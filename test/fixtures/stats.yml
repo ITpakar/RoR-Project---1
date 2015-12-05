@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_id: 
+  player_id: 
+  runs: 1
+  minutes: 1
+  balls: 1
+  4s: 1
+  6s: 1
+  overs: 1
+  maidens: 1
+  runs_against: 1
+  wickets: 1
+  extras: 1
+  catches: 1
+  stumpings: 1
+  run_outs: 1
+
+two:
+  game_id: 
+  player_id: 
+  runs: 1
+  minutes: 1
+  balls: 1
+  4s: 1
+  6s: 1
+  overs: 1
+  maidens: 1
+  runs_against: 1
+  wickets: 1
+  extras: 1
+  catches: 1
+  stumpings: 1
+  run_outs: 1

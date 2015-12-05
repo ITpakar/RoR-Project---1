@@ -1,0 +1,22 @@
+<h3>View Form - <%= @code.name %></h3>
+
+<p id="notice"><%= notice %></p>
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+
+						<p>
+			  <strong>Name:</strong>
+			  <%= @code.name %>
+			</p>
+			
+						<%= link_to 'Edit', edit_code_path(@code) %> |
+			<%= link_to 'Back', codes_path %>
+		
+		</div>
+	</div>
+</div>

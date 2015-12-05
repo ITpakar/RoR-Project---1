@@ -1,0 +1,61 @@
+<%= form_for(@squad, remote: true, html: {class: :squad_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
+<div class="modal-body">
+	<ul class="errors"></ul>
+
+	<div class="form-group">
+		<%= f.label :form, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<%= f.select :code_id, options_for_select(Code.pluck(:name, :id)), {prompt: true}, {:class => 'form-control'} %>
+		</div>
+	</div>
+	<div class="form-group">
+		<%= f.label :country_id, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<%= f.select :country_id, options_for_select(Country.pluck(:name, :id)), {prompt: true}, {:class => 'form-control'} %>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div class="form-group">
+		<%= f.label :available_players, class: "col-md-3 control-label" %>
+		<div class="col-md-6">
+			<%= f.select :available_players, options_for_select(@squad.get_available_players), {}, {:class => 'form-control'} %>
+		</div>
+		<div class="col-md-3">
+			<%= link_to "Add Player", '#', class: "btn btn-default", id: 'display_template_add' %>
+		</div>
+	</div>
+
+	<h3>Selected Players</h3>
+	<table id="display-selected-table" class="table table-striped">
+		<thead>
+			<tr>
+				<th>Field Name</th>
+				<th>Operations</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if @squad.players.count == 0 %>
+			<tr>
+				<td colspan='2'>No players have been selected yet.</td>
+			</tr>
+			<% else %>
+			<% @squad.players.each do |cd| %>
+			<tr id="<%= cd.id %>" class="rows">
+				<td><%= cd.name %></td>
+				<td><i rel="<%= cd.id %>" class="del-btn fa fa-times-circle"></td>
+			</tr>
+			<% end %>
+			<% end %>
+		</tbody>
+	</table>
+	
+	
+	<div class="modal-footer">
+		<%= f.hidden_field :column_data %>
+		<%= f.submit "Save Squad", class: "btn btn-primary", onClick: "$('#squad_column_data').val($('#display-selected-table tbody').sortable('toArray').join(':'))" %>
+		<%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
+	</div>
+</div>
+<% end %>

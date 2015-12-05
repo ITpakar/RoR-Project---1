@@ -1,0 +1,27 @@
+<h3>View Location - <%= @location.name %></h3>
+
+<p id="notice"><%= notice %></p>
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+
+						<p>
+			  <strong>Name:</strong>
+			  <%= @location.name %>
+			</p>
+			
+						<p>
+			  <strong>Country:</strong>
+			  <%= @location.country %>
+			</p>
+			
+						<%= link_to 'Edit', edit_location_path(@location) %> |
+			<%= link_to 'Back', locations_path %>
+		
+		</div>
+	</div>
+</div>

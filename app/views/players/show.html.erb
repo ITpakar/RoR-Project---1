@@ -1,0 +1,42 @@
+<h3>View Player - <%= @player.name %></h3>
+
+<p id="notice"><%= notice %></p>
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+
+						<p>
+			  <strong>Name:</strong>
+			  <%= @player.name %>
+			</p>
+			
+						<p>
+			  <strong>Country:</strong>
+			  <%= @player.country %>
+			</p>
+			
+						<p>
+			  <strong>Batting style:</strong>
+			  <%= @player.batting_style %>
+			</p>
+			
+						<p>
+			  <strong>Bowling style:</strong>
+			  <%= @player.bowling_style %>
+			</p>
+			
+						<p>
+			  <strong>Role:</strong>
+			  <%= @player.role %>
+			</p>
+			
+						<%= link_to 'Edit', edit_player_path(@player) %> |
+			<%= link_to 'Back', players_path %>
+		
+		</div>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<%= form_for(@game, remote: true, html: {class: :game_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
+  <div class="modal-body">
+  <ul class="errors"></ul>
+
+  <div class="form-group">
+    <%= f.label :match_date, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+	  <%= f.datetime_select :match_date, class: 'form-control' %>
+	</div>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Save Game", class: "btn btn-primary" %>
+    <%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
+  </div>
+  </div>
+<% end %>
