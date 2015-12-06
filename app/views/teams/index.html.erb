@@ -1,0 +1,20 @@
+<h3>Teams</h3>
+<div class="col-md-12">
+  <div class="panel panel-inverse">
+    <div class="panel-body">    
+      <p><%= link_to "New Team", new_team_path, remote: true, class: "btn btn-xs btn-primary" %></p>
+      <table id="teams-table" data-source="<%= teams_path(format: :json) %>" class="table table-striped table-bordered dataTable no-footer" width="100%">
+        <thead>
+          <tr>
+
+            <th>Game</th>
+
+		    <th>Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>	
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  team_id: 
+  player: 
+  captain: false
+  deleted: false
+
+two:
+  team_id: 
+  player: 
+  captain: false
+  deleted: false

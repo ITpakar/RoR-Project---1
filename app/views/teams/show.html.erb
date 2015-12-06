@@ -1,0 +1,24 @@
+<h3>View Team - <%= @team.name %></h3>
+
+<p id="notice"><%= notice %></p>
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+
+			
+			<p>
+			  <strong>Game:</strong>
+			  <%= @team.game %>
+			</p>
+			
+			
+			<%= link_to 'Edit', edit_team_path(@team) %> |
+			<%= link_to 'Back', teams_path %>
+		
+		</div>
+	</div>
+</div>

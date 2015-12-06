@@ -6,8 +6,8 @@ class CreateStats < ActiveRecord::Migration
       t.integer :runs
       t.integer :minutes
       t.integer :balls
-      t.integer :4s
-      t.integer :6s
+      t.integer :fours
+      t.integer :sixes
       t.integer :overs
       t.integer :maidens
       t.integer :runs_against

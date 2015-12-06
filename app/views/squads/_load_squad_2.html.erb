@@ -1,0 +1,26 @@
+<% if @squad_players.count > 0 then %>
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Country</th>
+    <th>Batting Style</th>
+    <th>Bowling Style</th>
+    <th>Role</th>
+    <th>Operations</th>
+  </tr>
+  <% @squad_players.each do |p| %>  
+    <% @game_squad = @game.game_squads.build %>
+    <%= f.fields_for :game_squads, @game_squad do |gsp| %>
+    
+      <tr>
+      	<td><%= p.player.name %></td>
+      	<td><%= p.player.country.name %></td>
+      	<td><%= p.player.batting_style.titleize %></td>
+      	<td><%= p.player.bowling_style %></td>
+      	<td><%= p.player.role.titleize %><%= gsp.hidden_field :player_id, value: p.player_id %></td>
+      	<td><%= link_to "Remove", "#" %></td>	    
+      </tr>
+    <% end %>
+  <% end %>
+  </table>
+<% end %>

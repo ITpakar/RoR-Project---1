@@ -1,16 +1,154 @@
-<%= form_for(@game, remote: true, html: {class: :game_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
-  <div class="modal-body">
-  <ul class="errors"></ul>
+<%= form_for(@game, remote: true, html: {class: :game_form }) do |f| %>
 
-  <div class="form-group">
-    <%= f.label :match_date, class: "col-md-3 control-label" %>
-    <div class="col-md-9">
-	  <%= f.datetime_select :match_date, class: 'form-control' %>
+<ul class="errors"></ul>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+
+		<h3>Step One</h3>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group input-group">
+					<%= f.label :match_date, class: 'label-control' %>
+					<div class="input-group date" id="match-date">
+						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "dd/mm/yyyy" }, :value=>"#{f.object.m.strftime("%d/%m/%Y") unless f.object.new_record?}" %>
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<%= f.label 'Choose Game Type', class: 'label-control' %>
+					<div class="input-group">
+						<%= f.select :code_id, options_for_select(Code.all.map{|s| [s.name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "squads", :action => "get_squad_select")}} %>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<%= f.label :name, class: 'label-control' %>
+					<div class="input-group">
+						<%= f.text_field :name, class: 'form-control' %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h3>Step Two</h3>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<%= f.label 'Choose Team 1', class: 'label-control' %>
+					<div class="input-group">
+						<%= f.collection_select(:squad_1_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<%= f.label 'Choose Team 2', class: 'label-control' %>
+					<div class="input-group">
+						<%= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h3>Step Three</h3>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<%= f.label 'Choose Location', class: 'label-control' %>
+					<div class="input-group">
+						<%= f.select :location_id, options_for_select(Location.all.map{|s| [s.full_name, s.id]}), { prompt: true }, { class: 'form-control' } %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h3>Step Four</h3>
+		<p>
+			<strong>Build Squads</strong>
+		</p>
+		<div id="no-teams" class="alert alert-danger" role="alert">
+			<p>
+				Please select two teams.
+			</p>
+		</div>
+
+		<div id="squads">
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a data-toggle="tab" href="#team1" id="team_1_label">Team 1</a>
+				</li>
+				<li>
+					<a data-toggle="tab" href="#team2" id="team_2_label">Team 2</a>
+				</li>
+			</ul>
+			<p>
+				&nbsp;
+			</p>
+			<div class="tab-content">
+				<div id="team1" class="tab-pane fade in active">
+					<div class="pull-right">
+						<%= link_to("Load Squad", squad_load_1_path(), {class: "btn btn-primary btn-xs", id: 'team_1_squad', onclick: 'load_squad(1);', :data => { :remote => true, params: {team_id: 0}} }) %>
+					</div>
+
+					<h4> Team 1 </h4>
+					<div id="team1-data"></div>
+				</div>
+				<div id="team2" class="tab-pane fade">
+					<div class="pull-right">
+						<%= link_to("Load Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>
+					</div>
+					<h4> Team 2 </h4>
+					<div id="team2-data"></div>
+				</div>
+			</div>
+
+		</div>
 	</div>
-  </div>
-  <div class="modal-footer">
-    <%= f.submit "Save Game", class: "btn btn-primary" %>
-    <%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
-  </div>
-  </div>
+	<div class="panel-footer">
+		<%= f.submit "Build Game", class: "btn btn-primary" %>
+	</div>
+
+</div>
+
+<script>
+	$('#match-date').datepicker({
+		todayHighlight : true,
+		autoclose : true,
+		orientation : 'top left'
+	});
+
+	$('#squads').hide();
+
+	function check_teams() {
+		var x = $('#game_squad_1_id').val();
+		var y = $('#game_squad_2_id').val();
+		if (x == '0' || y == '0') {
+			$('#no-teams').show();
+			$('#squads').hide();
+		} else {
+
+			$('#team_1_label').html($('#game_squad_1_id :selected').text());
+			$('#team_2_label').html($('#game_squad_2_id :selected').text());
+			
+			$('#team_1_squad').attr('data-params', '{"type": 1, "team_id":' + x + '}');
+			$('#team_2_squad').attr('data-params', '{"type": 2, "team_id":' + y + '}');
+
+			$('#no-teams').hide();
+			$('#squads').show();
+		}		
+	}
+
+	function load_squad(team) {
+		
+	}
+
+	function clear_squad(team) {
+		if (team == '1') {
+			$('#team1-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+		} else if (team == '2') {
+			$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+		}
+	}
+</script>
 <% end %>

@@ -16,4 +16,8 @@ class Squad < ActiveRecord::Base
     #Property.attribute_names.reject{|r1| selected_players.include? r1.camelize}.reject{|r| r == "id" || r == "created_at" || r == "created_by_id" || r == "updated_at"}.map.with_index{ |k, index| [k.titleize, "#{k.camelize}"  ]}
     Player.pluck(:name, :id)
   end
+  
+  def full_name
+     "#{self.country.name} -  #{self.code.name}"
+  end
 end

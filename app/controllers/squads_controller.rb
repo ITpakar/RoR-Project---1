@@ -48,6 +48,30 @@ class SquadsController < ApplicationController
 	@squad.save
   end
 
+  def get_squad_select  
+    code = params[:game][:code_id] 
+    @squads = Squad.where(:code_id => code, :deleted => 0)
+  end
+  
+  def load_squad_1
+    #code = params[:game][:code_id]
+    squad_id = params[:team_id]
+    #@game = game
+    @type = params[:type]
+    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => squad_id)
+  end
+  
+   def load_squad_2
+    #code = params[:game][:code_id]
+    squad_id = params[:team_id]
+    @type = params[:type]
+    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => squad_id)
+  end
+  
+  def save_squad
+    
+  end
+
   private
     def set_squad
       @squad = Squad.find(params[:id])

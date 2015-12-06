@@ -14,6 +14,7 @@ class GamesController < ApplicationController
 
   def new
     @game = Game.new
+    #@game.game_squads.build
   end
 
   def edit
@@ -41,6 +42,6 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params.require(:game).permit(:match_date)
+      params.require(:game).permit(:match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, game_squads_attributes: [:id, :player_id])
     end
 end

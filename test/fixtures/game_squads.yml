@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  country_id: 
+  player_id: 
+  captain: false
+  wicket_keeper: false
+
+two:
+  country_id: 
+  player_id: 
+  captain: false
+  wicket_keeper: false

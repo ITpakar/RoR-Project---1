@@ -18,4 +18,6 @@
 //= require dataTables/extras/dataTables.fixedColumns
 //= require dataTables/extras/dataTables.tableTools
 
+//= require bootstrap-datepicker/js/bootstrap-datepicker.js
+
 //= require_tree .
