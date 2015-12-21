@@ -1,0 +1,22 @@
+<ul class="errors"></ul>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<%= form_for(:game, remote: true, html: {class: :game_form }) do |f| %>
+		<div class="col-md-12">
+			<div class="form-group">
+				<%= f.label 'Choose Game', class: 'label-control' %>
+				<div class="form-group">
+					<%= f.select :id, options_for_select(Game.all.map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "games", :action => "load_innings")}} %>
+				</div>
+			</div>
+		</div>
+		<% end %>
+		<div id="innings" class="col-md-12"></div>
+
+	</div>
+
+</div>
+
+<div id="scores"></div>
+

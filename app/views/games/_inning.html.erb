@@ -1,0 +1,69 @@
+
+<div class="panel panel-default">
+	<div class="panel-body">
+
+		<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
+		<% if @game_players.count > 0 then %>
+
+			<h5>Batting</h5>
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Name</th>
+					<th>Runs</th>
+					<th>Minutes</th>
+					<th>Balls</th>
+					<th>4s</th>
+					<th>6s</th>
+					<th>SR</th>
+				</tr>
+				<% inning.stats.reject{ |sp| sp.player.country_id != team_id}.each do |p| %>
+				<%= f.fields_for :stats, p do |s| %>
+				<tr>
+					<td><%= p.player.name %></td>
+					<td><%= s.text_field :runs, :size => 3 %></td>
+					<td><%= s.text_field :minutes, :size => 3 %></td>
+					<td><%= s.text_field :balls, :size => 3 %></td>
+					<td><%= s.text_field :fours, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td class='strike-rate'>&nbsp;</td>
+	
+				</tr>
+				<% end %>
+				<% end %>
+	
+			</table>
+
+			<h5>Bowling</h5>
+			<table class="table table-striped">
+				<tr>
+					<th>Name</th>
+					<th>Overs</th>
+					<th>M</th>
+					<th>R</th>
+					<th>W</th>
+					<th>Econ</th>
+					<th>0s</th>
+					<th>4s</th>
+					<th>6s</th>
+				</tr>
+				<% inning.stats.reject{ |sp| sp.player.country_id == team_id}.each do |p| %>
+				<%= f.fields_for :stats, p do |s| %>
+				<tr>
+					<td><%= p.player.name %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td>&nbsp;</td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :sixes, :size => 3 %></td>
+				</tr>
+				<% end %>
+				<% end %>
+			</table>
+		<% end %>
+	</div>
+
+</div>
+

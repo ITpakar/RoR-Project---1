@@ -1,0 +1,8 @@
+<% 
+  @team = Team.new 
+  ff = ''
+  form_for(@team) do |f|
+    ff = f
+  end
+%>
+$('#team').html("<%= escape_javascript(render partial: 'load_game_squad', locals: {f: ff, team: @team}) %>");

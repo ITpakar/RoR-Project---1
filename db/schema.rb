@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206061732) do
+ActiveRecord::Schema.define(version: 20151210061109) do
 
   create_table "codes", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.boolean  "deleted",                default: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.string   "name",            limit: 255
+    t.integer  "default_innings", limit: 4,   default: 2
+    t.boolean  "deleted",                     default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "countries", force: :cascade do |t|
@@ -31,8 +32,9 @@ ActiveRecord::Schema.define(version: 20151206061732) do
     t.integer  "game_id",       limit: 4
     t.integer  "country_id",    limit: 4
     t.integer  "player_id",     limit: 4
+    t.boolean  "selected",                default: false
     t.boolean  "captain",                 default: false
-    t.boolean  "wicket_keeper"
+    t.boolean  "wicket_keeper",           default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
@@ -42,19 +44,36 @@ ActiveRecord::Schema.define(version: 20151206061732) do
   add_index "game_squads", ["player_id"], name: "index_game_squads_on_player_id", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.datetime "match_date"
-    t.string   "name",        limit: 255
-    t.integer  "location_id", limit: 4
-    t.integer  "code_id",     limit: 4
-    t.integer  "squad_1_id",  limit: 4
-    t.integer  "squad_2_id",  limit: 4
-    t.boolean  "deleted",                 default: false
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.date     "match_date"
+    t.string   "name",              limit: 255
+    t.integer  "number_of_innings", limit: 4,     default: 2
+    t.integer  "location_id",       limit: 4
+    t.integer  "code_id",           limit: 4
+    t.integer  "squad_1_id",        limit: 4
+    t.integer  "squad_2_id",        limit: 4
+    t.integer  "wides",             limit: 4,     default: 0
+    t.integer  "no_balls",          limit: 4,     default: 0
+    t.integer  "byes",              limit: 4,     default: 0
+    t.integer  "leg_byes",          limit: 4,     default: 0
+    t.integer  "extras",            limit: 4,     default: 0
+    t.text     "notes",             limit: 65535
+    t.boolean  "deleted",                         default: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   add_index "games", ["squad_1_id"], name: "index_games_on_squad_1_id", using: :btree
   add_index "games", ["squad_2_id"], name: "index_games_on_squad_2_id", using: :btree
+
+  create_table "innings", force: :cascade do |t|
+    t.integer  "game_id",    limit: 4
+    t.integer  "batting",    limit: 4, default: 0
+    t.integer  "bowling",    limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "innings", ["game_id"], name: "index_innings_on_game_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -79,6 +98,18 @@ ActiveRecord::Schema.define(version: 20151206061732) do
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree
 
+  create_table "run_outs", force: :cascade do |t|
+    t.integer  "game_id",    limit: 4
+    t.integer  "innings",    limit: 4
+    t.integer  "player_id",  limit: 4
+    t.integer  "run_out_by", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "run_outs", ["game_id"], name: "index_run_outs_on_game_id", using: :btree
+  add_index "run_outs", ["player_id"], name: "index_run_outs_on_player_id", using: :btree
+
   create_table "squad_players", force: :cascade do |t|
     t.integer  "player_id",  limit: 4
     t.integer  "squad_id",   limit: 4
@@ -102,35 +133,34 @@ ActiveRecord::Schema.define(version: 20151206061732) do
   add_index "squads", ["country_id"], name: "index_squads_on_country_id", using: :btree
 
   create_table "stats", force: :cascade do |t|
-    t.integer  "game_id",      limit: 4
+    t.integer  "inning_id",    limit: 4
     t.integer  "player_id",    limit: 4
-    t.integer  "runs",         limit: 4
-    t.integer  "minutes",      limit: 4
-    t.integer  "balls",        limit: 4
-    t.integer  "fours",        limit: 4
-    t.integer  "sixes",        limit: 4
-    t.integer  "overs",        limit: 4
-    t.integer  "maidens",      limit: 4
-    t.integer  "runs_against", limit: 4
-    t.integer  "wickets",      limit: 4
-    t.integer  "extras",       limit: 4
-    t.integer  "catches",      limit: 4
-    t.integer  "stumpings",    limit: 4
-    t.integer  "run_outs",     limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "runs",         limit: 4, default: 0
+    t.integer  "minutes",      limit: 4, default: 0
+    t.integer  "balls",        limit: 4, default: 0
+    t.integer  "fours",        limit: 4, default: 0
+    t.integer  "sixes",        limit: 4, default: 0
+    t.boolean  "run_out",                default: false
+    t.integer  "bowled_by",    limit: 4
+    t.integer  "caught_by",    limit: 4
+    t.integer  "overs",        limit: 4, default: 0
+    t.integer  "maidens",      limit: 4, default: 0
+    t.integer  "runs_against", limit: 4, default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
-  add_index "stats", ["game_id"], name: "index_stats_on_game_id", using: :btree
+  add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree
   add_index "stats", ["player_id"], name: "index_stats_on_player_id", using: :btree
 
   create_table "team_players", force: :cascade do |t|
-    t.integer  "team_id",    limit: 4
-    t.integer  "player_id",  limit: 4
-    t.boolean  "captain"
-    t.boolean  "deleted",              default: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.integer  "team_id",       limit: 4
+    t.integer  "player_id",     limit: 4
+    t.boolean  "captain",                 default: false
+    t.boolean  "wicket_keeper",           default: false
+    t.boolean  "deleted",                 default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
   add_index "team_players", ["team_id"], name: "index_team_players_on_team_id", using: :btree
@@ -138,6 +168,7 @@ ActiveRecord::Schema.define(version: 20151206061732) do
   create_table "teams", force: :cascade do |t|
     t.integer  "game_id",    limit: 4
     t.string   "name",       limit: 255
+    t.integer  "squad_id",   limit: 4
     t.boolean  "deleted",                default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false

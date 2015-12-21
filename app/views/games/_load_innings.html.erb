@@ -1,0 +1,43 @@
+<% if !@game.nil? && @game.number_of_innings > 0 then %>
+<%= form_for(@game, remote: true, :url => { :action => :load_scores }) do |f| %>
+<%= f.hidden_field :id %>
+<table class="table table-striped">
+	<tr>
+		<th>Innings</th>
+		<th>Batting Team</th>
+	</tr>
+	
+	<% @game.innings.each_with_index do |inning, i| %>
+	<%= f.fields_for :innings, inning do |ff| %>
+	
+	<tr>
+		<td><%= I18n.with_locale(:en) { (i + 1).to_words ordinal: true }.titleize %></td>
+		<td><%= ff.select(:batting, options_for_select({@game.squad_1.country.name => @game.squad_1.country.id, @game.squad_2.country.name => @game.squad_2.country.id}, inning.batting), {:include_blank => true, prompt: 'Please select a team'}, { class: 'form-control batting', onchange: 'update_batting();'}) %></td>
+	</tr>
+
+	
+	<% end %>
+	<% end %>
+</table>
+<p>
+	<%= f.submit 'Generate Score Table', id: 'generate-button', class: 'btn btn-primary', :data => {  :remote => true, cache: false, :format => 'json' } %>
+</p>
+<%
+ #
+%>
+<% end %>
+<% end %>
+<script>
+	function update_batting() {
+		var batting_order = {
+			batting_order : {}
+		};
+		$('.batting').each(function() {
+			var x = this.id.split('-');
+			batting_order['batting_order'][x[1]] = this.value;
+		});
+		console.log(batting_order);
+		$('#generate-button').attr('data-params', JSON.stringify(batting_order));
+	}
+
+</script>

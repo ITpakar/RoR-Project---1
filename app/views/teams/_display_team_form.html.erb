@@ -1,0 +1,29 @@
+<ul class="errors"></ul>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<%= form_for(:team, remote: true, html: {class: :team_form }) do |f| %>
+		
+	
+		
+		<div class="col-md-12">
+			<div class="form-group">
+				<%= f.label 'Choose Game', class: 'label-control' %>
+				<div class="form-group">
+					<%= f.select :game_id, options_for_select(Game.all.map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "teams", :action => "load_teams")}} %>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<div class="form-group">
+				<%= f.label 'Choose Team', class: 'label-control' %>
+				<div class="input-group">
+					<%= f.collection_select(:squad_id, [], :id, :full_name, {prompt: true}, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "teams", :action => "load_team")}}) %>
+				</div>
+			</div>
+		</div>
+		<div id="team"></div>
+		<% end %>
+	</div>
+</div>

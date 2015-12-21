@@ -1,6 +1,7 @@
 class Squad < ActiveRecord::Base
   belongs_to :country
   belongs_to :code
+   
   
   has_many :squad_players
   has_many :players, through: :squad_players

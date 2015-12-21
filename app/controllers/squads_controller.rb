@@ -50,7 +50,9 @@ class SquadsController < ApplicationController
 
   def get_squad_select  
     code = params[:game][:code_id] 
-    @squads = Squad.where(:code_id => code, :deleted => 0)
+    @squads = Squad.where(:code_id => code, :deleted => 0)    
+    @code = Code.find(code)
+    puts @code.attributes
   end
   
   def load_squad_1

@@ -1,0 +1,10 @@
+<%= form_for(@game) do |f| %>
+  <% @game.innings.each_with_index do |inning, index| %>
+    <%= f.fields_for :innings, inning do |inn| %>
+    <% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
+      <%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: inning.batting.to_i } %>
+      <%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first } %>
+    <% end %>
+  <% end %>
+  <%= f.submit "Save Scores", class: "btn btn-primary" %>
+<% end %>

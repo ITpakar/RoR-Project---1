@@ -1,3 +1,4 @@
+
 <% if @squad_players.count > 0 then %>
 <table class="table table-striped">
   <tr>
@@ -9,13 +10,13 @@
     <th>Selected</th>
     <th>Capt.</th>
     <th>WC</th>
-    <th>Operations</th>
-  </tr>
-  <% @squad_players.each do |p| %>  
-    <% @game_squad = @game.game_team_2_squads.build %>
-    <%= f.fields_for :game_team_2_squads, @game_squad do |gsp| %>
     
-        <tr>
+  </tr>
+  <% @squad_players.each do |p| %>     
+    <% @team_player = @team.team_players.build %>    
+    <%= f.fields_for :team_players, @team_player do |gsp| %>
+    
+      <tr>
       	<td><%= p.player.name %></td>
       	<td><%= p.player.country.name %></td>
       	<td><%= p.player.batting_style.titleize %></td>
@@ -26,12 +27,12 @@
       	<td><%= gsp.check_box :captain %></td>
       	<td><%= gsp.check_box :wicket_keeper %></td>
       	
-      	<td><%= link_to "Remove", "#" %></td>	    
+      		    
       </tr>
     <% end %>
   <% end %>
   </table>
   <div class="pull-right">
-    <%= link_to("Save Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>
+    <%= f.submit "Save Squad", {class: "btn btn-primary btn-xs", :data => { :remote => true, params: {team_id: 0}} } %>
   </div>
 <% end %>

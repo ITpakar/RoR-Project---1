@@ -41,6 +41,6 @@ class CodesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def code_params
-      params.require(:code).permit(:name)
+      params.require(:code).permit(:name, :default_innings)
     end
 end

@@ -11,7 +11,7 @@
 				<div class="form-group input-group">
 					<%= f.label :match_date, class: 'label-control' %>
 					<div class="input-group date" id="match-date">
-						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "dd/mm/yyyy" }, :value=>"#{f.object.m.strftime("%d/%m/%Y") unless f.object.new_record?}" %>
+						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "dd/mm/yyyy" } %>
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					</div>
 				</div>
@@ -48,6 +48,14 @@
 					<%= f.label 'Choose Team 2', class: 'label-control' %>
 					<div class="input-group">
 						<%= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<%= f.label 'Choose Number of Innings', class: 'label-control' %>
+					<div class="input-group">
+						<%= f.select :number_of_innings, options_for_select([1, 2], 2), { :prompt => 'Please select' }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "squads", :action => "get_squad_select")}} %>
 					</div>
 				</div>
 			</div>

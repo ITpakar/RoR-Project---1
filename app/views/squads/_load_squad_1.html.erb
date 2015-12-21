@@ -6,11 +6,14 @@
     <th>Batting Style</th>
     <th>Bowling Style</th>
     <th>Role</th>
+    <th>Selected</th>
+    <th>Capt.</th>
+    <th>WC</th>
     <th>Operations</th>
   </tr>
   <% @squad_players.each do |p| %>  
-    <% @game_squad = @game.game_squads.build %>
-    <%= f.fields_for :game_squads, @game_squad do |gsp| %>
+    <% @game_squad = @game.game_team_1_squads.build %>
+    <%= f.fields_for :game_team_1_squads, @game_squad do |gsp| %>
     
       <tr>
       	<td><%= p.player.name %></td>
@@ -18,6 +21,11 @@
       	<td><%= p.player.batting_style.titleize %></td>
       	<td><%= p.player.bowling_style %></td>
       	<td><%= p.player.role.titleize %><%= gsp.hidden_field :player_id, value: p.player_id %></td>
+      	
+      	<td><%= gsp.check_box :selected %></td>
+      	<td><%= gsp.check_box :captain %></td>
+      	<td><%= gsp.check_box :wicket_keeper %></td>
+      	
       	<td><%= link_to "Remove", "#" %></td>	    
       </tr>
     <% end %>

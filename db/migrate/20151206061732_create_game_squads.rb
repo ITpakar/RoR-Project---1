@@ -4,8 +4,9 @@ class CreateGameSquads < ActiveRecord::Migration
       t.belongs_to :game, index: true, foreign_key: true
       t.belongs_to :country, index: true, foreign_key: true
       t.belongs_to :player, index: true, foreign_key: true
+      t.boolean :selected, default: false
       t.boolean :captain, default: false
-      t.boolean :wicket_keeper
+      t.boolean :wicket_keeper, default: false
       t.timestamps null: false
     end
   end
