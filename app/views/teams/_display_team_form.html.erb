@@ -19,7 +19,7 @@
 			<div class="form-group">
 				<%= f.label 'Choose Team', class: 'label-control' %>
 				<div class="input-group">
-					<%= f.collection_select(:squad_id, [], :id, :full_name, {prompt: true}, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "teams", :action => "load_team")}}) %>
+					<%= f.collection_select(:team_id, [], :id, :full_name, {prompt: true}, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "teams", :action => "load_team")}}) %>
 				</div>
 			</div>
 		</div>
