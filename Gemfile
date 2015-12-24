@@ -13,8 +13,8 @@ group :development, :test do
   gem 'quiet_assets'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'mysql2', '~> 0.3.18'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'mysql2', '0.3.18'
 gem 'thin'
 gem 'jquery-datatables-rails'
 gem 'ajax-datatables-rails'
