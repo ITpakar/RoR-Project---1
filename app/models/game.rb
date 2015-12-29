@@ -11,6 +11,8 @@ class Game < ActiveRecord::Base
   
   has_many :innings
   has_many :stats, through: :innings
+  
+  has_many :teams
     
   #has_many :team_1_players, through: :game_team_1_squads, :class_name => "Player", :foreign_key => "player_id"
   #has_many :team_2_players, through: :game_team_2_squads, :class_name => "Player", :foreign_key => "player_id"

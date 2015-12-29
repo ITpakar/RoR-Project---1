@@ -1,6 +1,8 @@
 class Player < ActiveRecord::Base
   belongs_to :country
   
+  has_many :team_players
+  
   enum role: {Batsman: 0, Bowler: 1, AllRounder: 2, WicketKeeper: 3}
   enum batting_style: {RightHander: 0, LeftHander: 1}
   

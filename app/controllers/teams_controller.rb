@@ -73,6 +73,25 @@ class TeamsController < ApplicationController
     team_id = params[:team][:team_id]
     @type = params[:type]
     @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => team_id)
+    @stat = Stat
+      .includes(inning: [:game], player: [:team_players])
+      .references(inning:[:game], player: [:team_players])
+      .where(:team_players => { team_id: team_id })
+    @game = Game
+      .includes(:innings, :teams)
+      .references(:innings, :teams)
+      .where(:teams => {:id => team_id}).first
+    
+    @stats = {}
+    @stat.each do |t|
+      if @stats[t.inning_id].nil? then 
+        #puts t.inning_id
+        @stats[t.inning_id] = {}
+       end
+       @stats[t.inning_id][t.player_id] = t   
+    end
+    #puts "!!!"
+    #puts @stats.to_s
   end
 
   private
