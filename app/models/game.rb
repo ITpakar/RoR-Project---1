@@ -43,8 +43,12 @@ class Game < ActiveRecord::Base
   
   def full_name
     d = (self.match_date.nil? ? "Date Unknown" : self.match_date.strftime("%d/%m/%y") )
-    self.location.name ||= "Location Unknown"
-    "#{self.name} - #{self.squad_1.country.name} vs. #{self.squad_2.country.name} - #{self.code.name} - #{d} - #{self.location.name}"
+    if self.location.nil? then 
+      location = "Location Unknown"
+    else
+      location = self.location.name
+    end
+    "#{self.name} - #{self.squad_1.country.name} vs. #{self.squad_2.country.name} - #{self.code.name} - #{d} - #{location}"
   end
   
 end
