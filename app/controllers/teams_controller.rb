@@ -57,9 +57,11 @@ class TeamsController < ApplicationController
   end
   
   def load_teams
+   # p "===========================#{params.inspect}===="
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
-      @game = Game.find(game_id) unless game_id.blank?    
+      @game = Game.find(game_id) unless game_id.blank? 
+      #p "----#{@game.inspect}--"   
       #@countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]
       puts "!!!"
       @teams = Team.where(game_id: game_id).pluck(:name, :id)
@@ -104,4 +106,3 @@ class TeamsController < ApplicationController
       params.require(:team).permit(:id, :squad_id, :game_id, :name, team_players_attributes: [:id, :player_id, :captain, :selected, :wicket_keeper])
     end
 end
-

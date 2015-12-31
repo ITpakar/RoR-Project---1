@@ -31,7 +31,7 @@ class CountriesController < ApplicationController
 
   def destroy
     @country.deleted = 1
-	@country.save
+	  @country.save
   end
 
   private
@@ -44,3 +44,18 @@ class CountriesController < ApplicationController
       params.require(:country).permit(:name)
     end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -49,6 +49,7 @@ class Game < ActiveRecord::Base
       location = self.location.name
     end
     "#{self.name} - #{self.squad_1.country.name} vs. #{self.squad_2.country.name} - #{self.code.name} - #{d} - #{location}"
+    #"#{self.name} - #{self.squad_1.country.name} vs. #{self.squad_2.country.name} - #{self.code.name} - #{d} - #{location}"
   end
   
 end

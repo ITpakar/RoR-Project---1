@@ -19,7 +19,7 @@ class CodesController < ApplicationController
   def edit
   end
 
-  def create
+  def create  
     @code = Code.new(code_params)
     @code.save
   end
@@ -31,7 +31,7 @@ class CodesController < ApplicationController
 
   def destroy
     @code.deleted = 1
-	@code.save
+	  @code.save
   end
 
   private
@@ -44,3 +44,6 @@ class CodesController < ApplicationController
       params.require(:code).permit(:name, :default_innings)
     end
 end
+
+
+

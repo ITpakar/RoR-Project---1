@@ -20,7 +20,8 @@
     <th>Extras</th>
     <th>Catches</th>
     <th>Stumpings</th>
-    <th>Run Outs</th>    
+    <th>Run Outs</th>  
+    <th>Innings Score</th>  
   </tr>
   <% @squad_players.each do |p| %>     
   <% stat = @stats[inning.id][p.player.id] %>    
@@ -42,6 +43,8 @@
       	<td></td>
       	<td></td>
       	<td></td>
+        <td><%#= stat.inning_score %></td>
+
       </tr>
     
   <% end %>

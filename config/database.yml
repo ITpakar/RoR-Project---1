@@ -10,8 +10,10 @@ default: &default
   database: tipping
   username: root
   password: root
-  host: 127.0.0.1
+  host: localhost
   port: 3306
+  pool: 5
+  timeout: 5000
   secure_auth: false
 
 development:
@@ -26,4 +28,3 @@ test:
 
 production:
   <<: *default
-
