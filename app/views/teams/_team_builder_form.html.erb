@@ -1,8 +1,12 @@
-<ul class="errors"></ul>
+<ul class="errors">
+	<li id = "li1"></li>
+	<li id = "li2"></li>
+	<li id = "li3"></li>
+</ul>
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		<%= form_for(:team, remote: true, html: {class: :team_form }) do |f| %>
+		<%= form_for(:team, remote: true, html: {class: :team_form,:onsubmit => "return $.fn.myFunction()" }) do |f| %>
 		
 		<div class="col-md-12">
 			<div class="form-group">
@@ -34,3 +38,4 @@
 		<% end %>
 	</div>
 </div>
+

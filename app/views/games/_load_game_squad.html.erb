@@ -1,4 +1,3 @@
-
 <% if @squad_players.count > 0 then %>
 <table class="table table-striped">
   <tr>
@@ -23,9 +22,9 @@
       	<td><%= p.player.bowling_style %></td>
       	<td><%= p.player.role.titleize %><%= gsp.hidden_field :player_id, value: p.player_id %></td>
       	
-      	<td><%= gsp.check_box :selected %></td>
-      	<td><%= gsp.check_box :captain %></td>
-      	<td><%= gsp.check_box :wicket_keeper %></td>
+      	<td><%= gsp.check_box :selected,:class=>"cb_selected" %></td>
+      	<td><%= gsp.check_box :captain,:class=>"cb_captain" %></td>
+      	<td><%= gsp.check_box :wicket_keeper,:class=>"cb_keeper" %></td>
       	
       		    
       </tr>
@@ -33,6 +32,52 @@
   <% end %>
   </table>
   <div class="pull-right">
-    <%= f.submit "Save Squad", {class: "btn btn-primary btn-xs", :data => { :remote => true, params: {team_id: 0}} } %>
+    <%= f.submit "Save Squad", {id: "save_squad",class: "btn btn-primary btn-xs", :data => { :remote => true, params: {team_id: 0}} } %>
   </div>
 <% end %>
+
+
+
+
+
+
+<script>
+ $(document).ready(function(){
+
+    $.fn.myFunction = function(){
+ 
+    if ($('.cb_selected:checked').length < 11){
+       msg1 = "Please Select Atleast 11 players";
+    }
+    else {
+       msg1 = "Only 11 players Are Allowed";
+    }
+
+    if ($('.cb_captain:checked').length = 0){
+       msg2 = "Please Select A Captain";
+    }
+    else{
+       msg2 = "Only One Captain Is Allowed";
+    }
+
+    if ($('.cb_keeper:checked').length = 0){
+       msg3 = "Please Select A Wicket Keeper";
+    }
+    else{
+       msg3 = "Only One Wicket Keeper Is Allowed";
+    }
+
+    $('#li1').html(msg1);
+    $('#li2').html(msg2);
+    $('#li3').html(msg3);
+
+   
+    }
+});
+</script>
+
+
+
+
+
+

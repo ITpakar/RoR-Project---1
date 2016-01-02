@@ -20,11 +20,43 @@ class Stat < ActiveRecord::Base
 	  	points = points + self.fours #each four
 
 	  	points = points + (self.sixes*2) #each sixes
-	end  	
 
-	#---Batting Bonuses
+      base_points = points
+	  end  	
 
-	#Runs * (rounddown(Runs/50))/10)  	
+	  #---Batting Bonuses
+    if   self.runs.in?(50..99)
+     
+      points = base_points + (base_points*0.1).round
+    
+    elsif  self.runs.in?(100..149)
+      points = base_points + (base_points*0.2).round
+    end   
+
+      total_batting_points = points + base_points*0.1 if self.run_out
+
+
+    #---Bowling Points
+
+    wicket_points = 25*self.wickets
+
+    extras = self.runs_against*(-1)
+
+    base_bowling_points = wicket_points+extras
+
+
+    #---Bowling Bonuses
+
+    #total_bowling_points = base_bowling_points + (base_bowling_points*0.1).rounds if self.wickets
+
+    #---Fielding Points
+
+    catch_points = self.catch*10
+
+    
+
+
+
 
 
 
@@ -34,3 +66,6 @@ class Stat < ActiveRecord::Base
 
   end
 end
+
+
+

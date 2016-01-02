@@ -42,7 +42,8 @@ class TeamsController < ApplicationController
 	  @team.save
   end
 
-  def team_builder_save    
+  def team_builder_save  
+   p "----------------------------#{params.inspect}----"  
     players = params[:team][:team_players_attributes]    
     pp = []    
     players.each do |player|
@@ -72,6 +73,7 @@ class TeamsController < ApplicationController
   end  
   
   def load_team
+    #p "-----------------------#{params.inspect}-----"
     team_id = params[:team][:team_id]
     @type = params[:type]
     @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => team_id)
