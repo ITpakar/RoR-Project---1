@@ -49,14 +49,14 @@ class GamesController < ApplicationController
     @game = Game.find(game_id)    
     @game.update(game_params) unless @game.nil? 
     @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
-    @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
+    @countries = [[@game.squad_1.id, @game.squad_1.country.name], [@game.squad_2.id, @game.squad_2.country.name]]
   end
   
   def load_game_squads
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank?    
-      @countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]     
+      @countries = [[@game.squad_1.country.name, @game.squad_1.id], [@game.squad_2.country.name, @game.squad_2.id]]     
     end      
   end  
   
