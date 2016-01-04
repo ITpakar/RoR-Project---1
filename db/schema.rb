@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151210061309) do
+ActiveRecord::Schema.define(version: 20160104020658) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -143,9 +143,11 @@ ActiveRecord::Schema.define(version: 20151210061309) do
     t.boolean  "run_out",                default: false
     t.integer  "bowled_by",    limit: 4
     t.integer  "caught_by",    limit: 4
+    t.integer  "stumped_by",   limit: 4, default: 0
     t.integer  "overs",        limit: 4, default: 0
     t.integer  "maidens",      limit: 4, default: 0
     t.integer  "runs_against", limit: 4, default: 0
+    t.integer  "wickets",      limit: 4, default: 0
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -176,20 +178,4 @@ ActiveRecord::Schema.define(version: 20151210061309) do
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
 
-  add_foreign_key "game_squads", "countries"
-  add_foreign_key "game_squads", "games"
-  add_foreign_key "game_squads", "players"
-  add_foreign_key "innings", "games"
-  add_foreign_key "locations", "countries"
-  add_foreign_key "players", "countries"
-  add_foreign_key "run_outs", "games"
-  add_foreign_key "run_outs", "players"
-  add_foreign_key "squad_players", "players"
-  add_foreign_key "squad_players", "squads"
-  add_foreign_key "squads", "codes"
-  add_foreign_key "squads", "countries"
-  add_foreign_key "stats", "innings"
-  add_foreign_key "stats", "players"
-  add_foreign_key "team_players", "teams"
-  add_foreign_key "teams", "games"
 end
