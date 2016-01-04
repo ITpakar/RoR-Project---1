@@ -31,7 +31,7 @@ class LocationsController < ApplicationController
 
   def destroy
     @location.deleted = 1
-	  @location.save
+	@location.save
   end
 
   private

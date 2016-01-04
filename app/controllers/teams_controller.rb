@@ -73,7 +73,6 @@ class TeamsController < ApplicationController
   end  
   
   def load_team
-    #p "-----------------------#{params.inspect}-----"
     team_id = params[:team][:team_id]
     @type = params[:type]
     @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => team_id)
@@ -89,13 +88,10 @@ class TeamsController < ApplicationController
     @stats = {}
     @stat.each do |t|
       if @stats[t.inning_id].nil? then 
-        #puts t.inning_id
         @stats[t.inning_id] = {}
        end
        @stats[t.inning_id][t.player_id] = t   
     end
-    #puts "!!!"
-    #puts @stats.to_s
   end
 
   private
