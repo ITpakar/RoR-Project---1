@@ -79,6 +79,15 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, game_team_1_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], game_team_2_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], innings_attributes: [:id, :game_id, :batting], stats_attributes: [:id, :inning_id, :player_id, :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, :overs, :maidens, :runs_against, :created_at, :updated_at])
+      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
+        game_team_1_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], 
+        game_team_2_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], 
+        innings_attributes: [:id, :game_id, :batting], 
+        stats_attributes: [
+          :id, :inning_id, :player_id, 
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
+          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :created_at, :updated_at
+        ])
     end
 end

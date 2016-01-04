@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160104020658) do
+ActiveRecord::Schema.define(version: 20160104023553) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -133,23 +133,28 @@ ActiveRecord::Schema.define(version: 20160104020658) do
   add_index "squads", ["country_id"], name: "index_squads_on_country_id", using: :btree
 
   create_table "stats", force: :cascade do |t|
-    t.integer  "inning_id",    limit: 4
-    t.integer  "player_id",    limit: 4
-    t.integer  "runs",         limit: 4, default: 0
-    t.integer  "minutes",      limit: 4, default: 0
-    t.integer  "balls",        limit: 4, default: 0
-    t.integer  "fours",        limit: 4, default: 0
-    t.integer  "sixes",        limit: 4, default: 0
-    t.boolean  "run_out",                default: false
-    t.integer  "bowled_by",    limit: 4
-    t.integer  "caught_by",    limit: 4
-    t.integer  "stumped_by",   limit: 4, default: 0
-    t.integer  "overs",        limit: 4, default: 0
-    t.integer  "maidens",      limit: 4, default: 0
-    t.integer  "runs_against", limit: 4, default: 0
-    t.integer  "wickets",      limit: 4, default: 0
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.integer  "inning_id",      limit: 4
+    t.integer  "player_id",      limit: 4
+    t.integer  "runs",           limit: 4, default: 0
+    t.integer  "minutes",        limit: 4, default: 0
+    t.integer  "balls",          limit: 4, default: 0
+    t.integer  "fours",          limit: 4, default: 0
+    t.integer  "sixes",          limit: 4, default: 0
+    t.boolean  "run_out",                  default: false
+    t.integer  "bowled_by",      limit: 4
+    t.integer  "caught_by",      limit: 4
+    t.integer  "stumped_by",     limit: 4, default: 0
+    t.integer  "overs",          limit: 4, default: 0
+    t.integer  "maidens",        limit: 4, default: 0
+    t.integer  "runs_against",   limit: 4, default: 0
+    t.integer  "wickets",        limit: 4, default: 0
+    t.integer  "wides",          limit: 4, default: 0
+    t.integer  "no_balls",       limit: 4, default: 0
+    t.integer  "zeroes_against", limit: 4, default: 0
+    t.integer  "fours_against",  limit: 4, default: 0
+    t.integer  "sixes_against",  limit: 4, default: 0
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree

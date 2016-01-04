@@ -40,24 +40,28 @@
 					<th>Overs</th>
 					<th>M</th>
 					<th>R</th>
-					<th>W</th>
+					<th>Wi</th>
 					<th>Econ</th>
 					<th>0s</th>
 					<th>4s</th>
 					<th>6s</th>
+					<th>NB</th>
+					<th>W</th>
 				</tr>
 				<% inning.stats.reject{ |sp| sp.player.country_id == team_id}.each do |p| %>
 				<%= f.fields_for :stats, p do |s| %>
 				<tr>
 					<td><%= p.player.name %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :overs, :size => 3 %></td>
+					<td><%= s.text_field :maidens, :size => 3 %></td>
+					<td><%= s.text_field :runs_against, :size => 3 %></td>
+					<td><%= s.text_field :wickets, :size => 3 %></td>
 					<td>&nbsp;</td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :zeroes_against, :size => 3 %></td>
+					<td><%= s.text_field :fours_against, :size => 3 %></td>
+					<td><%= s.text_field :sixes_against, :size => 3 %></td>
+					<td><%= s.text_field :no_balls, :size => 3 %></td>
+					<td><%= s.text_field :wides, :size => 3 %></td>
 				</tr>
 				<% end %>
 				<% end %>
