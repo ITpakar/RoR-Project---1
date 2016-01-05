@@ -2,7 +2,7 @@ class Stat < ActiveRecord::Base
   belongs_to :inning
   belongs_to :player
 
-  def inning_score
+  def inning_score team_id
 
     points = 0
     base_points = 0
@@ -19,7 +19,7 @@ class Stat < ActiveRecord::Base
 	  #---Batting Bonuses    
     total_batting_points = base_points + (base_points * ((self.runs / 50).floor)/10) #Bonus above Score 50   
     
-    if (self.bowlled_by==nil and self.stumped_by==0 and self.caught_by==nil and self.run_out==false)  #if not out
+    if (self.bowled_by==nil and self.stumped_by==0 and self.caught_by==nil and self.run_out==false)  #if not out
       total_batting_points = total_batting_points + base_points*0.1  
     end
     #---Bowling Points
@@ -42,10 +42,13 @@ class Stat < ActiveRecord::Base
     total_fielding_points = catch_points + stump_points + runout_points
 
         
-    
+    #---Total Inning score 
     inning_score = total_batting_points + total_bowling_points + total_fielding_points
 
-
+    #if current player is captain inning score will be double
+    if (TeamPlayer.where(team_id: team_id,player_id: self.player_id).first.captain) 
+       inning_score = 2*inning_score
+    end
 
     puts "$$$"
     puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
