@@ -44,33 +44,46 @@
 <script>
  $(document).ready(function(){
 
+  
+   $('#save_squad').click(function(e){
+    e.preventDefault();
+    if ($.fn.myFunction())
+    {
+      $('.team_form').submit();
+    }
+  });
+
     $.fn.myFunction = function(){
- 
+      var msg1 = "";
+      var msg2 = "";
+      var msg3 = "";
+     
     if ($('.cb_selected:checked').length < 11){
        msg1 = "Please Select Atleast 11 players";
     }
-    else {
+    if (($('.cb_selected:checked').length > 11)){
        msg1 = "Only 11 players Are Allowed";
     }
 
-    if ($('.cb_captain:checked').length = 0){
+    if ($('.cb_captain:checked').length < 1){
        msg2 = "Please Select A Captain";
     }
-    else{
+    if ($('.cb_captain:checked').length > 1){
        msg2 = "Only One Captain Is Allowed";
     }
 
-    if ($('.cb_keeper:checked').length = 0){
+    if ($('.cb_keeper:checked').length < 1){
        msg3 = "Please Select A Wicket Keeper";
     }
-    else{
+    if ($('.cb_keeper:checked').length > 1){
        msg3 = "Only One Wicket Keeper Is Allowed";
     }
-
     $('#li1').html(msg1);
     $('#li2').html(msg2);
     $('#li3').html(msg3);
 
+    if(msg1=="" && msg2=="" && msg3=="")
+      {return true}
    
     }
 });

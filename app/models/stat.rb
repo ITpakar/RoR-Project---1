@@ -17,8 +17,11 @@ class Stat < ActiveRecord::Base
 	  base_points = points
 
 	  #---Batting Bonuses    
-    total_batting_points = base_points + (base_points * ((self.runs / 50).floor) * 0.1)   
-
+    total_batting_points = base_points + (base_points * ((self.runs / 50).floor)/10) #Bonus above Score 50   
+    
+    if (self.bowlled_by==nil and self.stumped_by==0 and self.caught_by==nil and self.run_out==false)  #if not out
+      total_batting_points = total_batting_points + base_points*0.1  
+    end
     #---Bowling Points
     wicket_points = 25 * self.wickets
     extras = self.runs_against * (-1)
@@ -33,11 +36,17 @@ class Stat < ActiveRecord::Base
     
     #---Fielding Points    
     catch_points = Stat.where(inning_id: self.inning_id, caught_by: self.player_id).count * 10
+    stump_points = Stat.where(inning_id: self.inning_id, stumped_by: self.player_id).count * 15
+    runout_points = RunOut.where(innings: self.inning_id, player_id: self.player_id).count * 25
+
+    total_fielding_points = catch_points + stump_points + runout_points
+
+        
     
-    
-    
-    
-    inning_score = total_batting_points + total_bowling_points + catch_points
+    inning_score = total_batting_points + total_bowling_points + total_fielding_points
+
+
+
     puts "$$$"
     puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
     puts "$$$"

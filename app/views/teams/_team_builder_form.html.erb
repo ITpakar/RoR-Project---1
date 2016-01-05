@@ -6,7 +6,8 @@
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		<%= form_for(:team, remote: true, html: {class: :team_form,:onsubmit => "return $.fn.myFunction()" }) do |f| %>
+
+		<%= form_for(:team, remote: true, html: {class: :team_form }) do |f| %>
 		
 		<div class="col-md-12">
 			<div class="form-group">
