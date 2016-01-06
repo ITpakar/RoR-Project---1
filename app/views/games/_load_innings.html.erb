@@ -12,7 +12,7 @@
 	
 	<tr>
 		<td><%= I18n.with_locale(:en) { (i + 1).to_words ordinal: true }.titleize %></td>
-		<td><%= ff.select(:batting, options_for_select({@game.squad_1.country.name => @game.squad_1.country.id, @game.squad_2.country.name => @game.squad_2.country.id}, inning.batting), {:include_blank => true, prompt: 'Please select a team'}, { class: 'form-control batting', onchange: 'update_batting();'}) %></td>
+		<td><%= ff.select(:batting, options_for_select({@game.squad_1.country.name => @game.squad_1.id, @game.squad_2.country.name => @game.squad_2.id}, inning.batting), {:include_blank => true, prompt: 'Please select a team'}, { class: 'form-control batting', onchange: 'update_batting();'}) %></td>
 	</tr>
 
 	
