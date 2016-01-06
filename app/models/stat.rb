@@ -19,7 +19,7 @@ class Stat < ActiveRecord::Base
 	  #---Batting Bonuses    
     total_batting_points = base_points + (base_points * ((self.runs / 50).floor)/10) #Bonus above Score 50   
     
-    if (self.bowlled_by==nil and self.stumped_by==0 and self.caught_by==nil and self.run_out==false)  #if not out
+    if (self.bowled_by==nil and self.stumped_by==0 and self.caught_by==nil and self.run_out==false)  #if not out
       total_batting_points = total_batting_points + base_points*0.1  
     end
     #---Bowling Points
@@ -47,9 +47,9 @@ class Stat < ActiveRecord::Base
 
 
 
-    puts "$$$"
-    puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
-    puts "$$$"
+    #puts "$$$"
+    #puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
+    #puts "$$$"
     inning_score 
   end
 end
