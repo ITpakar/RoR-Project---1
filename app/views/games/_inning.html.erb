@@ -1,7 +1,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-body">
-
+            <%@inning = inning%>
 		<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
 		<% if @game_players.count > 0 then %>
 
@@ -70,4 +70,5 @@
 	</div>
 
 </div>
+
 
