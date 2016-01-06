@@ -42,8 +42,7 @@ class TeamsController < ApplicationController
 	  @team.save
   end
 
-  def team_builder_save  
-   p "----------------------------#{params.inspect}----"  
+  def team_builder_save    
     players = params[:team][:team_players_attributes]    
     pp = []    
     players.each do |player|
@@ -58,7 +57,6 @@ class TeamsController < ApplicationController
   end
   
   def load_teams
-   # p "===========================#{params.inspect}===="
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank? 
@@ -73,17 +71,17 @@ class TeamsController < ApplicationController
   end  
   
   def load_team
-    team_id = params[:team][:team_id]
+    @team_id = params[:team][:team_id]
     @type = params[:type]
-    @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => team_id)
+    @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => @team_id)
     @stat = Stat
       .includes(inning: [:game], player: [:team_players])
       .references(inning:[:game], player: [:team_players])
-      .where(:team_players => { team_id: team_id })
+      .where(:team_players => { team_id: @team_id })
     @game = Game
       .includes(:innings, :teams)
       .references(:innings, :teams)
-      .where(:teams => {:id => team_id}).first
+      .where(:teams => {:id => @team_id}).first
     
     @stats = {}
     @stat.each do |t|

@@ -33,7 +33,8 @@ class SquadsController < ApplicationController
   end
 
   def update
-    players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
+    SquadPlayer.where(squad_id: params[:id]).delete_all
+    players = params[:squad][:column_data].split(':').uniq unless params[:squad][:column_data].nil?
     if !players.nil? && players.count > 0 then
       players.each do |player|
         @squad.squad_players.new(squad: @squad, player_id: player)
