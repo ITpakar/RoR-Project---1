@@ -49,7 +49,7 @@ class GamesController < ApplicationController
     @game = Game.find(game_id)    
     @game.update(game_params) unless @game.nil? 
     @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
-    @countries = [[@game.squad_1.id, @game.squad_1.country.name], [@game.squad_2.id, @game.squad_2.country.name]]
+    @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
   
   def load_game_squads
@@ -80,8 +80,8 @@ class GamesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def game_params
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
-        game_team_1_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], 
-        game_team_2_squads_attributes: [:id, :player_id, :selected, :captain, :wicket_keeper], 
+        game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+        game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
