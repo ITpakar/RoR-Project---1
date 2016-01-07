@@ -1,4 +1,4 @@
-class SquadsController < ApplicationController
+ class SquadsController < ApplicationController
   before_action :set_squad, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   

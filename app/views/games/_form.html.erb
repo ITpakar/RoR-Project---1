@@ -14,6 +14,7 @@
 						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "dd/mm/yyyy" } %>
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					</div>
+					    <span id ="date_error" class = "errors"></span>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -41,6 +42,7 @@
 					<div class="input-group">
 						<%= f.collection_select(:squad_1_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
 					</div>
+					<span id ="squad_1_error" class = "errors"></span>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -49,6 +51,7 @@
 					<div class="input-group">
 						<%= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
 					</div>
+					<span id ="squad_2_error" class = "errors"></span>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -114,7 +117,7 @@
 		</div>
 	</div>
 	<div class="panel-footer">
-		<%= f.submit "Build Game", class: "btn btn-primary" %>
+		<%= f.submit "Build Game", class: "btn btn-primary" ,id: "save_form"%>
 	</div>
 
 </div>
@@ -158,5 +161,53 @@
 			$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
 		}
 	}
-</script>
+
+ // Validation Game Form Script
+	
+  $('#save_form').click(function(e){
+	   e.preventDefault();
+	    if ($.fn.myFunction())
+	    {
+	  $('#date_error').html("");
+      $('#squad_1_error').html("");
+      $('#squad_2_error').html("");
+	      $('.game_form').submit();
+	    }
+     });
+
+    $.fn.myFunction = function(){
+      var msg1 = "";
+      var msg2 = "";
+      var msg3 = "";
+     
+    if ($('#game_match_date').val().trim() == ""){
+       msg1 = "Can't be Blank";
+    }
+
+    if (($('#game_squad_1_id').val().trim() == "" ) || ($('#game_squad_1_id').val().trim() == 0)){
+       msg2 = "Can't be Blank";
+    }
+
+    if (($('#game_squad_2_id').val().trim() == "") || ($('#game_squad_2_id').val().trim() == 0)){
+       msg3 = "Can't be Blank";
+    } 
+
+    if($('#game_squad_1_id').val().trim() == $('#game_squad_2_id').val().trim())
+    {
+      if (!(($('#game_squad_2_id').val().trim() == "" )||($('#game_squad_2_id').val().trim() == 0)))
+      {
+        msg2 = "Team's Can't be Same";
+      }  
+    }  
+
+    $('#date_error').html(msg1);
+    $('#squad_1_error').html(msg2);
+    $('#squad_2_error').html(msg3);
+
+    if(msg1=="" && msg2=="" && msg3=="")
+      {return true}
+     }
+</script>	
+
 <% end %>
+
