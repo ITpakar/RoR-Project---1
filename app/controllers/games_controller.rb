@@ -30,8 +30,9 @@ class GamesController < ApplicationController
   end
 
   def update
+    p "-----------------#{params.inspect}----------"
     @game.update(game_params)
-    respond_with(@game)
+    #respond_with(@game)
   end
 
   def destroy
@@ -56,7 +57,11 @@ class GamesController < ApplicationController
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank?    
-      @countries = [[@game.squad_1.country.name, @game.squad_1.id], [@game.squad_2.country.name, @game.squad_2.id]]     
+
+      #@countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]  
+      @countries = [@game.squad_1.country.id, @game.squad_2.country.id]
+      @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @countries)
+
     end      
   end  
   
