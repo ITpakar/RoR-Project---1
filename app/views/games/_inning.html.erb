@@ -14,7 +14,12 @@
 					<th>Balls</th>
 					<th>4s</th>
 					<th>6s</th>
-					<th>SR</th>
+					<th>SR</th> 01
+					<th>Bowled By</th>
+					<th>Caught By</th>
+					<th>Stumped By</th>
+					<th>Run Out By</th>
+
 				</tr>
 				<% inning.stats.reject{ |sp| sp.player.country_id != team_id}.each do |p| %>
 				<%= f.fields_for :stats, p do |s| %>
@@ -26,6 +31,13 @@
 					<td><%= s.text_field :fours, :size => 3 %></td>
 					<td><%= s.text_field :sixes, :size => 3 %></td>
 					<td class='strike-rate'>&nbsp;</td>
+					<td><%#= s.select :bowled_by, options_for_select(@game.find_players(team_id)), { prompt: true }, {class: 'form-control'}%></td>
+
+					<td><%#= s.select :caught_by, options_for_select(), { prompt: true }, {class: 'form-control'}%></td>
+
+					<td><%#= s.select :stumped_by, options_for_select(),{ prompt: true }, {class: 'form-control'}%></td>
+
+					<td></td>
 	
 				</tr>
 				<% end %>
@@ -70,5 +82,3 @@
 	</div>
 
 </div>
-
-
