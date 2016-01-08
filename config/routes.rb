@@ -31,4 +31,8 @@ Rails.application.routes.draw do
   get 'load-game-squad' => 'games#load_game_squad'
 
   get 'get_players' => 'countries#get_players'
+
+  get 'remove_player' => 'squads#remove_player'
+
+  
 end

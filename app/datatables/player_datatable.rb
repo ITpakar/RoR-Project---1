@@ -25,7 +25,7 @@ class PlayerDatatable < AjaxDatatablesRails::Base
       [
         # comma separated list of the values for each cell of a table row
         # example: record.attribute,		
-		    record.name, record.country.name, record.batting_style.titleize, record.bowling_style, record.role.titleize, ops
+		    record.name, record.country.name, record.batting_style.titleize, record.bowling_style, record.role.titleize, record.dob, ops
       ]
     end
   end

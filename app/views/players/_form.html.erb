@@ -26,6 +26,20 @@
 	  <%= f.text_field :bowling_style, class: 'form-control' %>
 	</div>
   </div>
+  
+  <div class="form-group">
+    <%= f.label :date_of_birth, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+    <div class="input-group date" id="match-date">
+          
+            <%= f.text_field :dob, class: "form-control", :data => { :date_format => "dd/mm/yyyy" } %>
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          </div>  
+    </div>
+  </div>
+
+
+
   <div class="form-group">
     <%= f.label :role, class: "col-md-3 control-label" %>
     <div class="col-md-9">
@@ -38,3 +52,11 @@
   </div>
   </div>
 <% end %>
+<script>
+  $('#match-date').datepicker({
+    todayHighlight : true,
+    autoclose : true,
+    orientation : 'top left'
+  });
+
+</script>
