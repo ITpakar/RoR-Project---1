@@ -1,0 +1,27 @@
+<div class="modal-header">
+<h3>New Game Type</h3>
+</div>
+<%= form_tag(save_quick_add_game_type_path ,remote: true,:class=> "form-horizontal", :style=> "display:inline;")   do %>
+  <div class="modal-body">
+  <ul class="errors"></ul>
+
+  <div class="form-group">
+      <%= label_tag "game_type", nil,:class=> "col-md-4 control-label" %>
+   <div class="col-md-8">
+	  <%= text_field_tag "name", nil,:class=> 'form-control' %>
+  </div>
+  </div>
+
+    <div class="form-group">
+      <%= label_tag "innings", nil,:class=> "col-md-4 control-label" %>
+   <div class="col-md-8">
+	  <%= text_field_tag "default_innings", nil,:class=> 'form-control' %>
+  </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= submit_tag "Add Game Type", class: "btn btn-primary" %>
+    <%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
+  </div>
+  </div>
+<% end %>

@@ -23,8 +23,12 @@
 					<div class="input-group">
 						<%= f.select :code_id, options_for_select(Code.all.map{|s| [s.name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "squads", :action => "get_squad_select")}} %>
 					</div>
+					<div class="input-group">
+					    <%= link_to "Quick Add",quick_add_game_type_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+					</div>
 				</div>
 			</div>
+
 			<div class="col-md-4">
 				<div class="form-group">
 					<%= f.label :name, class: 'label-control' %>
@@ -42,6 +46,9 @@
 					<div class="input-group">
 						<%= f.collection_select(:squad_1_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
 					</div>
+					<div class="input-group">
+					    <%= link_to "Quick Add",quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+					</div>
 					<span id ="squad_1_error" class = "errors"></span>
 				</div>
 			</div>
@@ -50,6 +57,9 @@
 					<%= f.label 'Choose Team 2', class: 'label-control' %>
 					<div class="input-group">
 						<%= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
+					</div>
+					<div class="input-group">
+					    <%= link_to "Quick Add",quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
 					</div>
 					<span id ="squad_2_error" class = "errors"></span>
 				</div>
@@ -71,6 +81,7 @@
 					<div class="input-group">
 						<%= f.select :location_id, options_for_select(Location.all.map{|s| [s.full_name, s.id]}), { prompt: true }, { class: 'form-control' } %>
 					</div>
+					<%= link_to "Quick Add",quick_add_location_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
 				</div>
 			</div>
 		</div>
@@ -207,6 +218,11 @@
     if(msg1=="" && msg2=="" && msg3=="")
       {return true}
      }
+
+
+  //Quick Add 
+  
+
 </script>	
 
 <% end %>

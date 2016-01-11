@@ -1,0 +1,8 @@
+<%html = "<option value="+@country.id.to_s+">"+@country.name+"</option>"%>
+
+$('#game_squad_1_id').append("<%= html.html_safe%>");
+$('#game_squad_2_id').append("<%= html.html_safe%>");
+$("#global-modal").modal("hide");
+
+
+

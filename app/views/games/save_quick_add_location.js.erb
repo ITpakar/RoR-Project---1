@@ -1,0 +1,4 @@
+<%html = "<option value="+@location.id.to_s+">"+@location.full_name+"</option>"%>
+
+$('#game_location_id').append("<%= html.html_safe%>");
+$("#global-modal").modal("hide");

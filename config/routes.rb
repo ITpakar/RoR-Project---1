@@ -34,5 +34,19 @@ Rails.application.routes.draw do
 
   get 'remove_player' => 'squads#remove_player'
 
+  get 'quick_add_game_type' => 'games#quick_add_game_type'
+  post 'save_quick_add_game_type' => 'games#save_quick_add_game_type'
+
+  get 'quick_add_country' => 'games#quick_add_country'
+  post 'save_quick_add_country' => 'games#save_quick_add_country'
+  
+  get 'quick_add_location' => 'games#quick_add_location'
+  post 'save_quick_add_location' => 'games#save_quick_add_location'
+
+  get 'quick_add_player' => 'games#quick_add_player'
+  post 'save_quick_add_player' => 'games#save_quick_add_player'
+
+  
+
   
 end

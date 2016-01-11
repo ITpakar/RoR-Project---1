@@ -25,13 +25,11 @@ class GamesController < ApplicationController
   end
 
   def create
-    p "----------------------#{params.inspect}---------"
     @game = Game.new(game_params)
     @game.save
   end
 
   def update
-    p "-----------------#{params.inspect}----------"
     @game.update(game_params)
     #respond_with(@game)
   end
@@ -75,7 +73,40 @@ class GamesController < ApplicationController
   def scoring_save
     
   end
-  
+
+  def quick_add_game_type
+  end
+
+  def save_quick_add_game_type 
+   @code = Code.create(:name =>params[:name],:default_innings=> params[:default_innings].to_i)
+  end
+
+  def quick_add_country
+  end
+
+  def save_quick_add_country
+     @country = Country.create(:name => params[:name])
+  end
+
+  def quick_add_location
+  end
+
+  def save_quick_add_location
+    @location = Location.create(:name => params[:name],:country_id=>params[:country_id])
+  end
+
+  def quick_add_player
+    @player = Player.new
+    @country=Country.find_by_id(params[:country_id])
+  end
+
+  def save_quick_add_player
+    @player = Player.new(player_params)
+    @player.save
+    
+
+  end
+
   private
     def set_game
       @game = Game.find(params[:id])
@@ -94,4 +125,9 @@ class GamesController < ApplicationController
           :created_at, :updated_at
         ])
     end
+
+    def player_params
+      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
+    end
+
 end
