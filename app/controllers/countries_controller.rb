@@ -34,6 +34,13 @@ class CountriesController < ApplicationController
 	@country.save
   end
 
+  def get_players
+    @players = Player.where(country_id: params[:country_id] )
+    render :json => {:players => @players}
+
+
+  end
+
   private
     def set_country
       @country = Country.find(params[:id])

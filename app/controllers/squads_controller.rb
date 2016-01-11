@@ -1,4 +1,4 @@
-class SquadsController < ApplicationController
+ class SquadsController < ApplicationController
   before_action :set_squad, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -73,6 +73,17 @@ class SquadsController < ApplicationController
   
   def save_squad
     
+  end
+
+  def remove_player
+    p "===============================#{params[:squad]}=========="
+    team_id = SquadPlayer.find_by_id(params[:squad_player_id]).squad_id 
+    SquadPlayer.find_by_id(params[:squad_player_id]).delete
+    if params[:squad] == "squad_1"
+       redirect_to squad_load_1_path(:team_id => team_id,format: :js)
+    else
+       redirect_to squad_load_2_path(:team_id => team_id,format: :js)
+    end
   end
 
   private

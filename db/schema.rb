@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160104023553) do
+ActiveRecord::Schema.define(version: 20160108130509) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20160104023553) do
     t.boolean  "deleted",                   default: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.string   "dob",           limit: 255
   end
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree

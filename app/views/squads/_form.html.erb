@@ -11,7 +11,9 @@
 	<div class="form-group">
 		<%= f.label :country_id, class: "col-md-3 control-label" %>
 		<div class="col-md-9">
-			<%= f.select :country_id, options_for_select(Country.pluck(:name, :id)), {prompt: true}, {:class => 'form-control'} %>
+			<select id = "squad_country_id" class = "form-control">
+              <option value="<%= @squad.country.id%>"><%= @squad.country.name%></option>
+            </select>  
 		</div>
 	</div>
 	
@@ -20,7 +22,7 @@
 	<div class="form-group">
 		<%= f.label :available_players, class: "col-md-3 control-label" %>
 		<div class="col-md-6">
-			<%= f.select :available_players, options_for_select(@squad.get_available_players), {}, {:class => 'form-control'} %>
+			<%= f.select :available_players, {}, {}, {:class => 'form-control'} %>
 		</div>
 		<div class="col-md-3">
 			<%= link_to "Add Player", '#', class: "btn btn-default", id: 'display_template_add' %>
@@ -59,3 +61,29 @@
 	</div>
 </div>
 <% end %>
+
+
+
+
+<script>
+ $( document ).ready(function() {
+   $.ajax({
+            url: '/get_players',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : $('#squad_country_id').val()},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '';
+	         $.each(data.players, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.name + '</option>';
+	            });
+	          $('#squad_available_players').html(html);
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+});
+</script>

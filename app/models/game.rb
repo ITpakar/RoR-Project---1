@@ -39,6 +39,11 @@ class Game < ActiveRecord::Base
   def setup_innings
     self.number_of_innings.to_i.times { self.innings.build }
   end
+  def find_players team_id
+    p "--------------#{self.id.inspect}---"
+     teams = @game.teams.pluck(:id)
+     p "--------------#{teams.inspect}---"
+  end
   
   
   def full_name

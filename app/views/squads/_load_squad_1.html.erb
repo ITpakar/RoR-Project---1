@@ -14,8 +14,8 @@
   <% @squad_players.each do |p| %>  
     <% @game_squad = @game.game_team_1_squads.build %>
     <%= f.fields_for :game_team_1_squads, @game_squad do |gsp| %>
-    
-      <tr>
+      <%row_id = "row_#{p.id}"%>
+      <tr id = "<%=row_id%>">
       	<td><%= p.player.name %></td>
       	<td><%= p.player.country.name %></td>
       	<td><%= p.player.batting_style.titleize %></td>
@@ -25,8 +25,11 @@
       	<td><%= gsp.check_box :selected %></td>
       	<td><%= gsp.check_box :captain %></td>
       	<td><%= gsp.check_box :wicket_keeper %></td>
-      	
-      	<td><%= link_to "Remove", "#" %></td>	    
+      	<!-- <td><%#= link_to "Remove",remove_player_path(:squad_player_id => p.id) %></td> -->
+        <td>
+           <%= link_to("Remove", remove_player_path(:squad_player_id => p.id,:squad =>"squad_1"), {class: "btn btn-danger btn-xs", id: 'remove_link', :data => { :remote => true}}) %>
+        </td>
+            
       </tr>
     <% end %>
   <% end %>
@@ -35,3 +38,14 @@
     <%= link_to("Save Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>
   </div>
 <% end %>
+
+<script>
+$( document ).ready(function() {
+ $('#remove_link').click(function(){
+    $('#remove_link').parents('tr').hide();
+    return 0;
+  });
+ });
+
+
+</script>

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'game-innings' => 'games#get_games_innings'
   get 'squad-load-1' => 'squads#load_squad_1'
   get 'squad-load-2' => 'squads#load_squad_2' 
-  get 'squad-save' => 'squads#save_squad'
+  get 'squad-save' => 'squads#save_squad'  
   
   get 'scoring' => 'games#scoring'
   patch 'scoring' => 'games#scoring_save'
@@ -29,4 +29,10 @@ Rails.application.routes.draw do
   
   get 'load-game-squads' => 'games#load_game_squads'
   get 'load-game-squad' => 'games#load_game_squad'
+
+  get 'get_players' => 'countries#get_players'
+
+  get 'remove_player' => 'squads#remove_player'
+
+  
 end
