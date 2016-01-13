@@ -70,3 +70,6 @@ SquadPlayer.create(squad_id: 2, player_id: 28)
 SquadPlayer.create(squad_id: 2, player_id: 29)
 SquadPlayer.create(squad_id: 2, player_id: 30)
 SquadPlayer.create(squad_id: 2, player_id: 31)
+
+
+User.create(email: "tipping@example.com", password: "password")

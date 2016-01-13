@@ -1,4 +1,5 @@
  class SquadsController < ApplicationController
+  before_action :require_user
   before_action :set_squad, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -57,21 +58,22 @@
   end
   
   def load_squad_1
-    p "------------1----------#{params.inspect}-----"
-    #code = params[:game][:code_id]
+
+    # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
+    # @type = params[:type]
+    # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
     squad_id = params[:team_id]
-    @country =Squad.find_by_id(squad_id)
-    #@game = game
     @type = params[:type]
-    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad_id)
-  end 
-  
+    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => squad_id)
+  end  
    def load_squad_2
-    p "-----------2---#{params.inspect}---------"
-    #code = params[:game][:code_id]
+    
+    # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
+    # @type = params[:type]
+    # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
     squad_id = params[:team_id]
     @type = params[:type]
-    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad_id)
+    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => squad_id)
   end
   
   def save_squad
@@ -79,7 +81,6 @@
   end
 
   def remove_player
-    p "===============================#{params[:squad]}=========="
     team_id = SquadPlayer.find_by_id(params[:squad_player_id]).squad_id 
     SquadPlayer.find_by_id(params[:squad_player_id]).delete
     if params[:squad] == "squad_1"

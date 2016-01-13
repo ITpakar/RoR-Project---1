@@ -17,8 +17,9 @@
     <%= f.label :country_id, class: "col-md-3 control-label" %>
   <div class="col-md-9">
     <select class = "form-control">
-        <option value="<%= @country.id%>"><%= @country.name%></option>
-        <%= f.hidden_field :country_id, :value => @country.id %>
+        <option id = "player_country_id" value=""></option>
+        <%= f.hidden_field :country_id%>
+        <%= hidden_field_tag :code_id%>
     </select>  
   </div>
   </div>
@@ -47,7 +48,6 @@
   </div>
 
 
-
   <div class="form-group">
     <%= f.label :role, class: "col-md-3 control-label" %>
     <div class="col-md-9">
@@ -66,5 +66,17 @@
     autoclose : true,
     orientation : 'top left'
   });
+
+  $( document ).ready(function() {  
+     var x = $('#game_squad_1_id :selected').text();
+     var y = $('#game_squad_1_id :selected').val();
+     <%if (@type == "1")%>
+      html = '<option value=' + y + '>' + x + '</option>';
+      $('#player_country_id').html(html);
+     <%else%>
+     alert("2");
+     <%end%>
+
+   });
 
 </script>

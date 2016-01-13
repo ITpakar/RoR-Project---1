@@ -76,6 +76,7 @@
 
 <script>
  $( document ).ready(function() {
+  $('#squad_country_id').change(function() {
    $.ajax({
             url: '/get_players',
             dataType: 'json',
@@ -94,5 +95,6 @@
                 alert(errorThrown);
             }
         });
+});
 });
 </script>

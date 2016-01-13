@@ -1,4 +1,5 @@
 class PlayersController < ApplicationController
+  before_action :require_user
   before_action :set_player, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   

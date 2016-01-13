@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160108130509) do
+ActiveRecord::Schema.define(version: 20160113092524) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -183,6 +183,13 @@ ActiveRecord::Schema.define(version: 20160108130509) do
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email",      limit: 255
+    t.string   "password",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   add_foreign_key "game_squads", "countries"
   add_foreign_key "game_squads", "games"

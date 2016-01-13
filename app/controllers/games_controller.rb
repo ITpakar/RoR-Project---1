@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action :require_user
   before_action :set_game, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -86,6 +87,11 @@ class GamesController < ApplicationController
 
   def save_quick_add_country
      @country = Country.create(:name => params[:name])
+     @codes =Code.all
+     @codes.each do |code|
+       squad = Squad.create(:code_id => code.id,:country_id => @country.id)
+     end
+
   end
 
   def quick_add_location
@@ -96,13 +102,15 @@ class GamesController < ApplicationController
   end
 
   def quick_add_player
+    @type = params[:type]
     @player = Player.new
-    @country=Country.find_by_id(params[:country_id])
+    #@country=Country.find_by_id(params[:country_id])
   end
 
   def save_quick_add_player
-    @player = Player.new(player_params)
-    @player.save
+    # @player = Player.new(player_params)
+    # @player.save
+    #redirect_to 
     
 
   end

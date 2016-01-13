@@ -15,7 +15,7 @@
     <% @game_squad = @game.game_team_1_squads.build %>
     <%= f.fields_for :game_team_1_squads, @game_squad do |gsp| %>
       <%row_id = "row_#{p.id}"%>
-      <%@country_id = p.player.country.id%>
+      <%#@country_id = p.player.country.id%>
       <tr id = "<%=row_id%>">
       	<td><%= p.player.name %></td>
       	<td><%= p.player.country.name %></td>
@@ -48,8 +48,7 @@
 
 
   <div class="pull-right">
-    <%= link_to("Add New Player", quick_add_player_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', :data => { :remote => true, params: {country_id: 
-      @squad}} }) %>
+    <%= link_to("Add New Player", quick_add_player_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', :data => { :remote => true, params: {type: 1}} }) %>
   </div>
   <div class="pull-right">
     <%= link_to("Add Player from Database", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', :data => { :remote => true, params: {team_id: 0}} }) %>

@@ -118,7 +118,7 @@
 				</div>
 				<div id="team2" class="tab-pane fade">
 					<div class="pull-right">
-						<%= link_to("Load Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>
+						<%= link_to("Load Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>					
 					</div>
 					<h4> Team 2 </h4>
 					<div id="team2-data"></div>
@@ -145,6 +145,7 @@
 	function check_teams() {
 		var x = $('#game_squad_1_id').val();
 		var y = $('#game_squad_2_id').val();
+		var z = $('#game_code_id').val();		
 		if (x == '0' || y == '0') {
 			$('#no-teams').show();
 			$('#squads').hide();
@@ -153,8 +154,8 @@
 			$('#team_1_label').html($('#game_squad_1_id :selected').text());
 			$('#team_2_label').html($('#game_squad_2_id :selected').text());
 			
-			$('#team_1_squad').attr('data-params', '{"type": 1, "team_id":' + x + '}');
-			$('#team_2_squad').attr('data-params', '{"type": 2, "team_id":' + y + '}');
+			$('#team_1_squad').attr('data-params', '{"type": 1, "code_id": '+ z + ',"team_id":' + x + '}');	
+			$('#team_2_squad').attr('data-params', '{"type": 2, "code_id": '+ z + ',"team_id":' + y + '}');
 
 			$('#no-teams').hide();
 			$('#squads').show();
@@ -221,8 +222,6 @@
 
 
   //Quick Add 
-  
-
 </script>	
 
 <% end %>

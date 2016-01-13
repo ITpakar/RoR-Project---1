@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   resources :players
   resources :countries
 
-  root 'games#new'
+  resources :sessions
+
+  root 'sessions#new'
 
   get 'squad-select' => 'squads#get_squad_select'
   get 'game-innings' => 'games#get_games_innings'
@@ -45,6 +47,8 @@ Rails.application.routes.draw do
 
   get 'quick_add_player' => 'games#quick_add_player'
   post 'save_quick_add_player' => 'games#save_quick_add_player'
+
+  get '/logout' => 'sessions#logout'
 
   
 

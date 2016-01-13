@@ -15,7 +15,6 @@
 	</head>
 
 	<body>
-
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -43,6 +42,9 @@
 								<li><a href="/squads">Squads</a></li>								
 							</ul>
 						</li>
+						<%if session[:user_id] != nil%>
+						<li><a href="/logout">Logout</a></li>
+						<%end%>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
