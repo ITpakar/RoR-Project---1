@@ -36,8 +36,15 @@ class CountriesController < ApplicationController
   end
 
   def get_players
-    @players = Player.where(country_id: params[:country_id] )
-    render :json => {:players => @players}
+    if params[:squad_id].blank?
+      available_players = Player.where(country_id: params[:country_id] )
+    else
+      all_players = Player.where(country_id: params[:country_id] ).pluck(:id)
+      squad_players = SquadPlayer.where(squad_id: params[:squad_id]).pluck(:player_id)
+      remaining_players = all_players - squad_players
+      available_players = Player.where(:id => remaining_players)
+    end  
+    render :json => {:players => available_players}
 
 
   end

@@ -97,6 +97,6 @@
 
     # Only allow a trusted parameter "white list" through.
     def squad_params
-      params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players)
+      params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:custom_text,:description)
     end
 end

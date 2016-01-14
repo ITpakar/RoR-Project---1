@@ -108,6 +108,7 @@ class GamesController < ApplicationController
   end
 
   def save_quick_add_player
+     p "--------------------#{params.inspect}----------"
     # @player = Player.new(player_params)
     # @player.save
     #redirect_to 

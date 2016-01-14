@@ -18,8 +18,8 @@
   <div class="col-md-9">
     <select class = "form-control">
         <option id = "player_country_id" value=""></option>
-        <%= f.hidden_field :country_id%>
-        <%= hidden_field_tag :code_id%>
+        <%= f.hidden_field :country_id ,:value => ""%>
+        <%= hidden_field_tag(:code_id,:value)%>
     </select>  
   </div>
   </div>
@@ -73,6 +73,7 @@
      <%if (@type == "1")%>
       html = '<option value=' + y + '>' + x + '</option>';
       $('#player_country_id').html(html);
+      
      <%else%>
      alert("2");
      <%end%>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113092524) do
+ActiveRecord::Schema.define(version: 20160114123421) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -123,11 +123,13 @@ ActiveRecord::Schema.define(version: 20160113092524) do
   add_index "squad_players", ["squad_id"], name: "index_squad_players_on_squad_id", using: :btree
 
   create_table "squads", force: :cascade do |t|
-    t.integer  "code_id",    limit: 4
-    t.integer  "country_id", limit: 4
-    t.boolean  "deleted",              default: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.integer  "code_id",     limit: 4
+    t.integer  "country_id",  limit: 4
+    t.boolean  "deleted",                 default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "custom_text", limit: 255
+    t.string   "description", limit: 255
   end
 
   add_index "squads", ["code_id"], name: "index_squads_on_code_id", using: :btree

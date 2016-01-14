@@ -26,7 +26,7 @@ class SquadDatatable < AjaxDatatablesRails::Base
       [
         # comma separated list of the values for each cell of a table row
         # example: record.attribute,		
-		    record.code.name, record.country.name, ops
+		    record.country.name,record.code.name,record.description,ops
       ]
     end
   end

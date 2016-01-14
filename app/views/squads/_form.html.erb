@@ -1,6 +1,12 @@
 <%= form_for(@squad, remote: true, html: {class: :squad_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
 <div class="modal-body">
 	<ul class="errors"></ul>
+	<div class="form-group">
+		<%= f.label :custom_text, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<%= f.text_field :custom_text, class: 'form-control' %>
+		</div>
+	</div>
 
 	<div class="form-group">
 		<%= f.label :form, class: "col-md-3 control-label" %>
@@ -25,6 +31,12 @@
 		</div>
 	</div>
 	<%end%>
+    <div class="form-group">
+		<%= f.label :description, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<%= f.text_area :description, class: 'form-control' %>
+		</div>
+	</div>
 	
 	<hr />
 	
@@ -42,7 +54,7 @@
 	<table id="display-selected-table" class="table table-striped">
 		<thead>
 			<tr>
-				<th>Field Name</th>
+			    <th>Name</th>
 				<th>Operations</th>
 			</tr>
 		</thead>
@@ -69,19 +81,22 @@
 		<%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
 	</div>
 </div>
-<% end %>
+
+
+
 
 
 
 
 <script>
  $( document ).ready(function() {
-  $('#squad_country_id').change(function() {
+  $('#squad_country_id').change(function() { 
+  $('#display-selected-table tbody').empty() 	
    $.ajax({
             url: '/get_players',
             dataType: 'json',
             type: 'GET',
-            data: {country_id : $('#squad_country_id').val()},
+            data: {country_id : $('#squad_country_id').val(),squad_id: ""},
             dataType: 'json',
 	        success: function(data) {
 	          var html;
@@ -97,4 +112,33 @@
         });
 });
 });
+ <%if @squad.persisted?%>
+   $.ajax({
+            url: '/get_players',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : $('#squad_country_id').val(),squad_id: <%= @squad.id%>},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '';
+	         $.each(data.players, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.name + '</option>';
+	            });
+	          $('#squad_available_players').html(html);
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+ <%end%>
+
 </script>
+
+
+
+<% end %>
+
+
+
+
