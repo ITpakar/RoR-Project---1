@@ -87,11 +87,6 @@ class GamesController < ApplicationController
 
   def save_quick_add_country
      @country = Country.create(:name => params[:name])
-     @codes =Code.all
-     @codes.each do |code|
-       squad = Squad.create(:code_id => code.id,:country_id => @country.id)
-     end
-
   end
 
   def quick_add_location
