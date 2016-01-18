@@ -103,12 +103,24 @@ class GamesController < ApplicationController
   end
 
   def save_quick_add_player
-     p "--------------------#{params.inspect}----------"
-    # @player = Player.new(player_params)
-    # @player.save
-    #redirect_to 
-    
+  end
 
+
+  def quick_add_squad
+    @squad_type = params[:squad]
+    @squad = Squad.new
+  end
+
+  def save_quick_add_squad
+    @squad_type = params[:type]
+    players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
+    @squad = Squad.new(squad_params)    
+    if !players.nil? && players.count > 0 then
+      players.each do |player|
+        @squad.squad_players.new(squad: @squad, player_id: player)
+      end
+    end    
+    @squad.save
   end
 
   private
@@ -132,6 +144,10 @@ class GamesController < ApplicationController
 
     def player_params
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
+    end
+
+    def squad_params
+      params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
     end
 
 end

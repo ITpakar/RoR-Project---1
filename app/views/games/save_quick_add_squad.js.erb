@@ -1,0 +1,11 @@
+$("#global-modal").modal("hide");
+
+<%html = "<option value="+@squad.id.to_s+">"+@squad.description+"</option>"%>
+
+<%if @squad_type == "1"%>
+   $('#load_squad_1_id').append("<%= html.html_safe%>");
+<%elsif @squad_type == "2"%>
+   $('#load_squad_2_id').append("<%= html.html_safe%>");
+<%end%>
+
+

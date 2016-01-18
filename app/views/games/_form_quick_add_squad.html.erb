@@ -1,0 +1,133 @@
+<div class="modal-header">
+<h3>New Squad</h3>
+</div>
+<%= form_for(:squad, url: save_quick_add_squad_path(:type=>@squad_type),remote: true, html: {class: :squad_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
+<div class="modal-body">
+	<ul class="errors"></ul>
+	<div class="form-group">
+		<%= f.label :form, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<select id = "squad_code_id" class = "form-control">
+              <option value=""></option>
+            </select>  
+         <%= f.hidden_field :code_id, :id => "quick_code_id",:value => ""%>
+		</div>
+	</div>
+	<div class="form-group">
+		<%= f.label :country_id, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<select id = "squad_country_id" class = "form-control">
+              <option value=""></option>
+            </select>
+        <%= f.hidden_field :country_id, :id => "quick_country_id",:value => ""%>  
+		</div>
+	</div>
+    <div class="form-group">
+		<%= f.label :description, class: "col-md-3 control-label" %>
+		<div class="col-md-9">
+			<%= f.text_area :description, class: 'form-control' %>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div class="form-group">
+		<%= f.label :available_players, class: "col-md-3 control-label" %>
+		<div class="col-md-6">
+			<%= f.select :available_players, {}, {}, {:class => 'form-control'} %>
+		</div>
+		<div class="col-md-3">
+			<%= link_to "Add Player", '#', class: "btn btn-default", id: 'display_template_add' %>
+		</div>
+	</div>
+
+	<h3>Selected Players</h3>
+	<table id="display-selected-table" class="table table-striped">
+		<thead>
+			<tr>
+			    <th>Name</th>
+				<th>Operations</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if @squad.players.count == 0 %>
+			<tr>
+				<td colspan='2'>No players have been selected yet.</td>
+			</tr>
+			<% else %>
+			<% @squad.players.each do |cd| %>
+			<tr id="<%= cd.id %>" class="rows">
+				<td><%= cd.name %></td>
+				<td><i rel="<%= cd.id %>" class="del-btn fa fa-times-circle" id = "btn_delete" ></td>
+			</tr>
+			<% end %>
+			<% end %>
+		</tbody>
+	</table>
+	
+	
+	<div class="modal-footer">
+		<%= f.hidden_field :column_data %>
+		<%= f.submit "Save Squad", class: "btn btn-primary", onClick: "$('#squad_column_data').val($('#display-selected-table tbody').sortable('toArray').join(':'))" %>
+		<%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
+	</div>
+</div>
+
+
+
+
+
+
+
+<script>
+ $( document ).ready(function() {
+    var code_id = $('#game_code_id').val();
+    var code_value = $('#game_code_id option:selected').text(); 
+    html ='<option value=' + code_id + '>' + code_value + '</option>';
+    $('#squad_code_id').html(html);
+    $('#quick_code_id').val(code_id);
+
+    <%if @squad_type == "1" %>
+
+    var country_id = $('#game_squad_1_id').val();
+    var country_value = $('#game_squad_1_id option:selected').text(); 
+    html ='<option value=' + country_id + '>' + country_value + '</option>';
+    $('#squad_country_id').html(html);
+    $('#quick_country_id').val(country_id);
+
+    <%else%>
+
+    var country_id = $('#game_squad_2_id').val();
+    var country_value = $('#game_squad_2_id option:selected').text(); 
+    html ='<option value=' + country_id + '>' + country_value + '</option>';
+    $('#squad_country_id').html(html);
+    $('#quick_country_id').val(country_id); 
+
+    <%end%>
+
+  $('#display-selected-table tbody').empty() 	
+   $.ajax({
+            url: '/get_players',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : $('#squad_country_id').val(),squad_id: ""},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '';
+	         $.each(data.players, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.name + '</option>';
+	            });
+	          $('#squad_available_players').html(html);
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+});
+
+ </script>
+
+
+
+<% end %>

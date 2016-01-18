@@ -1,5 +1,4 @@
 <%= form_for(@game, remote: true, html: {class: :game_form }) do |f| %>
-
 <ul class="errors"></ul>
 
 <div class="panel panel-default">
@@ -45,7 +44,7 @@
 				<div class="form-group">
 					<%= f.label 'Choose Team 1', class: 'label-control' %>
 					<div class="input-group">
-						<%= f.collection_select(:squad_1_id, Country.all, :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
+						<%= f.collection_select(:squad_1_id, Country.all, :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
 						<%#= f.collection_select(:squad_1_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
 					</div>
 					<div class="input-group">
@@ -58,7 +57,7 @@
 				<div class="form-group">
 					<%= f.label 'Choose Team 2', class: 'label-control' %>
 					<div class="input-group">
-						<%= f.collection_select(:squad_2_id, Country.all, :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
+						<%= f.collection_select(:squad_2_id, Country.all, :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
 						<%#= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
 					</div>
 					<div class="input-group">
@@ -112,18 +111,34 @@
 			</p>
 			<div class="tab-content">
 				<div id="team1" class="tab-pane fade in active">
-					<div class="pull-right">
-						<%= link_to("Load Squad", squad_load_1_path(), {class: "btn btn-primary btn-xs", id: 'team_1_squad', onclick: 'load_squad(1);', :data => { :remote => true, params: {team_id: 0}} }) %>
-					</div>
 
-					<h4> Team 1 </h4>
-					<div id="team1-data"></div>
+					
+					<h4 class="inline-ele">Team 1</h4>
+			        <div class="inline-ele">
+						<%= link_to("Quich add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 1}}}) %>					
+					</div>
+					
+					<div class="inline-ele pull-right">
+						<%#= link_to("Load Squad", squad_load_1_path(), {class: "btn btn-primary btn-xs", id: 'team_1_squad', onclick: 'load_squad(1);', :data => { :remote => true, params: {team_id: 0}} }) %>
+					  <select id = "load_squad_1_id" class = "form-control">
+                          <option value="#">Select squad</option>
+                      </select>  
+					</div>
+					
+ 				<div id="team1-data"></div>
 				</div>
 				<div id="team2" class="tab-pane fade">
-					<div class="pull-right">
-						<%= link_to("Load Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>					
+					<h4 class="inline-ele"> Team 2 </h4>
+                     <div class="inline-ele">
+						<%= link_to("Quich add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 2}}}) %>					
+					</div>					
+					<div class="inline-ele pull-right">
+						<%#= link_to("Load Squad", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', onclick: 'load_squad(2);', :data => { :remote => true, params: {team_id: 0}} }) %>	
+					  <select id = "load_squad_2_id" class = "form-control">
+                          <option value="#">Select squad</option>
+                      </select>										
 					</div>
-					<h4> Team 2 </h4>
+
 					<div id="team2-data"></div>
 				</div>
 			</div>
@@ -176,6 +191,64 @@
 			$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
 		}
 	}
+
+	 function set_team(team){
+	 	//alert(team);
+		var code_id = $('#game_code_id').val();
+
+		if (team == '1' ){
+           var country_id = $('#game_squad_1_id').val();
+		  }
+	    else if (team == '2'){
+		   var country_id = $('#game_squad_2_id').val();	
+          }
+
+          $.ajax({
+            url: '/get_squads',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : country_id,code_id: code_id},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '';
+	         $.each(data.squads, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.description + '</option>';
+	            });
+	         if (team == '1' ){$('#load_squad_1_id').append(html);}	  
+	         else if (team == '2'){$('#load_squad_2_id').append(html);}  
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+
+    }
+
+   $('#load_squad_1_id').change(function(){
+
+   	var squad_id = $('#load_squad_1_id').val();
+
+   	$.ajax({
+            url: '/squad-load-1.js',
+            dataType: 'script',
+            type: 'GET',
+            data: {squad_id : squad_id,type : 1},
+   });
+   });
+
+   $('#load_squad_2_id').change(function(){
+
+   	var squad_id = $('#load_squad_2_id').val();
+
+   	$.ajax({
+            url: '/squad-load-2.js',
+            dataType: 'script',
+            type: 'GET',
+            data: {squad_id : squad_id,type : 2},
+   }); 
+   });
+       
 
  // Validation Game Form Script
 	

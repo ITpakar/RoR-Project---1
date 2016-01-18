@@ -128,7 +128,6 @@ ActiveRecord::Schema.define(version: 20160114123421) do
     t.boolean  "deleted",                 default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.string   "custom_text", limit: 255
     t.string   "description", limit: 255
   end
 
