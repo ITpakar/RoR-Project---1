@@ -1,0 +1,78 @@
+<div class="modal-header">
+<h3>Add Player From Database</h3>
+</div>
+<%= form_tag(save_existing_player_path ,remote: true,:class=> "form-horizontal", :style=> "display:inline;")   do %>
+  <div class="modal-body">
+  <ul class="errors"></ul>
+
+  <div class="form-group">
+    <%= label_tag "available_players",nil, :class=> "col-md-3 control-label" %>
+    <div class="col-md-6">
+      <%= select_tag "available_players", nil,{:class => 'form-control'} %>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Add Player", '#', class: "btn btn-default", id: 'display_template_add' %>
+    </div>
+  </div>
+
+
+
+  <h3>Selected Players</h3>
+  <table id="display-selected-table" class="table table-striped">
+    <thead>
+      <tr>
+          <th>Name</th>
+          <th>Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @squad.players.count == 0 %>
+      <tr>
+        <td colspan='2'>No players have been selected yet.</td>
+      </tr>
+      <% else %>
+      <% @squad.players.each do |cd| %>
+      <tr id="<%= cd.id %>" class="rows">
+        <td><%= cd.name %></td>
+        <td><i rel="<%= cd.id %>" class="del-btn fa fa-times-circle" id = "btn_delete" ></td>
+      </tr>
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="modal-footer">
+    <%= submit_tag "Add Player", class: "btn btn-primary" %>
+    <%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
+  </div>
+  </div>
+
+  <script>
+ $( document ).ready(function() {
+  var type = <%= @squad_type%>
+  var country_id = ""
+  if (type == "1"){country_id =('#game_squad_1_id').val();}
+   else if (type == "2"){country_id =('#game_squad_2_id').val();}
+   alert(country_id+"/"+<%= @squad.id%>);
+  $('#display-selected-table tbody').empty()  
+   $.ajax({
+            url: '/get_players',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : country_id,squad_id: <%= @squad.id%>},
+            dataType: 'json',
+          success: function(data) {
+            var html;
+            html = '';
+           $.each(data.players, function(i, value) {
+              html += '<option value=' + value.id + '>' + value.name + '</option>';
+              });
+            $('#squad_available_players').html(html);
+          },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+   });
+ </script>
+<% end %>

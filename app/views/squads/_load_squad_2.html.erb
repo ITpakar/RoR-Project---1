@@ -41,6 +41,13 @@
   </div>
 <% end %>
 
+<div class="pull-right">
+    <%= link_to("Add New Player", quick_add_player_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', :data => { :remote => true, params: {type: 2,squad_id: @squad_id}} }) %>
+  </div>
+  <div class="pull-right">
+    <%= link_to("Add Player from Database", squad_load_2_path(), {class: "btn btn-primary btn-xs", id: 'team_2_squad', :data => { :remote => true, params: {team_id: 0}} }) %>
+  </div>
+
 
 <script>
 $( document ).ready(function() {

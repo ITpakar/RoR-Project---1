@@ -97,12 +97,32 @@ class GamesController < ApplicationController
   end
 
   def quick_add_player
+    @squad_id = params[:squad_id]
     @type = params[:type]
     @player = Player.new
     #@country=Country.find_by_id(params[:country_id])
   end
 
   def save_quick_add_player
+    @player = Player.new(player_params)
+    @player.save
+    @squad_player = SquadPlayer.new(:squad_id => params[:squad_id],:player_id => @player.id)
+    @squad_player.save
+    
+    if params[:type] == "1"
+    redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:type]) 
+    elsif params[:type] == "2"
+    redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:type])
+  end
+  end
+
+  def quick_add_existing_player
+    p "--------------------#{params.inspect}-----"
+    @squad = Squad.find_by_id(params[:squad_id])
+    @squad_type = params[:type]
+  end
+
+  def save_existing_player
   end
 
 
@@ -121,6 +141,7 @@ class GamesController < ApplicationController
       end
     end    
     @squad.save
+    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
   end
 
   private

@@ -51,6 +51,9 @@ Rails.application.routes.draw do
   get 'quick_add_squad' => 'games#quick_add_squad'
   post 'save_quick_add_squad' => 'games#save_quick_add_squad'
 
+  get 'quick_add_existing_player' => 'games#quick_add_existing_player'
+  post 'save_existing_player' => 'games#save_existing_player'
+
   get 'get_squads' => 'squads#get_squads'
 
   get '/logout' => 'sessions#logout'

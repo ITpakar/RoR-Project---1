@@ -1,11 +1,21 @@
+<% 
+  @game = Game.new 
+  ff = ''
+  form_for(@game) do |f|
+    ff = f
+  end
+%>
+
 $("#global-modal").modal("hide");
 
 <%html = "<option value="+@squad.id.to_s+">"+@squad.description+"</option>"%>
 
 <%if @squad_type == "1"%>
    $('#load_squad_1_id').append("<%= html.html_safe%>");
+   $('#team1-data').html("<%= escape_javascript(render partial: 'squads/load_squad_1', locals: {f: ff, game: @game}) %>");
 <%elsif @squad_type == "2"%>
    $('#load_squad_2_id').append("<%= html.html_safe%>");
+   $('#team2-data').html("<%= escape_javascript(render partial: 'squads/load_squad_2', locals: {f: ff, game: @game}) %>");
 <%end%>
 
 

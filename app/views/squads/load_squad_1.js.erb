@@ -5,4 +5,5 @@
     ff = f
   end
 %>
+$("#global-modal").modal("hide");
 $('#team1-data').html("<%= escape_javascript(render partial: 'load_squad_1', locals: {f: ff, game: @game}) %>");

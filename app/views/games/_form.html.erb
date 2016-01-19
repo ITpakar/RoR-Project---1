@@ -20,7 +20,8 @@
 				<div class="form-group">
 					<%= f.label 'Choose Game Type', class: 'label-control' %>
 					<div class="input-group">
-						<%= f.select :code_id, options_for_select(Code.all.map{|s| [s.name, s.id]}), { prompt: true }, {class: 'form-control'} %>
+						<%= f.select :code_id, options_for_select(Code.all.map{|s| [s.name, s.id]}),{ prompt: true }, {class: 'form-control',onchange: 'set_team(3);
+							clear_squad(3);'} %>
 						<%#= f.select :code_id, options_for_select(Code.all.map{|s| [s.name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "squads", :action => "get_squad_select")}} %>
 					</div>
 					<div class="input-group">
@@ -190,12 +191,17 @@
 		} else if (team == '2') {
 			$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
 		}
+		else if (team == '3') {
+			$('#team1-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+			$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+		}
 	}
-
-	 function set_team(team){
-	 	//alert(team);
+//set team------------->
+    function set_team(team){
 		var code_id = $('#game_code_id').val();
 
+	if (team == '1' || team == '2')
+	{
 		if (team == '1' ){
            var country_id = $('#game_squad_1_id').val();
 		  }
@@ -211,19 +217,71 @@
             dataType: 'json',
 	        success: function(data) {
 	          var html;
-	          html = '';
+	          html = '<option value="#">Please Select</option>';
 	         $.each(data.squads, function(i, value) {
 	            html += '<option value=' + value.id + '>' + value.description + '</option>';
 	            });
-	         if (team == '1' ){$('#load_squad_1_id').append(html);}	  
-	         else if (team == '2'){$('#load_squad_2_id').append(html);}  
+	         if (team == '1' ){$('#load_squad_1_id').html(html);}	  
+	         if (team == '2'){$('#load_squad_2_id').html(html);}  
 	        },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
             }
         });
+      }
+     if (team == '3')
+        {
+        	//$('#team1-data').hide();
+        	if ($('#game_squad_1_id').val() != "") 
+        	{
+            var country_id = $('#game_squad_1_id').val();
+            $.ajax({
+            url: '/get_squads',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : country_id,code_id: code_id},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '<option value="#">Please Select</option>';
+	         $.each(data.squads, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.description + '</option>';
+	            });
+	         $('#load_squad_1_id').html(html);	    
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+             });
+        	}
+
+        	if ($('#game_squad_2_id').val() != "") 
+        	{
+            var country_id = $('#game_squad_2_id').val();
+            $.ajax({
+            url: '/get_squads',
+            dataType: 'json',
+            type: 'GET',
+            data: {country_id : country_id,code_id: code_id},
+            dataType: 'json',
+	        success: function(data) {
+	          var html;
+	          html = '<option value="#">Please Select</option>';
+	         $.each(data.squads, function(i, value) {
+	            html += '<option value=' + value.id + '>' + value.description + '</option>';
+	            });
+	         $('#load_squad_2_id').html(html);	    
+	        },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+             });
+        	}
+
+        }  
 
     }
+//set team--------------->    
 
    $('#load_squad_1_id').change(function(){
 
