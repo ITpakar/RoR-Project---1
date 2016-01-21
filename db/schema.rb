@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114123421) do
+ActiveRecord::Schema.define(version: 20160121010943) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20160114123421) do
     t.boolean  "deleted",                default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.string   "city",       limit: 255
   end
 
   add_index "locations", ["country_id"], name: "index_locations_on_country_id", using: :btree
@@ -90,7 +91,7 @@ ActiveRecord::Schema.define(version: 20160114123421) do
     t.integer  "country_id",    limit: 4
     t.integer  "batting_style", limit: 4,   default: 0
     t.string   "bowling_style", limit: 255
-    t.integer  "role",          limit: 4,   default: 0
+    t.string   "role",          limit: 255, default: "0"
     t.boolean  "deleted",                   default: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
@@ -192,20 +193,4 @@ ActiveRecord::Schema.define(version: 20160114123421) do
     t.datetime "updated_at",             null: false
   end
 
-  add_foreign_key "game_squads", "countries"
-  add_foreign_key "game_squads", "games"
-  add_foreign_key "game_squads", "players"
-  add_foreign_key "innings", "games"
-  add_foreign_key "locations", "countries"
-  add_foreign_key "players", "countries"
-  add_foreign_key "run_outs", "games"
-  add_foreign_key "run_outs", "players"
-  add_foreign_key "squad_players", "players"
-  add_foreign_key "squad_players", "squads"
-  add_foreign_key "squads", "codes"
-  add_foreign_key "squads", "countries"
-  add_foreign_key "stats", "innings"
-  add_foreign_key "stats", "players"
-  add_foreign_key "team_players", "teams"
-  add_foreign_key "teams", "games"
 end
