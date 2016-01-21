@@ -50,9 +50,9 @@ class Stat < ActiveRecord::Base
        inning_score = 2*inning_score
     end
 
-    puts "$$$"
-    puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
-    puts "$$$"
+    #puts "$$$"
+    #puts "#{self.player_id} : #{self.runs} : #{self.balls} : #{total_batting_points} + #{total_bowling_points} + #{catch_points}"
+    #puts "$$$"
     inning_score 
   end
 end
