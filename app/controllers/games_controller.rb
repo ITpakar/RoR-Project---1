@@ -26,6 +26,7 @@ class GamesController < ApplicationController
   end
 
   def create
+     p "-------#{params.inspect}----------"
     @game = Game.new(game_params)
     @game.save
   end
@@ -119,12 +120,26 @@ class GamesController < ApplicationController
   end
 
   def quick_add_existing_player
-    p "--------------------#{params.inspect}-----"
     @squad = Squad.find_by_id(params[:squad_id])
     @squad_type = params[:type]
   end
 
   def save_existing_player
+    squad =Squad.find_by_id(params[:squad_id])
+    players = params[:column_data].split(':') unless params[:column_data].nil?
+    SquadPlayer.where(squad_id: params[:squad_id]).delete_all
+    if !players.nil? && players.count > 0 then
+      players.each do |player|
+        squad.squad_players.create(squad: squad, player_id: player)
+      end
+    end
+
+     if params[:squad_type] == "1"
+    redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js) 
+    elsif params[:squad_type] == "2"
+    redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js)
+  end
+
   end
 
 
@@ -153,6 +168,8 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
+      params[:game][:squad_1_id] = params[:game][:squad_id_1] 
+      params[:game][:squad_2_id] = params[:game][:squad_id_2] 
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 

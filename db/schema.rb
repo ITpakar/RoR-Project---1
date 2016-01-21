@@ -193,4 +193,20 @@ ActiveRecord::Schema.define(version: 20160121010943) do
     t.datetime "updated_at",             null: false
   end
 
+  add_foreign_key "game_squads", "countries"
+  add_foreign_key "game_squads", "games"
+  add_foreign_key "game_squads", "players"
+  add_foreign_key "innings", "games"
+  add_foreign_key "locations", "countries"
+  add_foreign_key "players", "countries"
+  add_foreign_key "run_outs", "games"
+  add_foreign_key "run_outs", "players"
+  add_foreign_key "squad_players", "players"
+  add_foreign_key "squad_players", "squads"
+  add_foreign_key "squads", "codes"
+  add_foreign_key "squads", "countries"
+  add_foreign_key "stats", "innings"
+  add_foreign_key "stats", "players"
+  add_foreign_key "team_players", "teams"
+  add_foreign_key "teams", "games"
 end

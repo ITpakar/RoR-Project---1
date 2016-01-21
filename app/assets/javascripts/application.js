@@ -21,5 +21,3 @@
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 
 //= require_tree .
-
-

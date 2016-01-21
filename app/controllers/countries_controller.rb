@@ -36,6 +36,7 @@ class CountriesController < ApplicationController
   end
 
   def get_players
+    p "----------------#{params.inspect}---------"
     if params[:squad_id].blank?
       available_players = Player.where(country_id: params[:country_id] )
     else
@@ -44,6 +45,7 @@ class CountriesController < ApplicationController
       remaining_players = all_players - squad_players
       available_players = Player.where(:id => remaining_players)
     end  
+    p "------------------------#{available_players.inspect}------"
     render :json => {:players => available_players}
 
 

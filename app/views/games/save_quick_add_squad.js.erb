@@ -11,9 +11,13 @@ $("#global-modal").modal("hide");
 <%html = "<option value="+@squad.id.to_s+">"+@squad.description+"</option>"%>
 
 <%if @squad_type == "1"%>
+ var squad_id = <%=@squad.id%>
+$('#game_squad_id_1').val(squad_id)
    $('#load_squad_1_id').append("<%= html.html_safe%>");
    $('#team1-data').html("<%= escape_javascript(render partial: 'squads/load_squad_1', locals: {f: ff, game: @game}) %>");
 <%elsif @squad_type == "2"%>
+var squad_id = <%=@squad.id%>
+$('#game_squad_id_2').val(squad_id)
    $('#load_squad_2_id').append("<%= html.html_safe%>");
    $('#team2-data').html("<%= escape_javascript(render partial: 'squads/load_squad_2', locals: {f: ff, game: @game}) %>");
 <%end%>

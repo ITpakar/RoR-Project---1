@@ -43,7 +43,7 @@
   <div class="form-group">
     <%= f.label :role, class: "col-md-3 control-label" %>
     <div class="col-md-9">
-	 <%= f.select :role, options_for_select(Player.roles.map {|k, v| [k.titleize, k]}, @player.role), {prompt: true}, {:class => 'form-control'} %>
+	 <%#= f.select :role, options_for_select(Player.roles.map {|k, v| [k.titleize, k]}, @player.role), {prompt: true}, {:class => 'form-control'} %>
 	</div>
   </div>
   <div class="modal-footer">
@@ -54,6 +54,7 @@
 <% end %>
 <script>
   $('#match-date').datepicker({
+    dateFormat: 'yy-mm-dd',
     todayHighlight : true,
     autoclose : true,
     orientation : 'top left'

@@ -8,7 +8,7 @@
   <div class="form-group">
     <%= label_tag "available_players",nil, :class=> "col-md-3 control-label" %>
     <div class="col-md-6">
-      <%= select_tag "available_players", nil,{:class => 'form-control'} %>
+      <%= select_tag "available_players", nil,{:class => 'form-control',:id =>'squad_available_players'} %>
     </div>
     <div class="col-md-3">
       <%= link_to "Add Player", '#', class: "btn btn-default", id: 'display_template_add' %>
@@ -42,24 +42,30 @@
   </table>
 
   <div class="modal-footer">
-    <%= submit_tag "Add Player", class: "btn btn-primary" %>
+    <%= hidden_field_tag "column_data" %>
+    <%= hidden_field_tag "squad_id" ,@squad.id%>
+    <%= hidden_field_tag "squad_type" ,@squad_type%>
+    <%= submit_tag "Save Squad", class: "btn btn-primary", onClick: "$('#column_data').val($('#display-selected-table tbody').sortable('toArray').join(':'));" %>
     <%= link_to "Cancel", "#", class: "btn", data: {dismiss: "modal"} %>
   </div>
   </div>
 
-  <script>
+<% end %>
+
+
+<script>
  $( document ).ready(function() {
   var type = <%= @squad_type%>
   var country_id = ""
-  if (type == "1"){country_id =('#game_squad_1_id').val();}
-   else if (type == "2"){country_id =('#game_squad_2_id').val();}
-   alert(country_id+"/"+<%= @squad.id%>);
-  $('#display-selected-table tbody').empty()  
+  var squad_id = <%= @squad.id%>
+  if (type == "1"){country_id =$('#game_squad_1_id').val();}
+   else if (type == "2"){country_id =$('#game_squad_2_id').val();}
+  // $('#display-selected-table tbody').empty()  
    $.ajax({
             url: '/get_players',
             dataType: 'json',
             type: 'GET',
-            data: {country_id : country_id,squad_id: <%= @squad.id%>},
+            data: {country_id : country_id,squad_id : squad_id},
             dataType: 'json',
           success: function(data) {
             var html;
@@ -75,4 +81,3 @@
         });
    });
  </script>
-<% end %>
