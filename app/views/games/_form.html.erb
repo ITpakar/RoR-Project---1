@@ -10,7 +10,7 @@
 				<div class="form-group input-group">
 					<%= f.label :match_date, class: 'label-control' %>
 					<div class="input-group date" id="match-date">
-						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "yy-mm-dd" } %>
+						<%= f.text_field :match_date, class: "form-control", :data => { :date_format => "dd/mm/yyyy" }%>
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					</div>
 					    <span id ="date_error" class = "errors"></span>
@@ -155,7 +155,7 @@
 </div>
 
 <script>
-	$('#match-date').datepicker({
+	$('#match_date').datepicker({
 		
     todayHighlight : true,
     autoclose : true,

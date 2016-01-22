@@ -58,6 +58,7 @@ class TeamsController < ApplicationController
   end
   
   def load_teams
+    p "------------Load Teams----------"
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank? 
@@ -72,6 +73,7 @@ class TeamsController < ApplicationController
   end  
   
   def load_team
+    p "--------------------------load team----------"
     @team_id = params[:team][:team_id]
     @type = params[:type]
     @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => @team_id)

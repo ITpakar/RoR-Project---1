@@ -26,12 +26,14 @@ class GamesController < ApplicationController
   end
 
   def create
-     p "-------#{params.inspect}----------"
+   # p "---#{params.inspect}--------------"
+    #p "==========#{game_params.inspect}========"
     @game = Game.new(game_params)
     @game.save
   end
 
   def update
+    p "---------update game------"
     @game.update(game_params)
     #respond_with(@game)
   end
@@ -42,11 +44,13 @@ class GamesController < ApplicationController
   end
 
   def load_innings
+    p "------load inning----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
  def load_scores
+  p "--------#{params.inspect}-----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(game_params) unless @game.nil? 
@@ -168,8 +172,10 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params[:game][:squad_1_id] = params[:game][:squad_id_1] 
-      params[:game][:squad_2_id] = params[:game][:squad_id_2] 
+      params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
+      params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
+      params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
+
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -183,6 +189,7 @@ class GamesController < ApplicationController
     end
 
     def player_params
+      params[:player][:dob] = convert_to_database_date(params[:player][:dob])
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
     end
 
@@ -190,4 +197,22 @@ class GamesController < ApplicationController
       params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
     end
 
+
+
+    def convert_to_database_date date
+      array = date.split('/')
+    unless array[1].nil?
+      new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
+    else
+      new_date = date
+    end
+      new_date   
+    end
+
 end
+
+
+
+
+
+

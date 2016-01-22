@@ -8,7 +8,7 @@ class Player < ActiveRecord::Base
   
   validates :name, :presence => true
   validates :country, :presence => true
- # validates :role, :presence => true
+  validates :role, :presence => true
   validates :batting_style, :presence => true
   validates :bowling_style, :presence => true
 end
