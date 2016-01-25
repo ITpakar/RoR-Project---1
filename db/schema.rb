@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121010943) do
+ActiveRecord::Schema.define(version: 20160125085402) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(version: 20160121010943) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
   end
+
+  create_table "codes_countries", id: false, force: :cascade do |t|
+    t.integer "country_id", limit: 4, null: false
+    t.integer "code_id",    limit: 4, null: false
+  end
+
+  add_index "codes_countries", ["code_id", "country_id"], name: "index_codes_countries_on_code_id_and_country_id", using: :btree
+  add_index "codes_countries", ["country_id", "code_id"], name: "index_codes_countries_on_country_id_and_code_id", using: :btree
 
   create_table "countries", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -185,6 +193,14 @@ ActiveRecord::Schema.define(version: 20160121010943) do
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
+
+  create_table "umpires", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "country",    limit: 255
+    t.boolean  "deleted",                default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",      limit: 255

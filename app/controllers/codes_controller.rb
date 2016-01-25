@@ -35,6 +35,11 @@ class CodesController < ApplicationController
 	@code.save
   end
 
+  def get_innings
+    code = Code.find_by_id(params[:code_id])
+    render :json => {:code => code}
+  end
+
   private
     def set_code
       @code = Code.find(params[:id])

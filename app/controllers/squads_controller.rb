@@ -21,7 +21,6 @@
   end
 
   def create
-    
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
     if !players.nil? && players.count > 0 then
@@ -58,8 +57,6 @@
   end
   
   def load_squad_1
-
-
     # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
     # @type = params[:type]
     # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
@@ -68,7 +65,6 @@
     @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad_id)   
   end  
    def load_squad_2
-
     # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
     # @type = params[:type]
     # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)

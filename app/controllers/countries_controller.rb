@@ -22,11 +22,16 @@ class CountriesController < ApplicationController
 
   def create
     @country = Country.new(country_params)
-    @country.save
+    if @country.save
+      @country.code_ids = params[:country][:code_ids]
+    end
   end
 
   def update
-    @country.update(country_params)
+    params[:country][:code_ids] ||= []
+    if @country.update(country_params)
+      @country.code_ids = params[:country][:code_ids]
+    end 
     respond_with(@country)
   end
 

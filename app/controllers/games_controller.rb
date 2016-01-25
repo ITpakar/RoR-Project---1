@@ -33,7 +33,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    p "---------update game------"
+    #p "---------update game------"
     @game.update(game_params)
     #respond_with(@game)
   end
@@ -44,13 +44,13 @@ class GamesController < ApplicationController
   end
 
   def load_innings
-    p "------load inning----------"
+    #p "------load inning----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
  def load_scores
-  p "--------#{params.inspect}-----------"
+  #p "--------#{params.inspect}-----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(game_params) unless @game.nil? 

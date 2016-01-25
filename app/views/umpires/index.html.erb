@@ -1,0 +1,19 @@
+<h3>Umpire</h3>
+<div class="col-md-12">
+  <div class="panel panel-inverse">
+    <div class="panel-body">    
+      <p><%= link_to "New Umpire", new_umpire_path, remote: true, class: "btn btn-xs btn-primary" %></p>
+      <table id="umpires-table" data-source="<%= umpires_path(format: :json) %>" class="table table-striped table-bordered dataTable no-footer" width="100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Country</th>
+    		    <th>Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>	
+    </div>
+  </div>
+</div>

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :squads
   resources :players
   resources :countries
+  resources :umpires
 
   resources :sessions
 
@@ -55,6 +56,8 @@ Rails.application.routes.draw do
   post 'save_existing_player' => 'games#save_existing_player'
 
   get 'get_squads' => 'squads#get_squads'
+
+  get 'get_innings' => 'codes#get_innings'
 
   get '/logout' => 'sessions#logout'
 
