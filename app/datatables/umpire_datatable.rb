@@ -25,7 +25,7 @@ class UmpireDatatable < AjaxDatatablesRails::Base
       [
         # comma separated list of the values for each cell of a table row
         # example: record.attribute,		
-		    record.name,record.country, ops
+		    record.name,record.country.name, ops
       ]
     end
   end

@@ -57,6 +57,7 @@
   end
   
   def load_squad_1
+    p "-------1----#{params.inspect}--------"
     # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
     # @type = params[:type]
     # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
@@ -65,6 +66,7 @@
     @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad_id)   
   end  
    def load_squad_2
+    p "-------2-----#{params.inspect}-----"
     # @squad = Squad.where(:country_id =>params[:team_id],:code_id => params[:code_id]).first
     # @type = params[:type]
     # @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)

@@ -42,3 +42,8 @@ html body
 #team_2_squad
 {margin-right: 3px;}
 .inline-ele{display:inline-block;}
+
+#game_match_date > .datepicker[style] {
+    top: 274.59px !important;
+
+}

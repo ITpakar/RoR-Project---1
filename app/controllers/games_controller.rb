@@ -26,16 +26,12 @@ class GamesController < ApplicationController
   end
 
   def create
-   # p "---#{params.inspect}--------------"
-    #p "==========#{game_params.inspect}========"
     @game = Game.new(game_params)
     @game.save
   end
 
   def update
-    #p "---------update game------"
-    @game.update(game_params)
-    #respond_with(@game)
+    @game.update(update_game_params)
   end
 
   def destroy
@@ -53,7 +49,7 @@ class GamesController < ApplicationController
   #p "--------#{params.inspect}-----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
-    @game.update(game_params) unless @game.nil? 
+    @game.update(update_game_params) unless @game.nil? 
     @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
@@ -64,7 +60,7 @@ class GamesController < ApplicationController
       @game = Game.find(game_id) unless game_id.blank?    
 
       #@countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]  
-      @countries = [@game.squad_1.country.id, @game.squad_2.country.id]
+      @countries = [@game.squad_1.id, @game.squad_2.id]
       @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @countries)
 
     end      
@@ -176,6 +172,19 @@ class GamesController < ApplicationController
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
       params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
 
+      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
+        game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+        game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+        innings_attributes: [:id, :game_id, :batting], 
+        stats_attributes: [
+          :id, :inning_id, :player_id, 
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
+          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :created_at, :updated_at
+        ])
+    end
+
+    def update_game_params
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 

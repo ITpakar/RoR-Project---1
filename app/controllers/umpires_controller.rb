@@ -42,6 +42,6 @@ class UmpiresController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def umpire_params
-      params.require(:umpire).permit(:name, :country)
+      params.require(:umpire).permit(:name, :country_id)
     end
 end

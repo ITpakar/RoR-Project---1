@@ -9,7 +9,7 @@
 			<div class="col-md-4">
 				<div class="form-group input-group">
 					<%= f.label :match_date, class: 'label-control' %>
-					<div class="input-group date" id="match-date">
+					<div class="input-group date" id="match-date-id">
 						<%= f.text_field :match_date, class: "form-control", :value=>change_date(@game)%>
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					</div>
@@ -155,10 +155,10 @@
 </div>
 
 <script>
-	$('#match-date').datepicker({
+	$('#game_match_date').datepicker({
     todayHighlight : true,
     autoclose : true,
-    orientation : 'top left'
+    orientation : 'top left',
   });
 
 	$('#squads').hide();

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125085402) do
+ActiveRecord::Schema.define(version: 20160127102338) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -38,18 +38,18 @@ ActiveRecord::Schema.define(version: 20160125085402) do
 
   create_table "game_squads", force: :cascade do |t|
     t.integer  "game_id",       limit: 4
-    t.integer  "country_id",    limit: 4
     t.integer  "player_id",     limit: 4
     t.boolean  "selected",                default: false
     t.boolean  "captain",                 default: false
     t.boolean  "wicket_keeper",           default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+    t.integer  "squad_id",      limit: 4
   end
 
-  add_index "game_squads", ["country_id"], name: "index_game_squads_on_country_id", using: :btree
   add_index "game_squads", ["game_id"], name: "index_game_squads_on_game_id", using: :btree
   add_index "game_squads", ["player_id"], name: "index_game_squads_on_player_id", using: :btree
+  add_index "game_squads", ["squad_id"], name: "index_game_squads_on_squad_id", using: :btree
 
   create_table "games", force: :cascade do |t|
     t.date     "match_date"
@@ -146,26 +146,32 @@ ActiveRecord::Schema.define(version: 20160125085402) do
   create_table "stats", force: :cascade do |t|
     t.integer  "inning_id",      limit: 4
     t.integer  "player_id",      limit: 4
-    t.integer  "runs",           limit: 4, default: 0
-    t.integer  "minutes",        limit: 4, default: 0
-    t.integer  "balls",          limit: 4, default: 0
-    t.integer  "fours",          limit: 4, default: 0
-    t.integer  "sixes",          limit: 4, default: 0
-    t.boolean  "run_out",                  default: false
+    t.integer  "runs",           limit: 4,  default: 0
+    t.integer  "minutes",        limit: 4,  default: 0
+    t.integer  "balls",          limit: 4,  default: 0
+    t.integer  "fours",          limit: 4,  default: 0
+    t.integer  "sixes",          limit: 4,  default: 0
+    t.boolean  "run_out",                   default: false
     t.integer  "bowled_by",      limit: 4
     t.integer  "caught_by",      limit: 4
-    t.integer  "stumped_by",     limit: 4, default: 0
-    t.integer  "overs",          limit: 4, default: 0
-    t.integer  "maidens",        limit: 4, default: 0
-    t.integer  "runs_against",   limit: 4, default: 0
-    t.integer  "wickets",        limit: 4, default: 0
-    t.integer  "wides",          limit: 4, default: 0
-    t.integer  "no_balls",       limit: 4, default: 0
-    t.integer  "zeroes_against", limit: 4, default: 0
-    t.integer  "fours_against",  limit: 4, default: 0
-    t.integer  "sixes_against",  limit: 4, default: 0
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.integer  "stumped_by",     limit: 4,  default: 0
+    t.integer  "overs",          limit: 4,  default: 0
+    t.integer  "maidens",        limit: 4,  default: 0
+    t.integer  "runs_against",   limit: 4,  default: 0
+    t.integer  "wickets",        limit: 4,  default: 0
+    t.integer  "wides",          limit: 4,  default: 0
+    t.integer  "no_balls",       limit: 4,  default: 0
+    t.integer  "zeroes_against", limit: 4,  default: 0
+    t.integer  "fours_against",  limit: 4,  default: 0
+    t.integer  "sixes_against",  limit: 4,  default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "batting_order",  limit: 4
+    t.integer  "bowling_order",  limit: 4
+    t.integer  "fow_order",      limit: 4
+    t.integer  "fow_score",      limit: 4
+    t.float    "fow_overs",      limit: 24
+    t.integer  "fow_balls",      limit: 4
   end
 
   add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree
@@ -196,11 +202,13 @@ ActiveRecord::Schema.define(version: 20160125085402) do
 
   create_table "umpires", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.string   "country",    limit: 255
     t.boolean  "deleted",                default: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.integer  "country_id", limit: 4
   end
+
+  add_index "umpires", ["country_id"], name: "index_umpires_on_country_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",      limit: 255
@@ -209,9 +217,9 @@ ActiveRecord::Schema.define(version: 20160125085402) do
     t.datetime "updated_at",             null: false
   end
 
-  add_foreign_key "game_squads", "countries"
   add_foreign_key "game_squads", "games"
   add_foreign_key "game_squads", "players"
+  add_foreign_key "game_squads", "squads"
   add_foreign_key "innings", "games"
   add_foreign_key "locations", "countries"
   add_foreign_key "players", "countries"
@@ -225,4 +233,5 @@ ActiveRecord::Schema.define(version: 20160125085402) do
   add_foreign_key "stats", "players"
   add_foreign_key "team_players", "teams"
   add_foreign_key "teams", "games"
+  add_foreign_key "umpires", "countries"
 end
