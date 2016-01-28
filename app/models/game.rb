@@ -17,6 +17,12 @@ class Game < ActiveRecord::Base
   #has_many :team_1_players, through: :game_team_1_squads, :class_name => "Player", :foreign_key => "player_id"
   #has_many :team_2_players, through: :game_team_2_squads, :class_name => "Player", :foreign_key => "player_id"
   
+  enum coin_toss_win: {TeamA: 0, TeamB: 1}
+  enum coin_toss_decision: {Bat: 0,  Bowled: 1}
+  enum game_winner: {Draw: 0, Team1: 1, Team2: 2}
+  enum game_winner_amount: {Runs: 0, Wickets: 1}
+  enum day_night_game: {DayGame: 0, NightGame: 1, DayNightGame: 2}
+
   accepts_nested_attributes_for :game_team_1_squads
   accepts_nested_attributes_for :game_team_2_squads
   accepts_nested_attributes_for :innings
@@ -24,6 +30,8 @@ class Game < ActiveRecord::Base
   
   before_create :setup_innings
   after_create :setup_squad_stats
+
+
   
   def setup_squad_stats
     squad_members = self.game_squads
@@ -36,6 +44,12 @@ class Game < ActiveRecord::Base
     
   end
   
+  def selected_palyers
+    self.game_squads.includes(:player).references(:player).where(:selected => true).pluck(:name,:id)   
+  end
+
+
+
   def setup_innings
     self.number_of_innings.to_i.times { self.innings.build }
   end

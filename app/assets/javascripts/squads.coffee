@@ -6,6 +6,7 @@ $ ->
     ajax: $('#squads-table').data('source')    
     pagingType: 'full_numbers'
     columnDefs: [{ "orderable": false, "targets": 1 }]
+
   $('#global-modal').on 'shown.bs.modal', ->
     $('#display-selected-table tbody').sortable()   
     $('#display_template_add').on 'click', ->

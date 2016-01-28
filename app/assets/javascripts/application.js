@@ -20,4 +20,6 @@
 
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 
+//= require select2
+
 //= require_tree .

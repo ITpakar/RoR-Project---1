@@ -1,4 +1,139 @@
 <%= form_for(@game,remote: true) do |f| %>
+  
+
+  <div class="panel panel-default">
+    <div class="panel-body"> 
+     
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= f.label  "Coin Toss Win", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.select :coin_toss_win, options_for_select(Game.coin_toss_wins.map {|k, v| [k.titleize, v]}, @game.coin_toss_win), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= f.label 'Coin Toss Decision', class: 'label-control' %>
+          <div class="input-group">
+          <%= f.select :coin_toss_decision, options_for_select(Game.coin_toss_decisions.map {|k, v| [k.titleize, v]}, @game.coin_toss_decision), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= f.label 'Game Winner', class: 'label-control' %>
+          <div class="input-group">
+          <%= f.select :game_winner, options_for_select(Game.game_winners.map {|k, v| [k.titleize, v]}, @game.game_winner), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= f.label 'Game Winner Amount', class: 'label-control' %>
+          <div class="input-group">
+          <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, v]}, @game.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+
+    </div>  
+
+    <div class="row">
+
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Game Winner Margin", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Day Night Game", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.select :day_night_game, options_for_select(Game.day_night_games.map {|k, v| [k.titleize, v]}, @game.day_night_game), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Player of the Match", class: 'control-label' %>
+          <div class="input-group">
+           <%= f.select :player_of_the_match, options_for_select(@game.selected_palyers), {prompt: true}, {:class => 'form-control'} %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Umpire 1", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.select :umpire_1, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control',:id => 'umpire_1_id'} %>
+          </div>
+        </div>
+      </div>
+
+                  
+    </div>  
+
+    <div class="row">
+
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Umpire 2", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  " Umpire TV", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Umpire Referee", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+ 
+       <div class="form-group">
+          <%= f.label  "Umpire Reserve", class: 'control-label' %>
+          <div class="input-group">
+            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+                  
+    </div> 
+  
+  </div>
+  </div>
+
+
   <% @game.innings.each_with_index do |inning, index| %>
     <%= f.fields_for :innings, inning do |inn| %>
     <% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
@@ -14,4 +149,6 @@
 
 
 
-
+ <script>
+    
+ </script>

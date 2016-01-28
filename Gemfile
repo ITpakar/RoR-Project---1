@@ -22,3 +22,4 @@ gem 'responders', '~> 2.0'
 gem 'jquery-ui-rails'
 gem 'numbers_and_words'
 gem 'rails-erd'
+gem "select2-rails"

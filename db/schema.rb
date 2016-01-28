@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127102338) do
+ActiveRecord::Schema.define(version: 20160128063423) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -53,21 +53,33 @@ ActiveRecord::Schema.define(version: 20160127102338) do
 
   create_table "games", force: :cascade do |t|
     t.date     "match_date"
-    t.string   "name",              limit: 255
-    t.integer  "number_of_innings", limit: 4,     default: 2
-    t.integer  "location_id",       limit: 4
-    t.integer  "code_id",           limit: 4
-    t.integer  "squad_1_id",        limit: 4
-    t.integer  "squad_2_id",        limit: 4
-    t.integer  "wides",             limit: 4,     default: 0
-    t.integer  "no_balls",          limit: 4,     default: 0
-    t.integer  "byes",              limit: 4,     default: 0
-    t.integer  "leg_byes",          limit: 4,     default: 0
-    t.integer  "extras",            limit: 4,     default: 0
-    t.text     "notes",             limit: 65535
-    t.boolean  "deleted",                         default: false
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.string   "name",                limit: 255
+    t.integer  "number_of_innings",   limit: 4,     default: 2
+    t.integer  "location_id",         limit: 4
+    t.integer  "code_id",             limit: 4
+    t.integer  "squad_1_id",          limit: 4
+    t.integer  "squad_2_id",          limit: 4
+    t.integer  "wides",               limit: 4,     default: 0
+    t.integer  "no_balls",            limit: 4,     default: 0
+    t.integer  "byes",                limit: 4,     default: 0
+    t.integer  "leg_byes",            limit: 4,     default: 0
+    t.integer  "extras",              limit: 4,     default: 0
+    t.text     "notes",               limit: 65535
+    t.boolean  "deleted",                           default: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "coin_toss_win",       limit: 4
+    t.integer  "coin_toss_decision",  limit: 4
+    t.integer  "game_winner",         limit: 4
+    t.integer  "game_winner_amount",  limit: 4
+    t.integer  "game_winner_margin",  limit: 4
+    t.integer  "day_night_game",      limit: 4
+    t.integer  "player_of_the_match", limit: 4
+    t.integer  "umpire_1",            limit: 4
+    t.integer  "umpire_2",            limit: 4
+    t.integer  "umpire_tv",           limit: 4
+    t.integer  "umpire_referee",      limit: 4
+    t.integer  "umpire_reserve",      limit: 4
   end
 
   add_index "games", ["squad_1_id"], name: "index_games_on_squad_1_id", using: :btree
