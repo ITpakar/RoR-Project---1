@@ -5,7 +5,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.belongs_to :country, index: true, foreign_key: true
       t.integer :batting_style, :default => 0
       t.string :bowling_style
-      t.integer :role, :default => 0
+      t.string :role
       t.boolean :deleted, :default => false
       t.timestamps null: false
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128063423) do
+ActiveRecord::Schema.define(version: 20160129122655) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -68,11 +68,11 @@ ActiveRecord::Schema.define(version: 20160128063423) do
     t.boolean  "deleted",                           default: false
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-    t.integer  "coin_toss_win",       limit: 4
-    t.integer  "coin_toss_decision",  limit: 4
-    t.integer  "game_winner",         limit: 4
-    t.integer  "game_winner_amount",  limit: 4
-    t.integer  "game_winner_margin",  limit: 4
+    t.integer  "coin_toss_win",       limit: 4,     default: 0
+    t.integer  "coin_toss_decision",  limit: 4,     default: 0
+    t.integer  "game_winner",         limit: 4,     default: 0
+    t.integer  "game_winner_amount",  limit: 4,     default: 0
+    t.integer  "game_winner_margin",  limit: 4,     default: 0
     t.integer  "day_night_game",      limit: 4
     t.integer  "player_of_the_match", limit: 4
     t.integer  "umpire_1",            limit: 4
@@ -107,15 +107,17 @@ ActiveRecord::Schema.define(version: 20160128063423) do
   add_index "locations", ["country_id"], name: "index_locations_on_country_id", using: :btree
 
   create_table "players", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.integer  "country_id",    limit: 4
-    t.integer  "batting_style", limit: 4,   default: 0
-    t.string   "bowling_style", limit: 255
-    t.string   "role",          limit: 255, default: "0"
-    t.boolean  "deleted",                   default: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "dob",           limit: 255
+    t.string   "name",           limit: 255
+    t.integer  "country_id",     limit: 4
+    t.integer  "batting_style",  limit: 4,   default: 0
+    t.string   "bowling_style",  limit: 255
+    t.string   "role",           limit: 255
+    t.boolean  "deleted",                    default: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "dob",            limit: 255
+    t.string   "full_name",      limit: 255
+    t.string   "scorecard_name", limit: 255
   end
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree

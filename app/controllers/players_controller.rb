@@ -43,18 +43,21 @@ class PlayersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def player_params
       params[:player][:dob] = convert_to_database_date(params[:player][:dob])
-      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
+      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
 
     def convert_to_database_date date
       array = date.split('/')
+      
+
     unless array[1].nil?
-      new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
+      #new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d")
+      new_date = "#{array[2]}-#{array[1]}-#{array[0]}" 
     else
       new_date = date
     end
       new_date   
-    end
+     end
 
 end

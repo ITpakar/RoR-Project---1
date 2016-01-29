@@ -10,19 +10,20 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
-
+ *= require select2-bootstrap
  *= require jquery-ui/sortable
  *= require dataTables/jquery.dataTables
- 
+
  *= require dataTables/extras/dataTables.tableTools
  *= require dataTables/extras/dataTables.fixedColumns
- 
+
  *= require bootstrap-datepicker/css/bootstrap-datepicker3
 
- *= require select2-bootstrap
+ *= require select2
+
+ *= require_self
 
  *= require_tree .
- *= require_self
  */
 
 html body
@@ -49,3 +50,5 @@ html body
     top: 274.59px !important;
 
 }
+
+

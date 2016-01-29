@@ -10,7 +10,7 @@
         <div class="form-group">
           <%= f.label  "Coin Toss Win", class: 'control-label' %>
           <div class="input-group">
-            <%= f.select :coin_toss_win, options_for_select(Game.coin_toss_wins.map {|k, v| [k.titleize, v]}, @game.coin_toss_win), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :coin_toss_win, options_for_select(Game.coin_toss_wins.map {|k, v| [k.titleize, k]}, @game.coin_toss_win), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class="form-group">
           <%= f.label 'Coin Toss Decision', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :coin_toss_decision, options_for_select(Game.coin_toss_decisions.map {|k, v| [k.titleize, v]}, @game.coin_toss_decision), {prompt: true}, {:class => 'form-control'} %>
+          <%= f.select :coin_toss_decision, options_for_select(Game.coin_toss_decisions.map {|k, v| [k.titleize, k]}, @game.coin_toss_decision), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
         <div class="form-group">
           <%= f.label 'Game Winner', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :game_winner, options_for_select(Game.game_winners.map {|k, v| [k.titleize, v]}, @game.game_winner), {prompt: true}, {:class => 'form-control'} %>
+          <%= f.select :game_winner, options_for_select(Game.game_winners.map {|k, v| [k.titleize, k]}, @game.game_winner), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
           <%= f.label 'Game Winner Amount', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, v]}, @game.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
+          <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, k]}, @game.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
        <div class="form-group">
           <%= f.label  "Day Night Game", class: 'control-label' %>
           <div class="input-group">
-            <%= f.select :day_night_game, options_for_select(Game.day_night_games.map {|k, v| [k.titleize, v]}, @game.day_night_game), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :day_night_game, options_for_select(Game.day_night_games.map {|k, v| [k.titleize, k]}, @game.day_night_game), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
        <div class="form-group">
           <%= f.label  "Umpire 1", class: 'control-label' %>
           <div class="input-group">
-            <%= f.select :umpire_1, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control',:id => 'umpire_1_id'} %>
+            <%= f.select :umpire_1, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@
        <div class="form-group">
           <%= f.label  "Umpire 2", class: 'control-label' %>
           <div class="input-group">
-            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+           <%= f.select :umpire_2, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_2_id'} %>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@
        <div class="form-group">
           <%= f.label  " Umpire TV", class: 'control-label' %>
           <div class="input-group">
-            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+            <%= f.select :umpire_tv, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_tv_id'} %>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
        <div class="form-group">
           <%= f.label  "Umpire Referee", class: 'control-label' %>
           <div class="input-group">
-            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+            <%= f.select :umpire_referee, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@
        <div class="form-group">
           <%= f.label  "Umpire Reserve", class: 'control-label' %>
           <div class="input-group">
-            <%= f.text_field :game_winner_margin, class: 'form-control' %>
+            <%= f.select :umpire_reserve, options_for_select(Umpire.all.pluck(:name,:id)), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
           </div>
         </div>
       </div>
@@ -150,5 +150,7 @@
 
 
  <script>
-    
+    $(".umpire_select2" ).select2({
+
+    });
  </script>

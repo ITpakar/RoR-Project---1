@@ -1,10 +1,10 @@
 class AddColumnsToGames < ActiveRecord::Migration
   def change
-  	add_column :games, :coin_toss_win, :integer
-    add_column :games, :coin_toss_decision, :integer
-    add_column :games, :game_winner, :integer
-    add_column :games, :game_winner_amount, :integer
-    add_column :games, :game_winner_margin, :integer
+  	add_column :games, :coin_toss_win, :integer,:default => 0
+    add_column :games, :coin_toss_decision, :integer,:default => 0
+    add_column :games, :game_winner, :integer,:default => 0
+    add_column :games, :game_winner_amount, :integer,:default => 0
+    add_column :games, :game_winner_margin, :integer,:default => 0
 
     add_column :games, :day_night_game, :integer
     add_column :games, :player_of_the_match, :integer

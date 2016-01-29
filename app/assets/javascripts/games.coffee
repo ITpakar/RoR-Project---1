@@ -9,7 +9,5 @@ $ ->
       orderable: false
       targets: 1
      ]
-  )
-  $(document).on "click", "#umpire_1_id", ->
-    select2()    
+  ) 
 

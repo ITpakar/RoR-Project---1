@@ -185,7 +185,20 @@ class GamesController < ApplicationController
     end
 
     def update_game_params
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
+
+     
+      #params[:game][:coin_toss_win] = [:game][:coin_toss_win].to_i            if params[:game][:coin_toss_win].present? 
+       #puts "-----#{params[:game][:coin_toss_win]}-------" if params[:game][:coin_toss_win].present?
+      # params[:game][:coin_toss_decision] = [:game][:coin_toss_decision].to_i  if params[:game][:coin_toss_decision].present?
+      
+      # params[:game][:game_winner] = [:game][:game_winner].to_i                if params[:game][:game_winner].present?
+      
+      # params[:game][:game_winner_amount] = [:game][:game_winner_amount].to_i  if params[:game][:game_winner_amount].present?
+      
+      # params[:game][:day_night_game] = [:game][:day_night_game].to_i          if params[:game][:day_night_game].present?
+
+      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
+        :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         innings_attributes: [:id, :game_id, :batting], 

@@ -10,16 +10,18 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
+
+
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/sortable
+//= require select2
 
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.fixedColumns
 //= require dataTables/extras/dataTables.tableTools
 
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
-
-//= require select2
 
 //= require_tree .
