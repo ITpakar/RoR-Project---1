@@ -17,9 +17,9 @@ class Game < ActiveRecord::Base
   #has_many :team_1_players, through: :game_team_1_squads, :class_name => "Player", :foreign_key => "player_id"
   #has_many :team_2_players, through: :game_team_2_squads, :class_name => "Player", :foreign_key => "player_id"
   
-  enum coin_toss_win: {TeamA: 0, TeamB: 1}
+  #enum coin_toss_win: {TeamA: 0, TeamB: 1}
   enum coin_toss_decision: {Bat: 0,  Bowled: 1}
-  enum game_winner: {Draw: 0, Team1: 1, Team2: 2}
+  #enum game_winner: {Draw: 0, Team1: 1, Team2: 2}
   enum game_winner_amount: {Runs: 0, Wickets: 1}
   enum day_night_game: {DayGame: 0, NightGame: 1, DayNightGame: 2}
 
@@ -45,7 +45,7 @@ class Game < ActiveRecord::Base
   end
   
   def selected_palyers
-    self.game_squads.includes(:player).references(:player).where(:selected => true).pluck(:name,:id)   
+    self.game_squads.includes(:player).references(:player).pluck(:name,:id)   
   end
 
 
@@ -56,7 +56,14 @@ class Game < ActiveRecord::Base
   def find_players team_id
      teams = @game.teams.pluck(:id)
   end
-  
+
+  def get_teams
+    [[self.squad_1.country.name,self.squad_1.country.id],[self.squad_2.country.name,self.squad_2.country.id]]
+  end
+
+  def get_winner_team
+    [["Draw",0],[self.squad_1.country.name,self.squad_1.country.id],[self.squad_2.country.name,self.squad_2.country.id]] 
+  end
   
   def full_name
     d = (self.match_date.nil? ? "Date Unknown" : self.match_date.strftime("%d/%m/%y") )

@@ -26,6 +26,7 @@ class GamesController < ApplicationController
   end
 
   def create
+       p "---------#{params.inspect}---------"
     @game = Game.new(game_params)
     @game.save
   end
@@ -144,11 +145,13 @@ class GamesController < ApplicationController
 
 
   def quick_add_squad
+    #p "---------------#{params.inspect}-"
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
+    p "-----save-quick -squad----"
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -158,7 +161,13 @@ class GamesController < ApplicationController
       end
     end    
     @squad.save
-    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
+
+    if params[:type] == "1"
+      redirect_to squad_load_1_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
+    elsif params[:type] == "2"
+      redirect_to squad_load_2_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
+    end     
+    #@squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
   end
 
   private
@@ -168,6 +177,7 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
+
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
       params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
@@ -185,18 +195,6 @@ class GamesController < ApplicationController
     end
 
     def update_game_params
-
-     
-      #params[:game][:coin_toss_win] = [:game][:coin_toss_win].to_i            if params[:game][:coin_toss_win].present? 
-       #puts "-----#{params[:game][:coin_toss_win]}-------" if params[:game][:coin_toss_win].present?
-      # params[:game][:coin_toss_decision] = [:game][:coin_toss_decision].to_i  if params[:game][:coin_toss_decision].present?
-      
-      # params[:game][:game_winner] = [:game][:game_winner].to_i                if params[:game][:game_winner].present?
-      
-      # params[:game][:game_winner_amount] = [:game][:game_winner_amount].to_i  if params[:game][:game_winner_amount].present?
-      
-      # params[:game][:day_night_game] = [:game][:day_night_game].to_i          if params[:game][:day_night_game].present?
-
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
         :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -212,7 +210,7 @@ class GamesController < ApplicationController
 
     def player_params
       params[:player][:dob] = convert_to_database_date(params[:player][:dob])
-      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
+      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
     def squad_params
