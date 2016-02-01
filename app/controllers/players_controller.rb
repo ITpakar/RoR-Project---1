@@ -42,7 +42,7 @@ class PlayersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def player_params
-      params[:player][:dob] = convert_to_database_date(params[:player][:dob])
+      # params[:player][:dob] = convert_to_database_date(params[:player][:dob])
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 

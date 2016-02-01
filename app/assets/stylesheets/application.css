@@ -46,9 +46,13 @@ html body
 {margin-right: 3px;}
 .inline-ele{display:inline-block;}
 
-#game_match_date > .datepicker[style] {
+/*#game_match_date > .datepicker[style] {
     top: 274.59px !important;
-
+}
+*/
+/*.datepicker{
+	top: 278px!important;
+	position: absolute!important;
 }
 
-
+*/

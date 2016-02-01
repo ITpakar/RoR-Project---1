@@ -11,7 +11,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    
+    @game = Game.find_by_id(params[:id])
   end
   
   def scoring
@@ -144,11 +144,13 @@ class GamesController < ApplicationController
 
 
   def quick_add_squad
+    #p "---------------#{params.inspect}-"
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
+    p "-----save-quick -squad----"
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -158,7 +160,13 @@ class GamesController < ApplicationController
       end
     end    
     @squad.save
-    @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
+
+    if params[:type] == "1"
+      redirect_to squad_load_1_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
+    elsif params[:type] == "2"
+      redirect_to squad_load_2_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
+    end     
+    #@squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
   end
 
   private
@@ -212,7 +220,7 @@ class GamesController < ApplicationController
 
     def player_params
       params[:player][:dob] = convert_to_database_date(params[:player][:dob])
-      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob)
+      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
     def squad_params
