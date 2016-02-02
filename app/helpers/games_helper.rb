@@ -16,4 +16,26 @@ module GamesHelper
 		end    
      
 	end
+
+	def get_umpire_1 game
+       u=  Umpire.find_by_id(game.umpire_1)      
+       u.nil? ? nil : u.id
+	end
+	def get_umpire_2 game
+       u = Umpire.find_by_id(game.umpire_2)
+       u.nil? ?  nil : u.id 
+	end
+	def get_umpire_tv game
+       u = Umpire.find_by_id(game.umpire_tv)
+       u.nil? ? nil : u.id
+	end
+	def get_umpire_referee game
+       u = Umpire.find_by_id(game.umpire_referee)
+       u.nil? ? nil : u.id
+	end
+	def get_umpire_reserve game
+       u = Umpire.find_by_id(game.umpire_reserve)
+       u.nil? ?  nil : u.id
+	end
+
 end

@@ -15,13 +15,13 @@
     <% @game_squad = @game.game_team_1_squads.build %>
     <%= f.fields_for :game_team_1_squads, @game_squad do |gsp| %>
       <%row_id = "row_#{p.id}"%>
-      <%#@country_id = p.player.country.id%>
       <tr id = "<%=row_id%>">
       	<td><%= p.player.name %></td>
       	<td><%= p.player.country.name %></td>
       	<td><%= p.player.batting_style.titleize %></td>
       	<td><%= p.player.bowling_style %></td>
       	<td><%= p.player.role.titleize %><%= gsp.hidden_field :player_id, value: p.player_id %></td>
+        <td><%= gsp.hidden_field :squad_id ,value: p.squad_id %></td>
       	
       	<td><%= gsp.check_box :selected %></td>
       	<td><%= gsp.check_box :captain %></td>
