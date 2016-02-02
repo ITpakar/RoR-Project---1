@@ -17,8 +17,8 @@ class GameDatatable < AjaxDatatablesRails::Base
 	
 	    ops = ''
       ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, game_path(record))	        
-	    ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_game_path(record), remote: true) 
-      ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, game_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this game?' }) 
+	    # ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_game_path(record), remote: true) 
+      # ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, game_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this game?' }) 
       [
 		    record.match_date.strftime('%d/%m/%Y'), record.location.name, record.squad_1.country.name, record.squad_2.country.name, ops
       ]
