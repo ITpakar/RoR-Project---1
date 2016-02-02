@@ -46,13 +46,7 @@ html body
 {margin-right: 3px;}
 .inline-ele{display:inline-block;}
 
-/*#game_match_date > .datepicker[style] {
-    top: 274.59px !important;
-}
-*/
-/*.datepicker{
-	top: 278px!important;
-	position: absolute!important;
-}
-
-*/
+/*custom css -simranjit@2Feb'16*/
+.top-margin { margin-top: 10%;}
+.form-control[readonly] {background: none repeat scroll 0 0 #FFFFFF!important;}
+.horizontal-ruler { border: 1px solid #808080; margin-top: 1px;}

@@ -1,3 +1,4 @@
+# not in use
 class SessionsController < ApplicationController
 
 	def new 

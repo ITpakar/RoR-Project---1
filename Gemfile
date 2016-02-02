@@ -23,3 +23,6 @@ gem 'jquery-ui-rails'
 gem 'numbers_and_words'
 gem 'rails-erd'
 gem "select2-rails"
+gem 'devise'
+gem "figaro"
+gem "cancan"
