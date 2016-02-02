@@ -46,11 +46,10 @@
   <div class="form-group">
     <%= f.label :date_of_birth, class: "col-md-3 control-label" %>
     <div class="col-md-9">
-    <div class="input-group date" id="match-date">
-          
-            <%= f.text_field :dob, class: "form-control", :value=>change_player_date(@player) %>
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-          </div>  
+      <div class="input-group date" id="match-date">   
+        <%= f.text_field :dob, class: "form-control", :value=>change_player_date(@player) %>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>  
     </div>
   </div>
 
@@ -67,11 +66,21 @@
   </div>
 <% end %>
 <script>
-  $('#player_dob').datepicker({
-    todayHighlight : true,
-    autoclose : true,
-    orientation : 'top left'
+  // $('#player_dob').datepicker({
+  //   todayHighlight : true
+  //   autoclose : true,
+  //   orientation : 'top left'
+  // });
+
+  $('#player_dob').datetimepicker({
+    timepicker:false,
+    maxDate:'-1970/01/01',
+    format:'d/m/Y'
   });
+
+
+
+
 
   $( document ).ready(function() {  
     <%if (@type == "1")%>
