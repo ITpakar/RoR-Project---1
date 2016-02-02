@@ -20,7 +20,7 @@ class Game < ActiveRecord::Base
   #enum coin_toss_win: {TeamA: 0, TeamB: 1}
   enum coin_toss_decision: {Bat: 0,  Bowled: 1}
   #enum game_winner: {Draw: 0, Team1: 1, Team2: 2}
-  enum game_winner_amount: {Runs: 0, Wickets: 1}
+  enum game_winner_amount: {Draw: 0, Runs: 1, Wickets: 2}
   enum day_night_game: {DayGame: 0, NightGame: 1, DayNightGame: 2}
 
   accepts_nested_attributes_for :game_team_1_squads
@@ -74,5 +74,40 @@ class Game < ActiveRecord::Base
     end
     "#{self.name} - #{self.squad_1.country.name} vs. #{self.squad_2.country.name} - #{self.code.name} - #{d} - #{location}"
   end
+
+  def get_winner_description
+    if self.game_winner == 0
+      return "Draw"
+    else
+      winner = Country.find_by_id(self.game_winner)
+      "#{winner.name} won by #{self.game_winner_margin} #{self.game_winner_amount}"  
+    end 
+  end
+
+  def get_umpires
+    umpire_1 = Umpire.find_by_id(self.umpire_1)
+    umpire_2 = Umpire.find_by_id(self.umpire_2)
+      if (umpire_1 and umpire_2)
+        "#{umpire_1.name} and #{umpire_2.name}"
+      elsif (umpire_1 or umpire_2)
+        return umpire_1 ? "#{umpire_1.name}" : "#{umpire_2.name}"
+      end
+  end
+
+  def get_match_umpire
+    Umpire.find_by_id(self.umpire_referee).try(:name)
+  end
+
+  def get_reserve_umpire
+    Umpire.find_by_id(self.umpire_reserve).try(:name)
+  end
+
+  def coin_toss_outcome
+    country = Country.find_by_id(self.coin_toss_win).try(:name)
+    if country 
+      "#{country} Won The Toss and Choose To #{self.coin_toss_decision} First" 
+    end  
+  end
+
   
 end
