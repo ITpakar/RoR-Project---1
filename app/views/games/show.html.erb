@@ -1,22 +1,17 @@
 <h3>View Game - <%= @game.name %></h3>
-
 <p id="notice"><%= notice %></p>
-
 <div class="col-md-12">
 	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
 		<div class="panel-heading">
 			<h4 class="panel-title">Main Details</h4>
 		</div>
 		<div class="panel-body">
-
-						<p>
-			  <strong>Match date:</strong>
-			  <%= @game.match_date %>
+			<p>
+				<strong>Match date:</strong>
+				<%= @game.match_date %>
 			</p>
-			
-						<%= link_to 'Edit', edit_game_path(@game) %> |
+			<%= link_to 'Edit', edit_game_path(@game) %> |
 			<%= link_to 'Back', games_path %>
-		
 		</div>
 	</div>
 </div>

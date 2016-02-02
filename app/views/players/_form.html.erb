@@ -1,7 +1,6 @@
 <%= form_for(@player, remote: true, html: {class: :player_form, class: "form-horizontal", style: "display:inline;" }) do |f| %>
   <div class="modal-body">
   <ul class="errors"></ul>
-
   <div class="form-group">
     <%= f.label :name, class: "col-md-3 control-label" %>
     <div class="col-md-9">
@@ -44,14 +43,11 @@
     <div class="col-md-9">
     <div class="input-group date" id="player-dob-date">
         <%#= f.text_field :dob, class: "form-control" , :data => { :date_format => "dd/mm/yyyy"},:onclick=>"$(this).datepicker({dateFormat: 'dd/mm/yy',changeYear: true}).datepicker('show')"%>
-        <%= f.text_field :dob, class: "form-control",:value=>change_date(@player)%>
+        <%= f.text_field :dob, class: "form-control" %>
             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>  
     </div>
   </div>
-
-
-
   <div class="form-group">
     <%= f.label :role, class: "col-md-3 control-label" %>
     <div class="col-md-9">
@@ -68,9 +64,19 @@
 
 
 <script>
-  $('#player-dob-date').datepicker({
-     todayHighlight : true,
-     autoclose : true,
-     orientation : 'top left'
+  // old datepicker
+  // $('#player-dob-date').datepicker({
+  //    todayHighlight : true,
+  //    autoclose : true,
+  //    orientation : 'top left'
+  // });
+
+  $('#player_dob').datetimepicker({
+    timepicker:false,
+    maxDate:'+1970/01/1',
+    format:'d/m/Y'
   });
+
+
+
 </script>
