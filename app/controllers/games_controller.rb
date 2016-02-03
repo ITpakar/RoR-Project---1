@@ -26,7 +26,6 @@ class GamesController < ApplicationController
   end
 
   def create
-       p "---------#{params.inspect}---------"
     @game = Game.new(game_params)
     @game.save
   end

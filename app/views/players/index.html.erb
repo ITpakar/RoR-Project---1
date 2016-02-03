@@ -2,7 +2,7 @@
 <div class="col-md-12">
   <div class="panel panel-inverse">
     <div class="panel-body">    
-      <p><%= link_to "New Player", new_player_path, remote: true, class: "btn btn-xs btn-primary" %></p>
+      <p><%= link_to "New Player", new_player_path, remote: true, class: "btn btn-xs btn-primary" if can? :new, Player%></p>
       <table id="players-table" data-source="<%= players_path(format: :json) %>" class="table table-striped table-bordered dataTable no-footer" width="100%">
         <thead>
           <tr>

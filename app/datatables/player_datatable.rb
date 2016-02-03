@@ -1,6 +1,6 @@
 class PlayerDatatable < AjaxDatatablesRails::Base
 
-  def_delegators :@view, :link_to, :h, :mailto, :player_path, :edit_player_path
+  def_delegators :@view, :link_to, :h, :mailto, :player_path, :edit_player_path, :can?, :profile_player_path
   
   
   def sortable_columns
@@ -17,23 +17,20 @@ class PlayerDatatable < AjaxDatatablesRails::Base
 
   def data
     records.map do |record|
-	
 	  ops = ''    	        
-	  ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_player_path(record), remote: true) 
-    ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, player_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this player?' }) 
-
+	  ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_player_path(record), remote: true) if can? :edit, Player
+    ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, player_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this player?' }) if can? :destroy, Player
       [
         # comma separated list of the values for each cell of a table row
         # example: record.attribute,		
-		    record.name, record.country.name, record.batting_style.titleize, record.bowling_style, record.role.titleize, record.dob.to_date.strftime('%d/%m/%Y'), ops
+		    "#{link_to record.name, profile_player_path(record)}", record.country.name, record.batting_style.titleize, record.bowling_style, record.role.titleize, record.dob.to_date.strftime('%d/%m/%Y'), ops
       ]
     end
   end
 
   def get_raw_records
     # insert query here
-	Player.includes(:country).references(:country).where(deleted: '0')
+	  Player.includes(:country).references(:country).where(deleted: '0')
   end
 
-  # ==== Insert 'presenter'-like methods below if necessary
 end

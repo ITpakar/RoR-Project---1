@@ -1,17 +1,28 @@
 Rails.application.routes.draw do
+  get 'home/index'
+  root "home#index"
+  devise_for :users, controllers: {
+        registrations: 'users/registrations'
+      }
+  resources :users do 
+    resources :profiles, only: [:edit, :update]
+  end
+
   resources :teams
   resources :games
   resources :codes, :path => "forms"
   resources :locations
   resources :squads
-  resources :players
+  resources :players do 
+    member do
+      get 'profile'
+    end
+  end
   resources :countries
   resources :umpires
 
-  resources :sessions
-
-  root 'sessions#new'
-
+  # resources :sessions
+  
   get 'squad-select' => 'squads#get_squad_select'
   get 'game-innings' => 'games#get_games_innings'
   get 'squad-load-1' => 'squads#load_squad_1'

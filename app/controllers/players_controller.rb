@@ -14,13 +14,16 @@ class PlayersController < ApplicationController
   end
 
   def new
+    authorize! :new, Player
     @player = Player.new
   end
 
   def edit
+    authorize! :edit, Player
   end
 
   def create
+    authorize! :create, Player
     @player = Player.new(player_params)
     @player.save
   end
@@ -31,8 +34,13 @@ class PlayersController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, Player
     @player.deleted = 1
-	@player.save
+    @player.save
+  end
+
+  def profile
+    @player = Player.find_by_id(params[:id])
   end
 
   private
