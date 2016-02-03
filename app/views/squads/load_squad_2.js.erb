@@ -5,5 +5,7 @@
     ff = f
   end
 %>
+var squad_id = <%=@squad_id%>
+$('#game_squad_id_2').val(squad_id)
 $("#global-modal").modal("hide");
 $('#team2-data').html("<%= escape_javascript(render partial: 'load_squad_2', locals: {f: ff, game: @game}) %>");

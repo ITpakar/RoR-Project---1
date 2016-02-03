@@ -180,7 +180,7 @@ class GamesController < ApplicationController
 
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
-      params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
+      #params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
 
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -204,8 +204,8 @@ class GamesController < ApplicationController
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
-          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+          :bowling_order,:overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
         ])
     end
@@ -232,7 +232,6 @@ class GamesController < ApplicationController
     end
 
 end
-
 
 
 
