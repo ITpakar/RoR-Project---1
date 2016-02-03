@@ -37,4 +37,9 @@ module GamesHelper
 		u.nil? ?  nil : u.id
 	end
 
+	def get_toss_winner game		
+       
+       game.coin_toss_win
+	end
+
 end
