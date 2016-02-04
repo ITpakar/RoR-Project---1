@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129122655) do
+ActiveRecord::Schema.define(version: 20160204102013) do
 
   create_table "codes", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 20160129122655) do
     t.integer  "fow_score",      limit: 4
     t.float    "fow_overs",      limit: 24
     t.integer  "fow_balls",      limit: 4
+    t.integer  "lbw_by",         limit: 4
   end
 
   add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree

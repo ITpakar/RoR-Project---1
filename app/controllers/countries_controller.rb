@@ -56,6 +56,13 @@ class CountriesController < ApplicationController
 
   end
 
+  def get_countries
+    p "-------#{params.inspect}---------"
+    @code = Code.find_by_id(params[:code_id])
+    @countries = @code.countries
+    render :json => {:countries => @countries}
+  end
+  
   private
     def set_country
       @country = Country.find(params[:id])

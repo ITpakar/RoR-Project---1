@@ -26,7 +26,6 @@ class GamesController < ApplicationController
   end
 
   def create
-       p "---------#{params.inspect}---------"
     @game = Game.new(game_params)
     @game.save
   end
@@ -41,13 +40,11 @@ class GamesController < ApplicationController
   end
 
   def load_innings
-    #p "------load inning----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
  def load_scores
-  #p "--------#{params.inspect}-----------"
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
@@ -91,6 +88,7 @@ class GamesController < ApplicationController
 
   def save_quick_add_country
      @country = Country.create(:name => params[:name])
+     @country.code_ids = params[:country][:code_ids]
   end
 
   def quick_add_location
@@ -145,13 +143,11 @@ class GamesController < ApplicationController
 
 
   def quick_add_squad
-    #p "---------------#{params.inspect}-"
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
-    p "-----save-quick -squad----"
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -180,7 +176,6 @@ class GamesController < ApplicationController
 
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
-      #params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
 
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -211,24 +206,11 @@ class GamesController < ApplicationController
     end
 
     def player_params
-     # params[:player][:dob] = convert_to_database_date(params[:player][:dob])
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
     def squad_params
       params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
-    end
-
-
-
-    def convert_to_database_date date
-      array = date.split('/')
-    unless array[1].nil?
-      new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
-    else
-      new_date = date
-    end
-      new_date   
     end
 
 end

@@ -59,6 +59,8 @@ Rails.application.routes.draw do
 
   get 'get_innings' => 'codes#get_innings'
 
+  get 'get_countries' => 'countries#get_countries'
+
   get '/logout' => 'sessions#logout'
 
   
