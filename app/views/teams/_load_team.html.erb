@@ -29,7 +29,7 @@
   <% stat = @stats[inning.id][p.player.id] %>
   <% inning_score = stat.inning_score(@team_id) %>
   <% @total_inning_score = @total_inning_score.to_f + inning_score.to_f %>
-  <% @total_team_score = @total_team_score.to_f + inning_score.to_f%>    
+  <%# @total_team_score = @total_team_score.to_f + inning_score.to_f%>    
       <tr>
       	<td><%= p.player.name %></td>
       	<td><%= (stat.balls > 0 ? "Yes" : "No") %></td>

@@ -8,22 +8,29 @@
 			<table class="table table-striped table-bordered">
 				<tr>
 					<th>Name</th>
+					<th>Batting Order</th>
 					<th>Runs</th>
 					<th>Minutes</th>
 					<th>Balls</th>
 					<th>4s</th>
 					<th>6s</th>
-					<th>SR</th> 01
+					<th>SR</th> 
 					<th>Bowled By</th>
 					<th>Caught By</th>
 					<th>Stumped By</th>
 					<th>Run Out By</th>
+					<th>Fow Order</th>
+					<th>Fow Score</th>
+					<th>Fow Overs</th>
+					<th>Fow Balls</th>
+ 
 
 				</tr>
 				<% inning.stats.reject{ |sp| sp.player.country_id != team_id}.each do |p| %>
 				<%= f.fields_for :stats, p do |s| %>
 				<tr>
 					<td><%= p.player.name %></td>
+					<td><%=s.text_field :batting_order, :size => 2%></td>
 					<td><%= s.text_field :runs, :size => 3 %></td>
 					<td><%= s.text_field :minutes, :size => 3 %></td>
 					<td><%= s.text_field :balls, :size => 3 %></td>
@@ -34,6 +41,10 @@
 					<td></td>
 					<td></td>
 					<td></td>
+					<td><%= s.text_field :fow_order,:size => 3%></td>
+					<td><%= s.text_field :fow_score, :size => 3%></td>
+					<td><%= s.text_field :fow_overs, :size => 3%></td>
+					<td><%= s.text_field :fow_balls, :size => 3%></td>
 	
 				</tr>
 				<% end %>
@@ -45,6 +56,7 @@
 			<table class="table table-striped">
 				<tr>
 					<th>Name</th>
+					<th>bowling Order</th>
 					<th>Overs</th>
 					<th>M</th>
 					<th>R</th>
@@ -60,6 +72,7 @@
 				<%= f.fields_for :stats, p do |s| %>
 				<tr>
 					<td><%= p.player.name %></td>
+					<td><%= s.text_field :bowling_order, :size => 2 %></td>
 					<td><%= s.text_field :overs, :size => 3 %></td>
 					<td><%= s.text_field :maidens, :size => 3 %></td>
 					<td><%= s.text_field :runs_against, :size => 3 %></td>
