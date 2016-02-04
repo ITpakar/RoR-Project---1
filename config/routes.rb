@@ -2,8 +2,15 @@ Rails.application.routes.draw do
   get 'home/index'
   root "home#index"
   devise_for :users, controllers: {
-        registrations: 'users/registrations'
-      }
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
+
+  namespace :admin do
+    get 'sign_in' => 'sessions#new'
+    post 'login' => 'sessions#create'
+  end
+
   resources :users do 
     resources :profiles, only: [:edit, :update]
   end

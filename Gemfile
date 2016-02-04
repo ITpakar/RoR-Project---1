@@ -25,4 +25,4 @@ gem 'rails-erd'
 gem "select2-rails"
 gem 'devise'
 gem "figaro"
-gem "cancan"
+gem 'cancancan', '~> 1.10'
