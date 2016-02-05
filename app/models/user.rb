@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   :recoverable, :rememberable, :trackable, :validatable
 
   has_one :profile
-  after_create :create_profile
+  after_create :create_profile#, unless: Proc.new { self.profile }
 
   def create_profile
     self.build_profile.save(:validation => false)

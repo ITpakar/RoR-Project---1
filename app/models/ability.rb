@@ -15,7 +15,9 @@ class Ability
       cannot :create, Player
       cannot :destroy, Player
       cannot :edit, Player
+
     else
+      cannot :read, Player
       Rails.logger.info '=========guest'
     end
   end

@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-
+  include ApplicationHelper
+  
   before_filter :set_mailer_host
 
   def set_mailer_host
@@ -11,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.admin?
-      new_game_path
+      admin_root
     else
       root_path
     end
@@ -23,10 +24,10 @@ class ApplicationController < ActionController::Base
 
 # exception handling for unauthorization
   rescue_from CanCan::AccessDenied do |exception|
-    Rails.logger.info "-------------"
     @error_message = exception.message
     respond_to do |f|
       f.js{render 'layouts/error', status: 401}
+      f.html{flash[:error] = exception.message; redirect_to root_path}
     end
   end
 

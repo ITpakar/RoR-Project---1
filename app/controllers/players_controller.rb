@@ -1,10 +1,12 @@
 class PlayersController < ApplicationController
+
   before_action :require_user
   before_action :set_player, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
   def index
-	respond_to do |format|
+    authorize! :read, Player
+    respond_to do |format|
       format.html
       format.json { render json: PlayerDatatable.new(view_context) }
     end

@@ -4,47 +4,55 @@ class TeamsController < ApplicationController
   respond_to :html, :js, :json
   
   def index
-	respond_to do |format|
-      format.html
+    authorize! :access, Team
+    respond_to do |format|
+      format.html {}
       format.json { render json: TeamDatatable.new(view_context) }
     end
   end
 
   def show
+    authorize! :access, Team
   end
   
   def team_builder
-    
+    authorize! :access, Team
   end
   
   def display_teams
-    
+    authorize! :access, Team
   end
 
   def new
+    authorize! :access, Team
     @team = Team.new
   end
 
   def edit
+    authorize! :access, Team
   end
 
   def create
+    authorize! :access, Team
     @team = Team.new(team_params)
     @team.save
   end
 
   def update
+    authorize! :access, Team
     @team.update(team_params)
     respond_with(@team)
   end
 
   def destroy
+    authorize! :access, Team
     @team.deleted = 1
 	  @team.save
   end
 
-  def team_builder_save    
-    players = params[:team][:team_players_attributes]    
+  def team_builder_save
+    authorize! :access, Team
+    players = params[:team][:team_players_attributes]
     pp = []    
     players.each do |player|
       if player.second['selected'] != '0' then 
@@ -54,26 +62,19 @@ class TeamsController < ApplicationController
     params[:team][:team_players_attributes] = pp
     @team = Team.new(team_params)
     @team.save
-    
   end
   
   def load_teams
-    p "------------Load Teams----------"
+    authorize! :access, Team
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank? 
-      #p "----#{@game.inspect}--"   
-      #@countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]
-      puts "!!!"
       @teams = Team.where(game_id: game_id).pluck(:name, :id)
-      @teams.each do |t|
-        puts t
-        end      
     end     
   end  
   
   def load_team
-    p "--------------------------load team----------"
+    authorize! :access, Team
     @team_id = params[:team][:team_id]
     @type = params[:type]
     @squad_players = TeamPlayer.includes(:player).references(:player).where(:team_id => @team_id)

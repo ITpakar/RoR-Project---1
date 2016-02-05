@@ -4,57 +4,65 @@ class GamesController < ApplicationController
   respond_to :html, :js, :json
   
   def index
-	  respond_to do |format|
+    authorize! :create, Game  
+    respond_to do |format|
       format.html
       format.json { render json: GameDatatable.new(view_context) }
     end
   end
 
   def show
+    authorize! :create, Game
     @game = Game.find_by_id(params[:id])
   end
   
   def scoring
-    
+    authorize! :create, Game
   end
 
   def new
+    authorize! :create, Game
     @game = Game.new
   end
 
   def edit
+    authorize! :update, Game
   end
 
   def create
+    authorize! :create, Game
     @game = Game.new(game_params)
     @game.save
   end
 
   def update
+    authorize! :update, Player
     @game.update(update_game_params)
   end
 
   def destroy
+    authorize! :destroy, Game
     @game.deleted = 1
     @game.save
   end
 
   def load_innings
-    #p "------load inning----------"
+    authorize! :read, Game  
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
- def load_scores
-  #p "--------#{params.inspect}-----------"
+  def load_scores
+    authorize! :read, Game  
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
     @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
-  
+
   def load_game_squads
+    authorize! :read, Game  
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank?    
@@ -67,6 +75,7 @@ class GamesController < ApplicationController
   end  
   
   def load_game_squad
+    authorize! :read, Game
     squad_id = params[:team][:squad_id]
     #@game = game
     @type = params[:type]
@@ -75,7 +84,7 @@ class GamesController < ApplicationController
   end
   
   def scoring_save
-    
+    authorize! :read, Game
   end
 
   def quick_add_game_type
@@ -83,48 +92,56 @@ class GamesController < ApplicationController
 
   def save_quick_add_game_type 
    @code = Code.create(:name =>params[:name],:default_innings=> params[:default_innings].to_i)
-  end
+ end
 
-  def quick_add_country
-  end
+ def quick_add_country
+  authorize! :create, Game  
+end
 
-  def save_quick_add_country
-     @country = Country.create(:name => params[:name])
-  end
+def save_quick_add_country
+  authorize! :create, Game 
+  @country = Country.create(:name => params[:name])
+end
 
-  def quick_add_location
-  end
+def quick_add_location
+  authorize! :create, Game 
+end
 
-  def save_quick_add_location
-    @location = Location.create(:name => params[:name],:country_id=>params[:country_id])
-  end
+def save_quick_add_location
+  authorize! :create, Game 
+  @location = Location.create(:name => params[:name],:country_id=>params[:country_id])
+end
 
-  def quick_add_player
-    @squad_id = params[:squad_id]
-    @type = params[:type]
-    @player = Player.new
+def quick_add_player
+  authorize! :create, Game 
+  @squad_id = params[:squad_id]
+  @type = params[:type]
+  @player = Player.new
     #@country=Country.find_by_id(params[:country_id])
   end
 
   def save_quick_add_player
+    authorize! :create, Game 
     @player = Player.new(player_params)
     @player.save
     @squad_player = SquadPlayer.new(:squad_id => params[:squad_id],:player_id => @player.id)
     @squad_player.save
     
     if params[:type] == "1"
-    redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:type]) 
+      redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:type]) 
     elsif params[:type] == "2"
-    redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:type])
-  end
+      redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:type])
+    end
   end
 
   def quick_add_existing_player
+    authorize! :create, Game
     @squad = Squad.find_by_id(params[:squad_id])
     @squad_type = params[:type]
   end
 
   def save_existing_player
+    authorize! :create, Game 
     squad =Squad.find_by_id(params[:squad_id])
     players = params[:column_data].split(':') unless params[:column_data].nil?
     SquadPlayer.where(squad_id: params[:squad_id]).delete_all
@@ -134,23 +151,23 @@ class GamesController < ApplicationController
       end
     end
 
-     if params[:squad_type] == "1"
-    redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js) 
+    if params[:squad_type] == "1"
+      redirect_to squad_load_1_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js) 
     elsif params[:squad_type] == "2"
-    redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js)
-  end
+      redirect_to squad_load_2_path(:squad_id => params[:squad_id],:type=>params[:squad_type],:format=>:js)
+    end
 
   end
 
 
   def quick_add_squad
-    #p "---------------#{params.inspect}-"
+    authorize! :create, Game
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
-    p "-----save-quick -squad----"
+    authorize! :create, Game
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -165,14 +182,13 @@ class GamesController < ApplicationController
       redirect_to squad_load_1_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
     elsif params[:type] == "2"
       redirect_to squad_load_2_path(:format => :js,:squad_id=> @squad,:type=>params[:type] )
-    end     
-    #@squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @squad.id)
+    end
   end
 
   private
-    def set_game
-      @game = Game.find(params[:id])
-    end
+  def set_game
+    @game = Game.find(params[:id])
+  end
 
     # Only allow a trusted parameter "white list" through.
     def game_params
@@ -190,7 +206,7 @@ class GamesController < ApplicationController
           :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
           :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
-        ])
+          ])
     end
 
     def update_game_params
@@ -206,7 +222,7 @@ class GamesController < ApplicationController
           :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
           :bowling_order,:overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
-        ])
+          ])
     end
 
     def player_params
@@ -222,15 +238,15 @@ class GamesController < ApplicationController
 
     def convert_to_database_date date
       array = date.split('/')
-    unless array[1].nil?
-      new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
-    else
-      new_date = date
-    end
+      unless array[1].nil?
+        new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
+      else
+        new_date = date
+      end
       new_date   
     end
 
-end
+  end
 
 
 
