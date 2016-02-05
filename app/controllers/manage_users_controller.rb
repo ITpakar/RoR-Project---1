@@ -44,7 +44,7 @@ class ManageUsersController < ApplicationController
 
   private
   def set_user
-    @user = User.includes(:profile)find(params[:id])
+    @user = User.includes(:profile).find(params[:id])
   end
 
   def user_params
