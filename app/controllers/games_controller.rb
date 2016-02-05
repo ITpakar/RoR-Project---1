@@ -14,6 +14,8 @@ class GamesController < ApplicationController
   def show
     authorize! :read, Game
     @game = Game.find_by_id(params[:id])
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id, :selected => true)
+    @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
   
   def scoring
@@ -101,6 +103,7 @@ end
 def save_quick_add_country
   authorize! :create, Game 
   @country = Country.create(:name => params[:name])
+  @country.code_ids = params[:country][:code_ids]
 end
 
 def quick_add_location
@@ -195,21 +198,23 @@ def quick_add_player
 
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
-      params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
 
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
+      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win, 
+        :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
-          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
           ])
     end
 
     def update_game_params
+      params[:game][:game_winner_margin] = 0 if (params[:game][:game_winner]=="0")
+      params[:game][:game_winner_amount] = 0 if (params[:game][:game_winner]=="0")
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
         :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -217,14 +222,13 @@ def quick_add_player
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
-          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
           ])
     end
 
     def player_params
-      params[:player][:dob] = convert_to_database_date(params[:player][:dob])
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
@@ -232,22 +236,4 @@ def quick_add_player
       params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
     end
 
-
-
-    def convert_to_database_date date
-      array = date.split('/')
-      unless array[1].nil?
-        new_date = Date.strptime("#{array[2]}/#{array[0]}/#{array[1]}", "%Y/%m/%d") 
-      else
-        new_date = date
-      end
-      new_date   
-    end
-
   end
-
-
-
-
-
-

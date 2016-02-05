@@ -1,0 +1,94 @@
+	<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
+		<% if @game_players.count > 0 then %>
+
+            <%@inning = inning%>
+
+            <%stats = inning.get_stats%>
+            <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}%>
+            <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}%>
+			<h5>Batting</h5>
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Name</th>
+					<th>Batting Order</th>
+					<th>Runs</th>
+					<th>SR</th>
+					<th>Minutes</th>
+					<th>Balls</th>
+					<th>4s</th>
+					<th>6s</th>
+					<th>Bowled By</th>
+					<th>Caught By</th>
+					<th>Stumped By</th>
+					<th>Lbw By</th>
+					<th>Run Out By</th>
+					<th>Fow Order</th>
+					<th>Fow Score</th>
+					<th>Fow Overs</th>
+					<th>Fow Balls</th>
+ 
+
+				</tr>
+				<% stats_current.each do |s| %>
+				<tr>
+					<td><%= s.player.name %></td>
+					<td><%= s.batting_order%></td>
+					<td><%= s.runs%></td>
+					<td><%= calculate_stricke_rate(s)%></td>
+					<td><%= s.minutes%></td>
+					<td><%= s.balls%></td>
+					<td><%= s.fours%></td>
+					<td><%= s.sixes%></td>
+					<td><%= find_player(s.bowled_by)%></td>
+					<td><%= find_player(s.caught_by)%></td>
+					<td><%= find_player(s.stumped_by)%></td>
+					<td><%= find_player(s.lbw_by)%></td>
+					<td><%= s.run_out%></td>
+					<td><%= s.fow_order%></td>
+					<td><%= s.fow_score%></td>
+					<td><%= s.fow_overs%></td>
+					<td><%= s.fow_balls%></td>
+	
+				</tr>
+				<% end %>
+	
+			</table>
+
+			<h5>Bowling</h5>
+			<table class="table table-striped">
+				<tr>
+					<th>Name</th>
+					<th>bowling Order</th>
+					<th>Overs</th>
+					<th>Over Partial</th>
+					<th>M</th>
+					<th>R</th>
+					<th>Wi</th>
+					<th>0s</th>
+					<th>4s</th>
+					<th>6s</th>
+					<th>NB</th>
+					<th>W</th>
+				</tr>
+				<% stats_opponent.each do |s| %>
+				<tr>
+					<td><%= s.player.name %></td>
+					<td><%= s.bowling_order%></td>
+					<td><%= s.overs%></td>
+					<td><%= s.over_partial%></td>
+					<td><%= s.maidens%></td>
+					<td><%= s.runs_against%></td>
+					<td><%= s.wickets %></td>
+					<td><%= s.zeroes_against %></td>
+					<td><%= s.fours_against %></td>
+					<td><%= s.sixes_against %></td>
+					<td><%= s.no_balls %></td>
+					<td><%= s.wides %></td>
+				</tr>
+				<% end %>
+			</table>
+		<% end %>
+
+
+
+

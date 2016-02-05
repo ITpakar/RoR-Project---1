@@ -9,7 +9,6 @@
 $("#global-modal").modal("hide");
 
 <%html = "<option value="+@squad.id.to_s+">"+@squad.description+"</option>"%>
-<%  p "-------------#{params.inspect}-----------"%>
 <%if @squad_type == "1"%>
  var squad_id = <%=@squad.id%>
 $('#game_squad_id_1').val(squad_id)

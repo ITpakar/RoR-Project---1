@@ -44,7 +44,7 @@
  					<div class="form-group">
  						<%= f.label 'Choose Team 1', class: 'label-control' %>
  						<div class="input-group">
- 							<%= f.collection_select(:squad_1_id, Country.where(deleted: 0), :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
+ 							<%= f.collection_select(:squad_1_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
  							<%=f.hidden_field :squad_id_1,:value=>""%>						
  							<%#= f.collection_select(:squad_1_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1); check_teams();'}) %>
  						</div>
@@ -58,7 +58,7 @@
  					<div class="form-group">
  						<%= f.label 'Choose Team 2', class: 'label-control' %>
  						<div class="input-group">
- 							<%= f.collection_select(:squad_2_id, Country.where(deleted: 0), :id, :name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
+ 							<%= f.collection_select(:squad_2_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
  							<%=f.hidden_field :squad_id_2,:value=>""%>
  							<%#= f.collection_select(:squad_2_id, Squad.where(code_id: (@game.code_id unless @game.code_id.nil?)), :id, :full_name, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2); check_teams();'}) %>
  						</div>
@@ -292,7 +292,6 @@ function set_team(team){
 //set team--------------->    
 
 $('#load_squad_1_id').change(function(){
-
 	var squad_id = $('#load_squad_1_id').val();
 	$('#game_squad_id_1').val(squad_id);
 
@@ -321,8 +320,23 @@ $('#load_squad_2_id').change(function(){
  
  $('#game_code_id').change(function(){
 
- 	if ($(this).val() != "") 
+    if ($(this).val() == "") 
+    {
+       var html = '<option value= "#">Please Select</option>';
+        $('#game_location_id').prop('selectedIndex',0);
+        $('#game_number_of_innings option').remove();
+        $('#game_squad_1_id').html(html); 
+        $('#game_squad_2_id').html(html);
+        $('#squads').hide();
+        $('#no-teams').show(); 
+
+
+    }
+
+ 	else if ($(this).val() != "") 
  	{
+        $('#squads').hide();
+        $('#no-teams').show(); 
  		var code_id = $(this).val();
  		$.ajax({
  			url: '/get_innings',
@@ -339,8 +353,27 @@ $('#load_squad_2_id').change(function(){
  				alert(errorThrown);
  			}
  		});
+        $.ajax({
+            url: '/get_countries',
+            dataType: 'json',
+            type: 'GET',
+            data: {code_id: code_id},
+            dataType: 'json',
+            success: function(data) {
+                var html = '<option value= "#">Please Select</option>';    
+                $.each(data.countries, function(i, value) {
+                            html += '<option value=' + value.id + '>' + value.name + '</option>';
+                        });
+                $('#game_squad_1_id option').remove();
+                $('#game_squad_2_id option').remove();
+                $('#game_squad_1_id').html(html); 
+                $('#game_squad_2_id').html(html);       
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
  	}
-
  });
 
  // Validation Game Form Script
@@ -365,17 +398,17 @@ $('#load_squad_2_id').change(function(){
  		msg1 = "Can't be Blank";
  	}
 
- 	if (($('#game_squad_1_id').val().trim() == "" ) || ($('#game_squad_1_id').val().trim() == 0)){
+ 	if (($('#game_squad_1_id').val().trim() == "#")||($('#game_squad_1_id').val().trim() == "" ) || ($('#game_squad_1_id').val().trim() == 0)){
  		msg2 = "Can't be Blank";
  	}
 
- 	if (($('#game_squad_2_id').val().trim() == "") || ($('#game_squad_2_id').val().trim() == 0)){
+ 	if (($('#game_squad_2_id').val().trim() == "#")||($('#game_squad_2_id').val().trim() == "") || ($('#game_squad_2_id').val().trim() == 0)){
  		msg3 = "Can't be Blank";
  	} 
 
  	if($('#game_squad_1_id').val().trim() == $('#game_squad_2_id').val().trim())
  	{
- 		if (!(($('#game_squad_2_id').val().trim() == "" )||($('#game_squad_2_id').val().trim() == 0)))
+ 		if (!(($('#game_squad_2_id').val().trim() == "" )||($('#game_squad_2_id').val().trim() == 0)) && ($('#game_squad_2_id').val().trim() != "#"))
  		{
  			msg2 = "Team's Can't be Same";
  		}  

@@ -3,15 +3,59 @@
 <div class="col-md-12">
 	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
 		<div class="panel-heading">
-			<h4 class="panel-title">Main Details</h4>
+			<h3 class="">Game Description</h3>
 		</div>
 		<div class="panel-body">
+		    <p>
+		       <h4><%=@game.squad_1.country.name%> vs <%=@game.squad_2.country.name%></h4>
+		    </p>
 			<p>
 				<strong>Match date:</strong>
-				<%= @game.match_date %>
+				<%= @game.match_date.strftime('%d/%m/%Y') %>
 			</p>
-			<%= link_to 'Edit', edit_game_path(@game) %> |
-			<%= link_to 'Back', games_path %>
+			<p>
+			    <strong>Game ID:</strong>
+			    <%= @game.code.name%>			
+			</p>
+			<p>
+			    <strong>Season:</strong>		
+			</p>
+			<p>
+			    <strong>Outcome:</strong>
+			    <%= @game.get_winner_description%>			
+			</p>
+			<p>
+			    <strong>Series:</strong>			
+			</p>
+			<p>
+			    <strong>Coin Toss Outcome:</strong>
+			    <%= @game.coin_toss_outcome%>			
+			</p>
+			<p>
+			    <strong>Umpires:</strong>
+			    <%= @game.get_umpires%>			
+			</p>
+            <p>
+			    <strong>TV Umpire:</strong>
+			    <%= @game.get_umpires%>			
+			</p>
+            <p>
+			    <strong>Match Umpire:</strong>
+			    <%= @game.get_match_umpire%>			
+			</p>
+            <p>
+			    <strong>Reserve Umpire:</strong>
+			    <%= @game.get_reserve_umpire%>			
+			</p>
+
+		  <% @game.innings.each_with_index do |inning, index| %>
+		    <% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
+		      <%= render partial: 'game_result', locals: {inning: inning, index: index, team_id: inning.batting.to_i } %>
+		      <%= render partial: 'game_result', locals: {inning: inning, index: index, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first } %>
+          <% end %>
+
+			<%#= link_to 'Edit', edit_game_path(@game) %>
+			<h3><%= link_to 'Back', games_path %></h3>
 		</div>
 	</div>
 </div>
