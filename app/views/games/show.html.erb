@@ -48,8 +48,14 @@
 			    <%= @game.get_reserve_umpire%>			
 			</p>
 
+		  <% @game.innings.each_with_index do |inning, index| %>
+		    <% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
+		      <%= render partial: 'game_result', locals: {inning: inning, index: index, team_id: inning.batting.to_i } %>
+		      <%= render partial: 'game_result', locals: {inning: inning, index: index, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first } %>
+          <% end %>
+
 			<%#= link_to 'Edit', edit_game_path(@game) %>
-			<%= link_to 'Back', games_path %>
+			<h3><%= link_to 'Back', games_path %></h3>
 		</div>
 	</div>
 </div>
