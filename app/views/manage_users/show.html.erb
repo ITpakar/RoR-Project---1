@@ -1,0 +1,21 @@
+<h3>View User - <%= @user.profile.screenname %></h3>
+
+<p id="notice"><%= notice %></p>
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+			<p>
+				<strong>Name:</strong>
+				<%= @user.email %>
+			</p>
+			
+			<%= link_to 'Edit', edit_manage_user_path(@user) %> |
+			<%= link_to 'Back', manage_users_path %>
+
+		</div>
+	</div>
+</div>

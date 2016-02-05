@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable
 
-  has_one :profile
-  after_create :create_profile#, unless: Proc.new { self.profile }
+  has_one :profile, dependent: :destroy
+  accepts_nested_attributes_for :profile, allow_destroy: true
+  after_save :create_profile, :on => :create, unless: Proc.new { self.profile }
 
   def create_profile
     self.build_profile.save(:validation => false)

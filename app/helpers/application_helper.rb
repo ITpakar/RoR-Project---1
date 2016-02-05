@@ -12,4 +12,8 @@ module ApplicationHelper
 		end
 	end
 
+	def manage_usr action
+		action == 'edit' ? manage_user_path : manage_users_path
+	end
+
 end

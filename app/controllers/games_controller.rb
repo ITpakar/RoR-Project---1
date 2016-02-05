@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   respond_to :html, :js, :json
   
   def index
-    authorize! :create, Game  
+    authorize! :read, Game  
     respond_to do |format|
       format.html
       format.json { render json: GameDatatable.new(view_context) }
@@ -12,7 +12,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    authorize! :create, Game
+    authorize! :read, Game
     @game = Game.find_by_id(params[:id])
   end
   
