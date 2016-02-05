@@ -3,7 +3,13 @@
 	<div class="panel-body">
 		<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
 		<% if @game_players.count > 0 then %>
+
             <%@inning = inning%>
+
+            <%stats = inning.get_stats%>
+            <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}%>
+            <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}%>
+
 			<h5>Batting</h5>
 			<table class="table table-striped table-bordered">
 				<tr>
@@ -26,18 +32,18 @@
  
 
 				</tr>
-				<% inning.stats.reject{ |sp| sp.player.country_id != team_id}.each do |p| %>
+				<% stats_current.each do |p| %>
 				<%= f.fields_for :stats, p do |s| %>
 				<tr>
 					<td><%= p.player.name %></td>
-					<td><%=s.text_field :batting_order, :size => 2%></td>
+					<td><%= s.text_field :batting_order, :size => 2%></td>
 					<td><%= s.text_field :runs, :size => 3 %></td>
 					<td><%= s.text_field :minutes, :size => 3 %></td>
 					<td><%= s.text_field :balls, :size => 3 %></td>
 					<td><%= s.text_field :fours, :size => 3 %></td>
 					<td><%= s.text_field :sixes, :size => 3 %></td>
 					<td class='strike-rate'>&nbsp;</td>
-					<td><%= %></td>
+					<td><%= s.select :bowled_by,stats_opponent.collect{|s| [s.player.name,s.player.id]},:class => "form-control"%></td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -68,7 +74,7 @@
 					<th>NB</th>
 					<th>W</th>
 				</tr>
-				<% inning.stats.reject{ |sp| sp.player.country_id == team_id}.each do |p| %>
+				<% stats_opponent.each do |p| %>
 				<%= f.fields_for :stats, p do |s| %>
 				<tr>
 					<td><%= p.player.name %></td>
@@ -91,3 +97,7 @@
 	</div>
 
 </div>
+
+
+
+

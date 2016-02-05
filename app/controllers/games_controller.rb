@@ -30,7 +30,10 @@ class GamesController < ApplicationController
   end
 
   def create
+<<<<<<< HEAD
     authorize! :create, Game
+=======
+>>>>>>> origin/develop_varun
     @game = Game.new(game_params)
     @game.save
   end
@@ -47,13 +50,20 @@ class GamesController < ApplicationController
   end
 
   def load_innings
+<<<<<<< HEAD
     authorize! :read, Game  
+=======
+>>>>>>> origin/develop_varun
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
+<<<<<<< HEAD
   def load_scores
     authorize! :read, Game  
+=======
+ def load_scores
+>>>>>>> origin/develop_varun
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
@@ -98,10 +108,17 @@ class GamesController < ApplicationController
   authorize! :create, Game  
 end
 
+<<<<<<< HEAD
 def save_quick_add_country
   authorize! :create, Game 
   @country = Country.create(:name => params[:name])
 end
+=======
+  def save_quick_add_country
+     @country = Country.create(:name => params[:name])
+     @country.code_ids = params[:country][:code_ids]
+  end
+>>>>>>> origin/develop_varun
 
 def quick_add_location
   authorize! :create, Game 
@@ -161,13 +178,19 @@ def quick_add_player
 
 
   def quick_add_squad
+<<<<<<< HEAD
     authorize! :create, Game
+=======
+>>>>>>> origin/develop_varun
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
+<<<<<<< HEAD
     authorize! :create, Game
+=======
+>>>>>>> origin/develop_varun
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -195,7 +218,6 @@ def quick_add_player
 
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
-      #params[:game][:match_date] = convert_to_database_date(params[:game][:match_date])
 
       params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
@@ -226,7 +248,6 @@ def quick_add_player
     end
 
     def player_params
-     # params[:player][:dob] = convert_to_database_date(params[:player][:dob])
       params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
     end
 
@@ -234,6 +255,7 @@ def quick_add_player
       params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
     end
 
+<<<<<<< HEAD
 
 
     def convert_to_database_date date
@@ -247,6 +269,9 @@ def quick_add_player
     end
 
   end
+=======
+end
+>>>>>>> origin/develop_varun
 
 
 
