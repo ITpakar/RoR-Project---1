@@ -9,6 +9,7 @@ class Ability
     elsif user.normal_user?
       Rails.logger.info '=========user'
       cannot :read, User
+      can :read, Team
       can :manage, Profile
       can :read, Game
       can :read, Player
