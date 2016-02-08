@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_user!
   before_action :set_game, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -40,6 +40,23 @@ class GamesController < ApplicationController
   def update
     authorize! :update, Player
     @game.update(update_game_params)
+    
+    # game = params[:game][:stats_attributes]
+    # game.each_value do |g|
+
+
+    # g[:run_out].reject!(&:empty?) if g[:run_out].present?
+
+    # if !g[:run_out].blank? && g[:batting_order].present?
+       
+    #     g[:run_out].each do |run_out|
+ 
+    #     end
+
+    # end
+    #end
+
+
   end
 
   def destroy

@@ -2,6 +2,7 @@ class Stat < ActiveRecord::Base
   belongs_to :inning
   belongs_to :player
 
+
   def inning_score team_id
 
     points = 0

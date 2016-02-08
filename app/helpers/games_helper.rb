@@ -8,6 +8,35 @@ module GamesHelper
 		end
 	end
 
+	def get_extras stats_opponent
+		nb = 0
+		wides = 0
+		stats_opponent.each do |stat|
+          nb = nb + stat.no_balls
+          wides = wides + stat.wides
+		end
+		"nb : #{nb},wides : #{wides}" 
+	end
+
+	def get_score stats_current,stats_opponent
+		
+        total_runs = 0
+        wickets = 0
+        total_balls = 0
+		stats_current.each do |stat|
+			total_runs = total_runs + stat.runs
+			total_balls = total_balls + stat.balls.to_i
+
+			if !stat.fow_order.nil?
+			  wickets = wickets+1
+			end
+			
+		end
+		overs = "#{total_balls/6}.#{total_balls%6}"
+
+		"#{wickets}/#{total_runs} (#{overs} overs)"
+	end
+
 	def find_opponent_player stats_opponent
 		arr = [["Please Select",""]]
 		stats_opponent.each do |so|
@@ -25,6 +54,15 @@ module GamesHelper
 			return 0
 		else 
 			(stat.runs.to_f/stat.balls.to_f)*100	
+		end
+	end
+
+	def calculate_economy_rate stat
+		balls = (6*stat.overs.to_i) + stat.over_partial.to_i
+		if (balls == 0 || stat.runs_against == 0)
+			return 0
+		else
+			(stat.runs_against.to_f/balls.to_f)*100
 		end
 	end
 

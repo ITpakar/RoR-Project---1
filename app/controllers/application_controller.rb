@@ -30,10 +30,4 @@ class ApplicationController < ActionController::Base
       f.html{flash[:error] = exception.message; redirect_to root_path}
     end
   end
-
-  def require_user 
-  	# redirect_to new_session_path unless current_user 
-  	# flash[:notice] = "Please Login"
-  end
-
 end
