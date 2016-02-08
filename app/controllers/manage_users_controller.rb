@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class ManageUsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
@@ -33,24 +33,23 @@ class UsersController < ApplicationController
 
   def update
     # authorize! :udpate, User
-    @user.update!(user_params)
+    @user.update(user_params)
     respond_with(@user)
   end
 
   def destroy
-    authorize! :destroy, User
-    @user.deleted = 1
-    @user.save
+    # authorize! :destroy, User
+    @user.destroy
   end
 
   private
   def set_user
-    @user = User.find(params[:id])
+    @user = User.includes(:profile).find(params[:id])
   end
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, 
-      :profile_attributes => [:firstname, :lastname, :screenname, :phone_number, :address])
+      :profile_attributes => [:firstname, :lastname, :screenname, :phone_number, :address, :id])
   end
 
 end

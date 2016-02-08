@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'home/index'
   root "home#index"
+
+  
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
@@ -10,11 +12,11 @@ Rails.application.routes.draw do
     get 'sign_in' => 'sessions#new'
     post 'login' => 'sessions#create'
   end
-
-  resources :users do 
+  resources :users, except: [:destroy] do 
     resources :profiles, only: [:edit, :update]
   end
 
+  resources :manage_users
   resources :teams
   resources :games
   resources :codes, :path => "forms"

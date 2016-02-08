@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_user!
   before_action :set_team, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   

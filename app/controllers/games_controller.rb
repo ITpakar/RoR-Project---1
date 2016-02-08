@@ -1,10 +1,10 @@
 class GamesController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_user!
   before_action :set_game, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
   def index
-    authorize! :create, Game  
+    authorize! :read, Game  
     respond_to do |format|
       format.html
       format.json { render json: GameDatatable.new(view_context) }
@@ -12,8 +12,10 @@ class GamesController < ApplicationController
   end
 
   def show
-    authorize! :create, Game
+    authorize! :read, Game
     @game = Game.find_by_id(params[:id])
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id, :selected => true)
+    @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
   
   def scoring
@@ -30,10 +32,8 @@ class GamesController < ApplicationController
   end
 
   def create
-<<<<<<< HEAD
+
     authorize! :create, Game
-=======
->>>>>>> origin/develop_varun
     @game = Game.new(game_params)
     @game.save
   end
@@ -50,20 +50,14 @@ class GamesController < ApplicationController
   end
 
   def load_innings
-<<<<<<< HEAD
     authorize! :read, Game  
-=======
->>>>>>> origin/develop_varun
     game_id = params[:game][:id]
     @game = Game.find(game_id) unless game_id.blank?
   end
 
-<<<<<<< HEAD
+
   def load_scores
     authorize! :read, Game  
-=======
- def load_scores
->>>>>>> origin/develop_varun
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
@@ -108,17 +102,12 @@ class GamesController < ApplicationController
   authorize! :create, Game  
 end
 
-<<<<<<< HEAD
+
 def save_quick_add_country
   authorize! :create, Game 
   @country = Country.create(:name => params[:name])
+  @country.code_ids = params[:country][:code_ids]
 end
-=======
-  def save_quick_add_country
-     @country = Country.create(:name => params[:name])
-     @country.code_ids = params[:country][:code_ids]
-  end
->>>>>>> origin/develop_varun
 
 def quick_add_location
   authorize! :create, Game 
@@ -178,19 +167,13 @@ def quick_add_player
 
 
   def quick_add_squad
-<<<<<<< HEAD
     authorize! :create, Game
-=======
->>>>>>> origin/develop_varun
     @squad_type = params[:squad]
     @squad = Squad.new
   end
 
   def save_quick_add_squad
-<<<<<<< HEAD
     authorize! :create, Game
-=======
->>>>>>> origin/develop_varun
     @squad_type = params[:type]
     players = params[:squad][:column_data].split(':') unless params[:squad][:column_data].nil?
     @squad = Squad.new(squad_params)    
@@ -219,14 +202,15 @@ def quick_add_player
       params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
       params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
 
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings, 
+      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win, 
+        :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
         game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by, 
-          :overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
           ])
     end
@@ -241,8 +225,8 @@ def quick_add_player
         innings_attributes: [:id, :game_id, :batting], 
         stats_attributes: [
           :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
-          :bowling_order,:overs, :maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
           :created_at, :updated_at
           ])
     end
@@ -255,9 +239,6 @@ def quick_add_player
       params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
     end
 
-<<<<<<< HEAD
-
-
     def convert_to_database_date date
       array = date.split('/')
       unless array[1].nil?
@@ -269,11 +250,5 @@ def quick_add_player
     end
 
   end
-=======
+
 end
->>>>>>> origin/develop_varun
-
-
-
-
-

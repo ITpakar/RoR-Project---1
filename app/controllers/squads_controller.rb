@@ -1,5 +1,5 @@
  class SquadsController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_user!
   before_action :set_squad, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   

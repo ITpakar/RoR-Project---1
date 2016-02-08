@@ -1,5 +1,5 @@
 
-<div class="panel panel-default">
+<div class="panel panel-default scoring-panel">
 	<div class="panel-body">
 		<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
 		<% if @game_players.count > 0 then %>
@@ -9,6 +9,7 @@
             <%stats = inning.get_stats%>
             <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}%>
             <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}%>
+            <%opponent_palyers = find_opponent_player(stats_opponent)%>
 
 			<h5>Batting</h5>
 			<table class="table table-striped table-bordered">
@@ -20,10 +21,10 @@
 					<th>Balls</th>
 					<th>4s</th>
 					<th>6s</th>
-					<th>SR</th> 
 					<th>Bowled By</th>
 					<th>Caught By</th>
 					<th>Stumped By</th>
+					<th>Lbw By</th>
 					<th>Run Out By</th>
 					<th>Fow Order</th>
 					<th>Fow Score</th>
@@ -42,11 +43,11 @@
 					<td><%= s.text_field :balls, :size => 3 %></td>
 					<td><%= s.text_field :fours, :size => 3 %></td>
 					<td><%= s.text_field :sixes, :size => 3 %></td>
-					<td class='strike-rate'>&nbsp;</td>
-					<td><%= s.select :bowled_by,stats_opponent.collect{|s| [s.player.name,s.player.id]},:class => "form-control"%></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><%= s.select(:bowled_by,opponent_palyers,{},{})%></td>
+					<td><%= s.select(:caught_by,opponent_palyers,{},{})%></td>
+					<td><%= s.select(:stumped_by,opponent_palyers,{},{})%></td>
+					<td><%= s.select(:lbw_by,opponent_palyers,{},{})%></td>
+					<td class><%= s.select(:run_out,opponent_palyers,{},{:class=>"select2-runout",:multiple=>true})%></td>
 					<td><%= s.text_field :fow_order,:size => 3%></td>
 					<td><%= s.text_field :fow_score, :size => 3%></td>
 					<td><%= s.text_field :fow_overs, :size => 3%></td>
@@ -64,10 +65,10 @@
 					<th>Name</th>
 					<th>bowling Order</th>
 					<th>Overs</th>
+					<th>Over Partial</th>
 					<th>M</th>
 					<th>R</th>
 					<th>Wi</th>
-					<th>Econ</th>
 					<th>0s</th>
 					<th>4s</th>
 					<th>6s</th>
@@ -80,10 +81,10 @@
 					<td><%= p.player.name %></td>
 					<td><%= s.text_field :bowling_order, :size => 2 %></td>
 					<td><%= s.text_field :overs, :size => 3 %></td>
+					<td><%= s.text_field :over_partial, :size => 3 %></td>
 					<td><%= s.text_field :maidens, :size => 3 %></td>
 					<td><%= s.text_field :runs_against, :size => 3 %></td>
 					<td><%= s.text_field :wickets, :size => 3 %></td>
-					<td>&nbsp;</td>
 					<td><%= s.text_field :zeroes_against, :size => 3 %></td>
 					<td><%= s.text_field :fours_against, :size => 3 %></td>
 					<td><%= s.text_field :sixes_against, :size => 3 %></td>
@@ -101,3 +102,7 @@
 
 
 
+
+<script>
+$(".select2-runout" ).select2();
+</script>

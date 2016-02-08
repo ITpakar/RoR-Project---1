@@ -1,9 +1,9 @@
 # Datatables
 $ ->
-  table = $('#users-table').dataTable
+  table = $('#manage-users-table').dataTable
     dom: 'C<"clear">lfrtip'
     processing: true
     serverSide: true
-    ajax: $('#users-table').data('source')
+    ajax: $('#manage-users-table').data('source')
     pagingType: 'full_numbers'
     columnDefs: [{ "orderable": false, "targets": 1 }]
