@@ -1,11 +1,13 @@
+<div class="panel panel-default scoring-panel">
+	<div class="panel-body">
 	<h4><%= if !team_id.nil? then @countries.assoc(team_id).second end %> <%= (index + 1).to_i.ordinalize %> Innings: <%= inning.id %></h4>
 		<% if @game_players.count > 0 then %>
 
             <%@inning = inning%>
 
             <%stats = inning.get_stats%>
-            <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}%>
-            <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}%>
+            <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}.sort_by{|stat| stat[:batting_order]}%>
+            <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}.sort_by{|stat| stat[:bowling_order]}%>
 			<h5>Batting</h5>
 			<table class="table table-striped table-bordered">
 				<tr>
@@ -50,10 +52,12 @@
 					<td><%= s.fow_balls%></td>
 	
 				</tr>
+				<%#lb = %>
 				<% end %>
 	
 			</table>
-
+            <b>Extras  (<%=get_extras(stats_opponent)%>)</b>
+            <b><p>Score  : <%=get_score(stats_current,stats_opponent)%></p></b>
 			<h5>Bowling</h5>
 			<table class="table table-striped">
 				<tr>
@@ -61,6 +65,7 @@
 					<th>bowling Order</th>
 					<th>Overs</th>
 					<th>Over Partial</th>
+					<th>Econ</th>
 					<th>M</th>
 					<th>R</th>
 					<th>Wi</th>
@@ -76,6 +81,7 @@
 					<td><%= s.bowling_order%></td>
 					<td><%= s.overs%></td>
 					<td><%= s.over_partial%></td>
+					<td><%= calculate_economy_rate(s)%></td>
 					<td><%= s.maidens%></td>
 					<td><%= s.runs_against%></td>
 					<td><%= s.wickets %></td>
@@ -88,6 +94,8 @@
 				<% end %>
 			</table>
 		<% end %>
+</div>
+</div>
 
 
 
