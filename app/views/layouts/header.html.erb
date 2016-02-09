@@ -18,8 +18,12 @@
 					<% if can? :read, current_user %>
 						<li><a href="/display-teams">Display Teams</a></li>
 					<% end -%>
-					<% if can? :read, current_user %>
-						<li><a href="/team-builder">Team Builder</a></li>
+					<% if can? :read, Team %>
+							<% if current_user.admin? %>
+								<li><%= link_to "Team Builder", team_builder_path %></li>
+							<% else -%>
+								<li><%= link_to "User Team Builder", user_team_builder_path %></li>
+							<% end -%>
 					<% end -%>
 					<% if can? :read, current_user %>
 						<li><a href="/scoring">Scoring</a></li>

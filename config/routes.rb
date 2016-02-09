@@ -2,10 +2,8 @@ Rails.application.routes.draw do
   get 'home/index'
   root "home#index"
 
-  
   devise_for :users, controllers: {
-    registrations: 'users/registrations',
-    sessions: 'users/sessions'
+    registrations: 'users/registrations'
   }
 
   namespace :admin do
@@ -45,6 +43,7 @@ Rails.application.routes.draw do
   
   get 'display-teams' => 'teams#display_teams'
   get 'team-builder' => 'teams#team_builder'
+  get 'user-team-builder' => 'teams#user_team_builder'
   post 'team-builder' => 'teams#team_builder_save'
   
   get 'load-teams' => 'teams#load_teams'

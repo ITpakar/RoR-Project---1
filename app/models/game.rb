@@ -32,8 +32,6 @@ class Game < ActiveRecord::Base
   before_create :setup_innings
   after_create :setup_squad_stats
 
-
-  
   def setup_squad_stats
     squad_members = self.game_squads
     

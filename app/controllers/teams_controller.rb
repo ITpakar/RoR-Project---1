@@ -19,6 +19,10 @@ class TeamsController < ApplicationController
     authorize! :access, Team
   end
   
+  def user_team_builder
+    authorize! :read, Team
+  end
+  
   def display_teams
     authorize! :access, Team
   end
