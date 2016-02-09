@@ -2,3 +2,9 @@
   <h3>Edit User</h3>
 </div>
 <%= render "form" %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#user_password').removeAttr( "required" );
+		$('#user_password_confirmation').removeAttr( "required" );
+	});
+</script>
