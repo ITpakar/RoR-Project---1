@@ -10,9 +10,39 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :full_name, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+    <%= f.text_field :full_name, class: 'form-control' %>
+  </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :scorecard_name, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+    <%= f.text_field :scorecard_name, class: 'form-control' %>
+  </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :dob, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+    <%= f.text_field :dob, class: 'form-control' ,id: 'umpire_dob_date',value: f.object.dob.try{strftime('%d/%m/%Y')}%>
+  </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date_died, class: "col-md-3 control-label" %>
+    <div class="col-md-9">
+    <%= f.text_field :date_died, class: 'form-control' ,id: "umpire_died_date",value: f.object.date_died.try{strftime('%d/%m/%Y')}%>
+  </div>
+  </div>
+
+
+
+  <div class="form-group">
     <%= f.label :country, class: "col-md-3 control-label" %>
     <div class="col-md-9">
-	  <%= f.select :country_id, options_for_select(Country.all.map{|c| [c.name, c.id]}), { prompt: true }, { class: 'form-control' }%>
+	  <%= f.select :country_id, options_for_select(Country.all.map{|c| [c.name, c.id]},:selected=>f.object.country_id), { prompt: true }, { class: 'form-control' }%>
 	</div>
   </div>
 
@@ -22,3 +52,19 @@
   </div>
   </div>
 <% end %>
+
+
+<script>
+
+  $('#umpire_dob_date').datetimepicker({
+    timepicker:false,
+    format:'d/m/Y'
+  });
+ $('#umpire_died_date').datetimepicker({
+    timepicker:false,
+    format:'d/m/Y'
+  });
+
+
+
+</script>

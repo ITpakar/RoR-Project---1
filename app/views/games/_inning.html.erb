@@ -46,7 +46,7 @@
 					<td><%= s.select(:caught_by,opponent_palyers,{},{})%></td>
 					<td><%= s.select(:stumped_by,opponent_palyers,{},{})%></td>
 					<td><%= s.select(:lbw_by,opponent_palyers,{},{})%></td>
-					<td class><%= s.select(:run_out,opponent_palyers,{},{:class=>"select2-runout",:multiple=>true})%></td>
+					<td class><%= s.select(:run_out,opponent_palyers,{:selected=>get_selected_runout(p)},{:class=>"select2-runout",:multiple=>true})%></td>
 					<td><%= s.text_field :fow_order,:size => 3%></td>
 					<td><%= s.text_field :fow_score, :size => 3%></td>
 					<td><%= s.text_field :fow_overs, :size => 3%></td>
