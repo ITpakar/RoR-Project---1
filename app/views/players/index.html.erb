@@ -12,7 +12,7 @@
             <th>Bowling style</th>
             <th>Role</th>
             <th>Date of Birth</th>
-		        <th>Operations</th>
+		        <%= "<th>Operations</th>".html_safe if can? :edit, Player%>
           </tr>
         </thead>
         <tbody>
