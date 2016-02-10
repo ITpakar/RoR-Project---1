@@ -5,16 +5,20 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   
   before_filter :set_mailer_host
-
   def set_mailer_host
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
   end
 
   def after_sign_in_path_for(resource)
-    if resource.admin?
-      admin_root
-    else
+    # if resource.admin?
+    #   admin_root
+    # else
+    #   root_path
+    # end
+    if resource.class.name.eql? 'User'
       root_path
+    else
+      admin_root
     end
   end
 
@@ -34,6 +38,16 @@ class ApplicationController < ActionController::Base
   def require_user 
   	# redirect_to new_session_path unless current_user 
   	# flash[:notice] = "Please Login"
+  end
+
+  def authenticate_scope
+    if current_usr
+      current_usr.is_admin? ? authenticate_admin! : authenticate_user!
+    else
+      authenticate_user!
+    end
+    # :authenticate_admin! || :authenticate_user!
+    # @current_usr = admin_signed_in? ? current_admin : current_user
   end
 
 end

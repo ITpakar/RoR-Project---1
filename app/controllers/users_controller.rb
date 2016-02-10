@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_scope!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   

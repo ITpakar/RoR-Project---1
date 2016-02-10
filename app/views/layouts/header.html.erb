@@ -11,25 +11,25 @@
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-left">
-				<% if current_user -%>
-					<% if can? :read, current_user %>
+				<% if current_usr -%>
+					<% if can? :read, current_usr %>
 						<li><a href="/games/new">Build a Game</a></li>
 					<% end -%>
-					<% if can? :read, current_user %>
+					<% if can? :read, current_usr %>
 						<li><a href="/display-teams">Display Teams</a></li>
 					<% end -%>
 					<% if can? :read, Team %>
-							<% if current_user.admin? %>
+							<% if current_admin %>
 								<li><%= link_to "Team Builder", team_builder_path %></li>
 							<% else -%>
 								<li><%= link_to "User Team Builder", user_team_builder_path %></li>
 							<% end -%>
 					<% end -%>
-					<% if can? :read, current_user %>
+					<% if can? :read, current_usr %>
 						<li><a href="/scoring">Scoring</a></li>
 					<% end -%>
 					<% if can? :read, Game.new %>
-						<% if current_user.admin? %>
+						<% if current_admin %>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reporting <span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -42,29 +42,29 @@
 					<% end -%>
 
 					<% if can? :read, Player %>
-						<% if current_user.admin? %>
+						<% if current_admin %>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">System Maintenance <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<% if can? :read, current_user %>
+									<% if can? :read, current_usr %>
 										<li><a href="/countries">Countries</a></li>
 									<% end -%>
-									<% if can? :read, current_user %>
+									<% if can? :read, current_usr %>
 										<li><a href="/locations">Locations</a></li>
 									<% end -%>
-									<% if can? :read, current_user %>
+									<% if can? :read, current_usr %>
 										<li><a href="/forms">Forms</a></li>
 									<% end -%>
 									<% if can? :read, Player %>
 										<li><a href="/players">Players</a></li>
 									<% end -%>
-									<% if can? :read, current_user %>	
+									<% if can? :read, current_usr %>	
 										<li><a href="/squads">Squads</a></li>
 									<% end -%>
-									<% if can? :read, current_user %>	
+									<% if can? :read, current_usr %>	
 										<li><a href="/umpires">Umpires</a></li>
 									<% end -%>
-									<% if can? :read, current_user %>	
+									<% if can? :read, current_usr %>	
 										<li><%= link_to "Manage Users", manage_users_path %></li>
 									<% end -%>
 								</ul>
@@ -75,20 +75,22 @@
 									<% end -%>
 							<% end -%>
 					<% end -%>
-					<% if can? :read, current_user.try(:profile) %>
+					<% if can? :read, current_usr.try(:profile) %>
 						<li>
-							<%= link_to 'Account Management', edit_user_profile_path(current_user, current_user.profile) %>
+							<%#= link_to 'Account Management', edit_user_profile_path(current_usr, current_usr.profile) %>
 						</li>
 					<% end -%>
 				<% end -%>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<% if user_signed_in? %>
-				<li ><%= link_to "Logout", destroy_user_session_path, :method => :delete%></li>
+				<% if signed_in? %>
+				<li ><%= link_to "Logout", destroy_session, :method => :delete%></li>
 				<% else -%>
-				<li><a href="#">Signup</a></li>
+				<li>
+					<%= link_to 'Login', new_user_session_path %>
+				</li>
 				<%end%>
 			</ul>
 		</div>
 	</div>
-</nav>
+</nav>  
