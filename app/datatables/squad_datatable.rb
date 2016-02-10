@@ -13,7 +13,7 @@ class SquadDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |record|
       ops = ''
-      ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, squad_path(record))	        
+     #ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, squad_path(record))	        
       ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_squad_path(record), remote: true) 
       ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, squad_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this squad?' }) 
       [	

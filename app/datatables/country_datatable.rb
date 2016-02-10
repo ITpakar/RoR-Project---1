@@ -18,10 +18,10 @@ class CountryDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |record|
 	
-	  ops = ''
-    ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, country_path(record))	        
-	  ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_country_path(record), remote: true) 
-    ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, country_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this country?' }) 
+	 ops = ''
+    #ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, country_path(record))	        
+	 ops = ops + " " + link_to('<i class="fa fa-pencil"> </i>'.html_safe, edit_country_path(record), remote: true) 
+     ops = ops + " " + link_to('<i class="fa fa-times-circle"> </i>'.html_safe, country_path(record), method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this country?' }) 
 
       [
         # comma separated list of the values for each cell of a table row
