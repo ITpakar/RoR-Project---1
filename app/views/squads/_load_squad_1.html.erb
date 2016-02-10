@@ -1,14 +1,15 @@
 <% if @squad_players.count > 0 then %>
-<table class="table table-striped">
+<table class="table table-striped" id ="table_1">
   <tr>
     <th>Name</th>
     <th>Country</th>
     <th>Batting Style</th>
     <th>Bowling Style</th>
     <th>Role</th>
-    <th>Selected</th>
-    <th>Capt.</th>
-    <th>WC</th>
+    <th><!-- Selected --></th>
+    <th><!-- Capt. --></th>
+    <th><!-- WC --></th>
+    <th></th>
     <th>Operations</th>
   </tr>
   <% @squad_players.each do |p| %>  
@@ -23,9 +24,9 @@
       	<td><%= p.player.role.titleize %><%= gsp.hidden_field :player_id, value: p.player_id %></td>
         <td><%= gsp.hidden_field :squad_id ,value: p.squad_id %></td>
       	
-      	<td><%= gsp.check_box :selected %></td>
-      	<td><%= gsp.check_box :captain %></td>
-      	<td><%= gsp.check_box :wicket_keeper %></td>
+      	<td><%#= gsp.check_box :selected %></td>
+      	<td><%#= gsp.check_box :captain %></td>
+      	<td><%#= gsp.check_box :wicket_keeper %></td>
       	<!-- <td><%#= link_to "Remove",remove_player_path(:squad_player_id => p.id) %></td> -->
         <td>
            <%= link_to("Remove", remove_player_path(:squad_player_id => p.id,:squad =>"squad_1"), {class: "btn btn-danger btn-xs", id: 'remove_link', :data => { :remote => true}}) %>

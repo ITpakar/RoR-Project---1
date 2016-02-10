@@ -6,8 +6,8 @@
             <%@inning = inning%>
 
             <%stats = inning.get_stats%>
-            <%stats_current = stats.reject{ |sp| sp.player.country_id != team_id}.sort_by{|stat| stat[:batting_order]}%>
-            <%stats_opponent = stats.reject{ |sp| sp.player.country_id == team_id}.sort_by{|stat| stat[:bowling_order]}%>
+            <%stats_current = stats_current_sorted(stats,team_id)%>
+            <%stats_opponent = stats_opponent_sorted(stats,team_id)%>
 			<h5>Batting</h5>
 			<table class="table table-striped table-bordered">
 				<tr>

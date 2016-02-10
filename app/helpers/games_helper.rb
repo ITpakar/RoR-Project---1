@@ -8,6 +8,20 @@ module GamesHelper
 		end
 	end
 
+	def stats_current_sorted stats,team_id
+		 stats = stats.reject{ |sp| sp.player.country_id != team_id}
+		 stats_with_batting_order = stats.reject{|st| st.batting_order == nil}.sort_by{|st| st[:batting_order]}
+		 stats = stats_with_batting_order + (stats - stats_with_batting_order)
+		 return stats
+	end
+	def stats_opponent_sorted stats,team_id
+		 stats = stats.reject{ |sp| sp.player.country_id == team_id}
+		 stats_with_bowling_order = stats.reject{|st| st.bowling_order == nil}.sort_by{|st| st[:bowling_order]}
+		 stats = stats_with_bowling_order + (stats - stats_with_bowling_order)
+		 return stats
+	end
+
+
 	def get_extras stats_opponent
 		nb = 0
 		wides = 0

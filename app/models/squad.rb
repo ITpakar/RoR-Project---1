@@ -1,13 +1,11 @@
 class Squad < ActiveRecord::Base
   belongs_to :country
   belongs_to :code
-   
-  
   has_many :squad_players
   has_many :players, through: :squad_players
   
   attr_accessor :available_players, :selected_players, :column_data
-  
+
   def get_available_players
     selected_players = []
     if !self.players.nil? then
