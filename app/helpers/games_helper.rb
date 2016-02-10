@@ -26,6 +26,7 @@ module GamesHelper
 		stats_current.each do |stat|
 			total_runs = total_runs + stat.runs
 			total_balls = total_balls + stat.balls.to_i
+			
 
 			if !stat.fow_order.nil?
 			  wickets = wickets+1
@@ -35,6 +36,19 @@ module GamesHelper
 		overs = "#{total_balls/6}.#{total_balls%6}"
 
 		"#{wickets}/#{total_runs} (#{overs} overs)"
+	end
+
+	def run_out_by stat
+        if stat.run_out        
+        run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
+        run_out_player = Player.where(:id=>run_out_by).pluck(:name).join(",")
+        end
+	end
+
+	def get_selected_runout stat
+	    if stat.run_out
+			run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
+	    end
 	end
 
 	def find_opponent_player stats_opponent

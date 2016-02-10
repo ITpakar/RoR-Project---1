@@ -42,22 +42,21 @@ class GamesController < ApplicationController
     authorize! :update, Player
     @game.update(update_game_params)
     
-    # game = params[:game][:stats_attributes]
-    # game.each_value do |g|
-
-
-    # g[:run_out].reject!(&:empty?) if g[:run_out].present?
-
-    # if !g[:run_out].blank? && g[:batting_order].present?
-       
-    #     g[:run_out].each do |run_out|
- 
-    #     end
-
-    # end
-    #end
-
-
+    #---RunOut
+    stats = params[:game][:stats_attributes]
+    stats.each_value do |stat|
+    stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
+    if !stat[:run_out].blank? && stat[:batting_order].present?
+        @_stat = Stat.find_by_id(stat[:id])
+        @_run_out = RunOut.where(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id) if @_stat.run_out         
+        @_run_out.delete_all if @_run_out
+        stat[:run_out].each do |run_out_by|
+         RunOut.create(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id,run_out_by: run_out_by) 
+        end
+        @_stat.update_attributes(:run_out => true)
+    end
+    end
+    #---End
   end
 
   def destroy

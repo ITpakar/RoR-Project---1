@@ -48,6 +48,6 @@ class UmpiresController < ApplicationController
   end
 
   def umpire_params
-    params.require(:umpire).permit(:name, :country_id)
+    params.require(:umpire).permit(:name,:full_name,:scorecard_name,:dob,:date_died,:country_id)
   end
 end
