@@ -4,7 +4,7 @@
 	<div class="form-group">
 		<%= f.label :form, class: "col-md-3 control-label" %>
 		<div class="col-md-9">
-			<%= f.select :code_id, options_for_select(Code.pluck(:name, :id)), {prompt: true}, {:class => 'form-control'} %>
+			<%= f.select :code_id, options_for_select(Code.pluck(:name, :id),:selected=>f.object.code_id), {prompt: true}, {:class => 'form-control'} %>
 		</div>
 	</div>
 	<%if @squad.persisted?%>

@@ -10,7 +10,6 @@
  					<%= f.label :match_date, class: 'label-control' %>
  					<div class="input-group date" id="match-date-id">
  						<%= f.text_field :match_date, class: "form-control", :value=>change_date(@game)%>
- 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
  					</div>
  					<span id ="date_error" class = "errors"></span>
  				</div>
@@ -35,6 +34,7 @@
  						<div class="input-group">
  							<%= f.text_field :name, class: 'form-control' %>
  						</div>
+                        <span id ="name_error" class = "errors"></span>
  					</div>
  				</div>
  			</div>
@@ -86,6 +86,7 @@
  							<%= f.select :location_id, options_for_select(Location.all.map{|s| [s.full_name, s.id]}), { prompt: true }, { class: 'form-control' } %>
  						</div>
  						<%= link_to "Quick Add",quick_add_location_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+                        <span id ="location_error" class = "errors"></span>
  					</div>
  				</div>
  			</div>
@@ -93,6 +94,9 @@
  			<p>
  				<strong>Selected Players</strong>
  			</p>
+
+            <span id ="squad_error" class = "errors"></span>
+
  			<div id="no-teams" class="alert alert-danger" role="alert">
  				<p>
  					Please select two teams.
@@ -385,6 +389,8 @@ $('#load_squad_2_id').change(function(){
  		$('#date_error').html("");
  		$('#squad_1_error').html("");
  		$('#squad_2_error').html("");
+        $('#name_error').html("");
+        $('#location_error').html("");
  		$('.game_form').submit();
  	}
  });
@@ -393,6 +399,12 @@ $('#load_squad_2_id').change(function(){
  	var msg1 = "";
  	var msg2 = "";
  	var msg3 = "";
+    var msg4 = "";
+    var msg5 = "";
+    var msg6 = "";
+    
+    var a = $('#table_1 tbody tr').length;
+    var b = $('#table_2 tbody tr').length;
 
  	if ($('#game_match_date').val().trim() == ""){
  		msg1 = "Can't be Blank";
@@ -413,17 +425,28 @@ $('#load_squad_2_id').change(function(){
  			msg2 = "Team's Can't be Same";
  		}  
  	}  
+    if ($('#game_name').val().trim() == ""){
+        msg4 = "Can't be Blank";
+    }
+    if ($('#game_location_id').val().trim() == ""){
+        msg5 = "Can't be Blank";
+    }
+
+    if (($('#table_1 tbody tr').length < 12 ) || ($('#table_2 tbody tr').length < 12))
+    { msg6 = "Please select squads with minimum 11 players";}  
 
  	$('#date_error').html(msg1);
  	$('#squad_1_error').html(msg2);
  	$('#squad_2_error').html(msg3);
+    $('#name_error').html(msg4);
+    $('#location_error').html(msg5);
+    $('#squad_error').html(msg6);
 
- 	if(msg1=="" && msg2=="" && msg3=="")
+ 	if(msg1=="" && msg2=="" && msg3=="" && msg4=="" && msg5=="" && msg6=="")
  		{return true}
  }
 
 
-  //Quick Add 
   </script>	
 
   <% end %>

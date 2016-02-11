@@ -14,7 +14,7 @@ class GamesController < ApplicationController
   def show
     authorize! :read, Game
     @game = Game.find_by_id(params[:id])
-    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id, :selected => true)
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
   
@@ -77,7 +77,7 @@ class GamesController < ApplicationController
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
-    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
 
@@ -129,9 +129,10 @@ def quick_add_location
   authorize! :create, Game 
 end
 
-def save_quick_add_location
+def save_quick_add_location  
   authorize! :create, Game 
-  @location = Location.create(:name => params[:name],:country_id=>params[:country_id])
+  @location = Location.new(:name => params[:name],:country_id=>params[:country_id])
+  end
 end
 
 def quick_add_player
@@ -139,7 +140,7 @@ def quick_add_player
   @squad_id = params[:squad_id]
   @type = params[:type]
   @player = Player.new
-    #@country=Country.find_by_id(params[:country_id])
+    #@country=Country.find_by_id(params[:coauntry_id])
   end
 
   def save_quick_add_player

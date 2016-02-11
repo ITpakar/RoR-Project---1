@@ -43,7 +43,6 @@
     <div class="col-md-9">
     <div class="input-group date" id="player-dob-date">
         <%= f.text_field :dob, class: "form-control" ,value: f.object.dob.try{to_date}.try{strftime('%d/%m/%Y')}%>
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>  
     </div>
   </div>
