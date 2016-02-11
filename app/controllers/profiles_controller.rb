@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
 	def update
 		profile = Profile.find_by_id(params[:id])
 		profile.update(profile_params)
-		redirect_to edit_user_profile_path(current_user, profile)
+		redirect_to edit_user_profile_path(current_usr, profile)
 	end
 
 	private

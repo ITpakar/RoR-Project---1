@@ -15,7 +15,12 @@ Rails.application.routes.draw do
   # root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'User' }, :as => "root"
   # root :to => 'home#admin_index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'Admin' }, :as => "root"
 
+
   resources :users, except: [:destroy] do 
+    resources :profiles, only: [:edit, :update]
+  end
+
+  resources :admins, except: [:destroy] do 
     resources :profiles, only: [:edit, :update]
   end
 

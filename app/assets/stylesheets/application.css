@@ -30,7 +30,7 @@ html body
 {
 	background-color: #eee;
 }
-
+body {padding-top:20px;}
 .errors
 {
   list-style-type:none;	

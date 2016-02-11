@@ -10,11 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    # if resource.admin?
-    #   admin_root
-    # else
-    #   root_path
-    # end
     if resource.class.name.eql? 'User'
       root_path
     else
@@ -33,11 +28,6 @@ class ApplicationController < ActionController::Base
       f.js{render 'layouts/error', status: 401}
       f.html{flash[:error] = exception.message; redirect_to root_path}
     end
-  end
-
-  def require_user 
-  	# redirect_to new_session_path unless current_user 
-  	# flash[:notice] = "Please Login"
   end
 
   def authenticate_scope

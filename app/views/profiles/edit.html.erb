@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
-				<%= form_for([current_user, current_user.profile], :html=> {:class => 'form-horizontal top-margin'}) do |f| -%>
+				<%= form_for([current_usr, current_usr.profile], :html=> {:class => 'form-horizontal top-margin'}) do |f| -%>
 				<div class="form-group">
 					<label for="" class="col-sm-4 control-label">First Name*</label>
 					<div class="col-sm-8">
@@ -55,7 +55,7 @@
 		</div>
 
 		<div class="col-md-6">
-			<%= form_for(current_user, url: registration_path(current_user), html: { method: :put, class: "form-horizontal top-margin" }) do |f| %>
+			<%= form_for(current_usr, url: registration_path(current_usr), html: { method: :put, class: "form-horizontal top-margin" }) do |f| %>
 				<div class="form-group">
 					<label for="" class="col-sm-4 control-label">Email*</label>
 					<div class="col-sm-8">
