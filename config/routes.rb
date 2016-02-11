@@ -7,10 +7,14 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  namespace :admin do
-    get 'sign_in' => 'sessions#new'
-    post 'login' => 'sessions#create'
-  end
+  # namespace :admin do
+  #   get 'sign_in' => 'sessions#new'
+  #   post 'login' => 'sessions#create'
+  # end
+
+  # root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'User' }, :as => "root"
+  # root :to => 'home#admin_index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'Admin' }, :as => "root"
+
   resources :users, except: [:destroy] do 
     resources :profiles, only: [:edit, :update]
   end

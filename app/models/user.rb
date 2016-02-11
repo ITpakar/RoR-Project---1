@@ -19,4 +19,12 @@ class User < ActiveRecord::Base
   def normal_user?
   	self.role == 'user'
   end
+
+  def is_admin?
+    false
+  end
+
+  def is_user?
+    true
+  end
 end

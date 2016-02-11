@@ -1,10 +1,10 @@
 class ManageUsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_scope
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
   def index
-    authorize! :read, User
+    authorize! :read, Admin
     respond_to do |format|
       format.html
       format.json { render json: UserDatatable.new(view_context) }
@@ -12,21 +12,21 @@ class ManageUsersController < ApplicationController
   end
 
   def show
-    # authorize! :read, User
+    # authorize! :read, Admin
   end
 
   def new
-    # authorize! :create, User
+    # authorize! :create, Admin
     @user = User.new
     @profile = @user.build_profile
   end
 
   def edit
-    # authorize! :update, User
+    # authorize! :update, Admin
   end
 
   def create  
-    # authorize! :create, User
+    # authorize! :create, Admin
     @user = User.new(user_params)
     @user.save
   end
@@ -42,7 +42,7 @@ class ManageUsersController < ApplicationController
   end
 
   def destroy
-    # authorize! :destroy, User
+    # authorize! :destroy, Admin
     @user.destroy
   end
 
