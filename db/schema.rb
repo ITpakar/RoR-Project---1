@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160209131920) do
+ActiveRecord::Schema.define(version: 20160211065714) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -218,7 +218,9 @@ ActiveRecord::Schema.define(version: 20160209131920) do
     t.float    "fow_overs",      limit: 24
     t.integer  "fow_balls",      limit: 4
     t.integer  "lbw_by",         limit: 4
-    t.integer  "over_partial",   limit: 4
+    t.integer  "over_partial",   limit: 4,  default: 0
+    t.integer  "byes",           limit: 4,  default: 0
+    t.integer  "leg_byes",       limit: 4,  default: 0
   end
 
   add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree
