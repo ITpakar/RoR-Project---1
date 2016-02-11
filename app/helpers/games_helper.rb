@@ -8,6 +8,63 @@ module GamesHelper
 		end
 	end
 
+	def stats_current_sorted stats,team_id
+		 stats = stats.reject{ |sp| sp.player.country_id != team_id}
+		 stats_with_batting_order = stats.reject{|st| st.batting_order == nil}.sort_by{|st| st[:batting_order]}
+		 stats = stats_with_batting_order + (stats - stats_with_batting_order)
+		 return stats
+	end
+	def stats_opponent_sorted stats,team_id
+		 stats = stats.reject{ |sp| sp.player.country_id == team_id}
+		 stats_with_bowling_order = stats.reject{|st| st.bowling_order == nil}.sort_by{|st| st[:bowling_order]}
+		 stats = stats_with_bowling_order + (stats - stats_with_bowling_order)
+		 return stats
+	end
+
+
+	def get_extras stats_opponent
+		nb = 0
+		wides = 0
+		stats_opponent.each do |stat|
+          nb = nb + stat.no_balls
+          wides = wides + stat.wides
+		end
+		"nb : #{nb},wides : #{wides}" 
+	end
+
+	def get_score stats_current,stats_opponent
+		
+        total_runs = 0
+        wickets = 0
+        total_balls = 0
+		stats_current.each do |stat|
+			total_runs = total_runs + stat.runs
+			total_balls = total_balls + stat.balls.to_i
+			
+
+			if !stat.fow_order.nil?
+			  wickets = wickets+1
+			end
+			
+		end
+		overs = "#{total_balls/6}.#{total_balls%6}"
+
+		"#{wickets}/#{total_runs} (#{overs} overs)"
+	end
+
+	def run_out_by stat
+        if stat.run_out        
+        run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
+        run_out_player = Player.where(:id=>run_out_by).pluck(:name).join(",")
+        end
+	end
+
+	def get_selected_runout stat
+	    if stat.run_out
+			run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
+	    end
+	end
+
 	def find_opponent_player stats_opponent
 		arr = [["Please Select",""]]
 		stats_opponent.each do |so|
@@ -25,6 +82,15 @@ module GamesHelper
 			return 0
 		else 
 			(stat.runs.to_f/stat.balls.to_f)*100	
+		end
+	end
+
+	def calculate_economy_rate stat
+		balls = (6*stat.overs.to_i) + stat.over_partial.to_i
+		if (balls == 0 || stat.runs_against == 0)
+			return 0
+		else
+			(stat.runs_against.to_f/balls.to_f)*100
 		end
 	end
 

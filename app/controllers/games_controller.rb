@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_scope
   before_action :set_game, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -14,7 +14,7 @@ class GamesController < ApplicationController
   def show
     authorize! :read, Game
     @game = Game.find_by_id(params[:id])
-    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id, :selected => true)
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => @game.id)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
   
@@ -40,6 +40,19 @@ class GamesController < ApplicationController
   def update
     authorize! :update, Player
     @game.update(update_game_params)
+    stats = params[:game][:stats_attributes]
+    stats.each_value do |stat|
+      stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
+      if !stat[:run_out].blank? && stat[:batting_order].present?
+        @_stat = Stat.find_by_id(stat[:id])
+        @_run_out = RunOut.where(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id) if @_stat.run_out         
+        @_run_out.delete_all if @_run_out
+        stat[:run_out].each do |run_out_by|
+          RunOut.create(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id,run_out_by: run_out_by) 
+        end
+        @_stat.update_attributes(:run_out => true)
+      end
+    end
   end
 
   def destroy
@@ -59,7 +72,7 @@ class GamesController < ApplicationController
     game_id = params[:game][:id]
     @game = Game.find(game_id)    
     @game.update(update_game_params) unless @game.nil? 
-    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id, :selected => true)
+    @game_players = GameSquad.includes(:player).references(:player).where(:game_id => game_id)
     @countries = [[@game.squad_1.country.id, @game.squad_1.country.name], [@game.squad_2.country.id, @game.squad_2.country.name]]
   end
 
@@ -68,23 +81,18 @@ class GamesController < ApplicationController
     game_id = params[:team][:game_id]    
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank?    
-
-      #@countries = [[@game.squad_1.country.name, @game.squad_1.country.id], [@game.squad_2.country.name, @game.squad_2.country.id]]  
       @countries = [@game.squad_1.id, @game.squad_2.id]
       @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => @countries)
-
-    end      
+    end
   end  
   
   def load_game_squad
     authorize! :read, Game
     squad_id = params[:team][:squad_id]
-    #@game = game
     @type = params[:type]
-    #@team = Team.new
     @squad_players = SquadPlayer.includes(:player).references(:player).where(:squad_id => squad_id)
   end
-  
+
   def scoring_save
     authorize! :read, Game
   end
@@ -93,34 +101,33 @@ class GamesController < ApplicationController
   end
 
   def save_quick_add_game_type 
-   @code = Code.create(:name =>params[:name],:default_innings=> params[:default_innings].to_i)
- end
+    @code = Code.create(:name =>params[:name],:default_innings=> params[:default_innings].to_i)
+  end
 
- def quick_add_country
-  authorize! :create, Game  
-end
+  def quick_add_country
+    authorize! :create, Game  
+  end
 
-def save_quick_add_country
-  authorize! :create, Game 
-  @country = Country.create(:name => params[:name])
-  @country.code_ids = params[:country][:code_ids]
-end
+  def save_quick_add_country
+    authorize! :create, Game 
+    @country = Country.create(:name => params[:name])
+    @country.code_ids = params[:country][:code_ids]
+  end
 
-def quick_add_location
-  authorize! :create, Game 
-end
+  def quick_add_location
+    authorize! :create, Game 
+  end
 
-def save_quick_add_location
-  authorize! :create, Game 
-  @location = Location.create(:name => params[:name],:country_id=>params[:country_id])
-end
+  def save_quick_add_location  
+    authorize! :create, Game 
+    @location = Location.new(:name => params[:name],:country_id=>params[:country_id])
+  end
 
-def quick_add_player
-  authorize! :create, Game 
-  @squad_id = params[:squad_id]
-  @type = params[:type]
-  @player = Player.new
-    #@country=Country.find_by_id(params[:country_id])
+  def quick_add_player
+    authorize! :create, Game 
+    @squad_id = params[:squad_id]
+    @type = params[:type]
+    @player = Player.new
   end
 
   def save_quick_add_player
@@ -162,7 +169,6 @@ def quick_add_player
 
   end
 
-
   def quick_add_squad
     authorize! :create, Game
     @squad_type = params[:squad]
@@ -193,47 +199,46 @@ def quick_add_player
     @game = Game.find(params[:id])
   end
 
-    # Only allow a trusted parameter "white list" through.
-    def game_params
+  def game_params
 
-      params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
-      params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
+    params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
+    params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
 
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win, 
-        :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
-        game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-        game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-        innings_attributes: [:id, :game_id, :batting], 
-        stats_attributes: [
-          :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
-          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
-          :created_at, :updated_at
-          ])
-    end
-
-    def update_game_params
-      params[:game][:game_winner_margin] = 0 if (params[:game][:game_winner]=="0")
-      params[:game][:game_winner_amount] = 0 if (params[:game][:game_winner]=="0")
-      params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
-        :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
-        game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-        game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-        innings_attributes: [:id, :game_id, :batting], 
-        stats_attributes: [
-          :id, :inning_id, :player_id, 
-          :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
-          :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
-          :created_at, :updated_at
-          ])
-    end
-
-    def player_params
-      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
-    end
-
-    def squad_params
-      params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
-    end
-
+    params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win, 
+      :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
+      game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+      game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+      innings_attributes: [:id, :game_id, :batting], 
+      stats_attributes: [
+        :id, :inning_id, :player_id, 
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+        :created_at, :updated_at
+        ])
   end
+
+  def update_game_params
+    params[:game][:game_winner_margin] = 0 if (params[:game][:game_winner]=="0")
+    params[:game][:game_winner_amount] = 0 if (params[:game][:game_winner]=="0")
+    params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
+      :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
+      game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+      game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
+      innings_attributes: [:id, :game_id, :batting], 
+      stats_attributes: [
+        :id, :inning_id, :player_id, 
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
+        :created_at, :updated_at
+        ])
+  end
+
+  def player_params
+    params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
+  end
+
+  def squad_params
+    params.require(:squad).permit(:code_id, :country_id, :column_data, :available_players,:description)
+  end
+
+end

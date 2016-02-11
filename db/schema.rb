@@ -248,11 +248,15 @@ ActiveRecord::Schema.define(version: 20160209131920) do
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
 
   create_table "umpires", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.boolean  "deleted",                default: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "country_id", limit: 4
+    t.string   "name",           limit: 255
+    t.boolean  "deleted",                    default: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.integer  "country_id",     limit: 4
+    t.string   "full_name",      limit: 255
+    t.string   "scorecard_name", limit: 255
+    t.date     "dob"
+    t.date     "date_died"
   end
 
   add_index "umpires", ["country_id"], name: "index_umpires_on_country_id", using: :btree

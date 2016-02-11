@@ -42,9 +42,8 @@
     <%= f.label :date_of_birth, class: "col-md-3 control-label" %>
     <div class="col-md-9">
     <div class="input-group date" id="player-dob-date">
-        <%#= f.text_field :dob, class: "form-control" , :data => { :date_format => "dd/mm/yyyy"},:onclick=>"$(this).datepicker({dateFormat: 'dd/mm/yy',changeYear: true}).datepicker('show')"%>
-        <%= f.text_field :dob, class: "form-control" %>
-          </div>  
+      <%= f.text_field :dob, class: "form-control", value: f.object.dob.try{to_date}.try{strftime('%d/%m/%Y')}%>
+    </div>  
     </div>
   </div>
   <div class="form-group">

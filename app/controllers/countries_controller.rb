@@ -1,5 +1,5 @@
 class CountriesController < ApplicationController
-  before_action :require_user
+  before_action :authenticate_scope
   before_action :set_country, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
@@ -61,7 +61,6 @@ class CountriesController < ApplicationController
   end
 
   def get_countries
-    p "-------#{params.inspect}---------"
     @code = Code.find_by_id(params[:code_id])
     @countries = @code.countries
     render :json => {:countries => @countries}

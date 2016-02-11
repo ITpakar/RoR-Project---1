@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+	before_action :authenticate_scope
 	def update
 		profile = Profile.find_by_id(params[:id])
 		profile.update(profile_params)

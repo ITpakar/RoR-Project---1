@@ -28,6 +28,7 @@ class Game < ActiveRecord::Base
   accepts_nested_attributes_for :innings
   accepts_nested_attributes_for :stats
   
+  
   before_create :setup_innings
   after_create :setup_squad_stats
 
