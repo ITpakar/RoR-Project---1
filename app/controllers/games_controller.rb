@@ -265,5 +265,3 @@ def quick_add_player
       end
       new_date   
     end
-
-end
