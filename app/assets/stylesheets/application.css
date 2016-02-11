@@ -31,6 +31,7 @@ html body
 	background-color: #eee;
 }
 body {padding-top:20px;}
+.container {width: 90%!important;}
 .errors
 {
   list-style-type:none;	

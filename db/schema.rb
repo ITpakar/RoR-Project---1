@@ -220,6 +220,8 @@ ActiveRecord::Schema.define(version: 20160211101321) do
     t.integer  "fow_balls",      limit: 4
     t.integer  "lbw_by",         limit: 4
     t.integer  "over_partial",   limit: 4
+    t.integer  "byes",           limit: 4,  default: 0
+    t.integer  "leg_byes",       limit: 4,  default: 0
   end
 
   add_index "stats", ["inning_id"], name: "index_stats_on_inning_id", using: :btree

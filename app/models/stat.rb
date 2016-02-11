@@ -56,4 +56,32 @@ class Stat < ActiveRecord::Base
     #puts "$$$"
     inning_score 
   end
+
+  def out_decription game_id
+    if self.run_out
+       run_out_by = RunOut.where(:innings=>self.inning_id,:game_id=>game_id,:player_id=>self.player_id).pluck(:run_out_by)
+       run_out_player = Player.where(:id=>run_out_by).pluck(:name).join(",")
+       return "run out (#{run_out_player})"
+    elsif !self.lbw_by.nil?
+      name = Player.find_by_id(self.lbw_by).name
+      return "lbw #{name}"
+    elsif !self.stumped_by.nil?
+        stump_by = Player.find_by_id(self.stumped_by).name
+        bowller =  Player.find_by_id(self.bowled_by).name
+        return "st. #{stump_by} , b. #{bowller}"
+    elsif !self.caught_by.nil?
+      caughter = Player.find_by_id(self.caught_by)
+      bowller  = Player.find_by_id(self.bowled_by)
+      if caughter==bowller
+        return "c & b #{bowller.name}"
+      else
+        return "c #{caughter.name} b #{bowller.name}"
+      end 
+    elsif !self.bowled_by.nil?
+      bowller  = Player.find_by_id(self.bowled_by).name
+        return  "b #{bowller}"
+    elsif ((self.fow_order.nil?) && (!self.batting_order.nil?))
+        return  "not out"  
+    end
+  end
 end
