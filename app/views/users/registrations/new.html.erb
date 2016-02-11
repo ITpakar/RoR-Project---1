@@ -1,6 +1,6 @@
 <h2>Standard User Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), :class => 'form-horizontal') do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html =>{:class => 'form-horizontal'}) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
@@ -21,44 +21,41 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
-
-
-  <%= f.fields_for :profile do |p| %>
-    <div class="form-group">
+  <% f.fields_for resource.build_profile do |p| %>
+    <div class="control-group">
       <%= p.label :firstname, class: "col-md-3 control-label" %>
-      <div class="col-md-9">
+      <div class="controls">
         <%= p.text_field :firstname, class: 'form-control', :required => true %>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="control-group">
       <%= p.label :lastname, class: "col-md-3 control-label" %>
-      <div class="col-md-9">
+      <div class="controls">
         <%= p.text_field :lastname, class: 'form-control', :required => true %>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="control-group">
       <%= p.label :screenname, class: "col-md-3 control-label" %>
-      <div class="col-md-9">
+      <div class="controls">
         <%= p.text_field :screenname, class: 'form-control', :required => true %>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="control-group">
       <%= p.label :phone_number, class: "col-md-3 control-label" %>
-      <div class="col-md-9">
+      <div class="controls">
         <%= p.text_field :phone_number, class: 'form-control', :required => true %>
       </div>
     </div>
-    <div class="form-group">
+    <div class="control-group">
       <%= p.label :address, class: "col-md-3 control-label" %>
-      <div class="col-md-9">
+      <div class="controls">
         <%= p.text_field :address, class: 'form-control', :required => true %>
       </div>
     </div>
   <% end %>
-
 
 
   <div class="actions">
@@ -67,3 +64,27 @@
 <% end %>
 
 <%= render "users/shared/links" %>
+
+
+<!-- <form class="form-horizontal">
+  <div class="form-group">
+    <label for="inputEmail" class="control-label col-xs-2">Email</label>
+    <div class="col-xs-10">
+      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword" class="control-label col-xs-2">Password</label>
+    <div class="col-xs-10">
+      <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-xs-offset-2 col-xs-10">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </div>
+</form> -->
+
