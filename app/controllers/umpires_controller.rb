@@ -1,5 +1,5 @@
 class UmpiresController < ApplicationController
-  before_action :authenticate_user!
+ before_action :authenticate_scope
   before_action :set_umpire, only: [:show, :edit, :update, :destroy]
   respond_to :html, :js, :json
 

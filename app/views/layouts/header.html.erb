@@ -77,7 +77,7 @@
 					<% end -%>
 					<% if can? :read, current_usr.try(:profile) %>
 						<li>
-							<%#= link_to 'Account Management', edit_user_profile_path(current_usr, current_usr.profile) %>
+							<%= link_to 'Account Management', edit_user_profile_path(current_usr, current_usr.profile) %>
 						</li>
 					<% end -%>
 				<% end -%>

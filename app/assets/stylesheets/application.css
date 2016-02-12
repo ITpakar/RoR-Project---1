@@ -30,7 +30,8 @@ html body
 {
 	background-color: #eee;
 }
-
+body {padding-top:20px;}
+.container {width: 90%!important;}
 .errors
 {
   list-style-type:none;	
@@ -51,4 +52,3 @@ html body
 .form-control[readonly] {background: none repeat scroll 0 0 #FFFFFF!important;}
 .horizontal-ruler { border: 1px solid #808080; margin-top: 1px;}
 .scoring-panel{max-width: 100%;overflow-y: hidden;}
-.container{width: 90%;}

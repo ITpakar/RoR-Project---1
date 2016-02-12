@@ -20,6 +20,8 @@
 					<th>Balls</th>
 					<th>4s</th>
 					<th>6s</th>
+					<th>Byes</th>
+					<th>Leg Byes</th>
 					<th>Bowled By</th>
 					<th>Caught By</th>
 					<th>Stumped By</th>
@@ -42,6 +44,8 @@
 					<td><%= s.text_field :balls, :size => 3 %></td>
 					<td><%= s.text_field :fours, :size => 3 %></td>
 					<td><%= s.text_field :sixes, :size => 3 %></td>
+					<td><%= s.text_field :byes, :size => 3 %></td>
+					<td><%= s.text_field :leg_byes, :size => 3 %></td>
 					<td><%= s.select(:bowled_by,opponent_palyers,{},{})%></td>
 					<td><%= s.select(:caught_by,opponent_palyers,{},{})%></td>
 					<td><%= s.select(:stumped_by,opponent_palyers,{},{})%></td>

@@ -11,25 +11,26 @@ module GamesHelper
 	def stats_current_sorted stats,team_id
 		 stats = stats.reject{ |sp| sp.player.country_id != team_id}
 		 stats_with_batting_order = stats.reject{|st| st.batting_order == nil}.sort_by{|st| st[:batting_order]}
-		 stats = stats_with_batting_order + (stats - stats_with_batting_order)
-		 return stats
 	end
 	def stats_opponent_sorted stats,team_id
 		 stats = stats.reject{ |sp| sp.player.country_id == team_id}
 		 stats_with_bowling_order = stats.reject{|st| st.bowling_order == nil}.sort_by{|st| st[:bowling_order]}
-		 stats = stats_with_bowling_order + (stats - stats_with_bowling_order)
-		 return stats
 	end
 
 
-	def get_extras stats_opponent
+	def get_extras stats_opponent,stats_current
 		nb = 0
 		wides = 0
+		leg_byes = 0
+
+		stats_current.each do |stat|
+          leg_byes = leg_byes + stat.leg_byes
+		end
 		stats_opponent.each do |stat|
           nb = nb + stat.no_balls
           wides = wides + stat.wides
 		end
-		"nb : #{nb},wides : #{wides}" 
+		"lb : #{leg_byes},nb : #{nb},wides : #{wides}" 
 	end
 
 	def get_score stats_current,stats_opponent
@@ -52,11 +53,21 @@ module GamesHelper
 		"#{wickets}/#{total_runs} (#{overs} overs)"
 	end
 
-	def run_out_by stat
-        if stat.run_out        
-        run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
-        run_out_player = Player.where(:id=>run_out_by).pluck(:name).join(",")
-        end
+	def fall_of_wickets stats_current
+        str = ""
+		stats_current = stats_current.reject{|st| st.fow_order==nil}.sort_by{|st| st[:fow_order]}
+
+		stats_current.each do |stat|
+			str2 = "#{stat.fow_order}-#{stat.fow_score}(#{stat.player.name}, #{stat.fow_overs} ov), "
+			str+= str2
+		end
+        str.chomp(", ")
+	end
+
+	def didnot_bat_players stats,team_id
+		stats = stats.reject{ |sp| sp.player.country_id != team_id}
+		stats_with_batting_order = stats.select{|st| st.batting_order == nil}
+		name = stats_with_batting_order.collect{|st| st.player.name}.join(",")
 	end
 
 	def get_selected_runout stat
@@ -85,12 +96,24 @@ module GamesHelper
 		end
 	end
 
+	def get_player_extra stat
+		if ((stat.no_balls != 0) && (stat.wides != 0))
+		  return "(#{stat.wides}w,#{stat.no_balls}nb)"
+		elsif (stat.no_balls != 0)
+		  return "(#{stat.no_balls}nb)"
+		elsif (stat.wides !=0)
+		  return "(#{stat.wides}w)"
+		else 
+		   return ""	
+		end
+	end
+
 	def calculate_economy_rate stat
 		balls = (6*stat.overs.to_i) + stat.over_partial.to_i
 		if (balls == 0 || stat.runs_against == 0)
 			return 0
 		else
-			(stat.runs_against.to_f/balls.to_f)*100
+		   (stat.runs_against.to_f/balls.to_f)*100
 		end
 	end
 
