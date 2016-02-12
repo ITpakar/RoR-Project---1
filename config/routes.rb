@@ -1,26 +1,22 @@
 Rails.application.routes.draw do
-  devise_for :admins
   get 'home/index'
   root "home#index"
+
+  devise_for :admins, :only => [:sessions]#, :only => [:sessions, :passwords, :registrations]
+  as :admin do
+    get 'admins/edit' => 'admins/registrations#edit', :as => 'edit_admin_registration'
+    put 'admins' => 'admins/registrations#update', :as => 'admin_registration'
+  end
 
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
 
-  # namespace :admin do
-  #   get 'sign_in' => 'sessions#new'
-  #   post 'login' => 'sessions#create'
-  # end
-
-  # root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'User' }, :as => "root"
-  # root :to => 'home#admin_index', :constraints => lambda { |request| request.env['warden'].user.class.name == 'Admin' }, :as => "root"
-
-
   resources :users, except: [:destroy] do 
     resources :profiles, only: [:edit, :update]
   end
 
-  resources :admins, except: [:destroy] do 
+  resources :admins, except: [:destroy] do
     resources :profiles, only: [:edit, :update]
   end
 
@@ -35,10 +31,10 @@ Rails.application.routes.draw do
       get 'profile'
     end
   end
+
+
   resources :countries
   resources :umpires
-
-  # resources :sessions
   
   get 'squad-select' => 'squads#get_squad_select'
   get 'game-innings' => 'games#get_games_innings'

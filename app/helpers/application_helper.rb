@@ -21,12 +21,12 @@ module ApplicationHelper
 		nil
 	end
 
-	def signed_in?
+	def signed_in? opt=nil
 		!!current_usr
 	end
 
 	def destroy_session
-		current_usr.is_admin? ? destroy_user_session_path : destroy_admin_session_path
+		current_usr.is_admin? ? destroy_admin_session_path : destroy_user_session_path
 	end
 
 	def current_ability

@@ -25,3 +25,7 @@
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 
 //= require_tree .
+
+$(document).ready(function(){
+	$("div[id^='flash']").delay(5000).slideUp();
+});
