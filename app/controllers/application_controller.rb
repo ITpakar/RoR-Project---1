@@ -17,9 +17,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def after_sign_out_path_for resource
-    resource.eql? :admin ? new_admin_session_path : new_user_session_path
-  end
+  # def after_sign_out_path_for resource
+  #   resource.eql? :admin ? new_admin_session_path : new_user_session_path
+  # end
 
   def after_update_path_for(resource)
     redirect_to edit_user_profile_path(resource, resource.profile)
