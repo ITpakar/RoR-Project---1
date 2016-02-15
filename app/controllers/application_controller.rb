@@ -17,16 +17,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # def after_sign_out_path_for resource
+  #   resource.eql? :admin ? new_admin_session_path : new_user_session_path
+  # end
+
   def after_update_path_for(resource)
-   redirect_to edit_user_profile_path(resource, resource.profile)
- end
+    redirect_to edit_user_profile_path(resource, resource.profile)
+  end
 
 # exception handling for unauthorization
   rescue_from CanCan::AccessDenied do |exception|
     @error_message = exception.message
     respond_to do |f|
-      f.js{render 'layouts/error', status: 401}
-      f.html{flash[:error] = exception.message; redirect_to root_path}
+      f.js    {render 'layouts/error', status: 401}
+      f.html  {flash[:error] = exception.message; redirect_to root_path}
     end
   end
 
@@ -36,8 +40,6 @@ class ApplicationController < ActionController::Base
     else
       authenticate_user!
     end
-    # :authenticate_admin! || :authenticate_user!
-    # @current_usr = admin_signed_in? ? current_admin : current_user
   end
 
 end
