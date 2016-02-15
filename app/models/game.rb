@@ -92,19 +92,22 @@ class Game < ActiveRecord::Base
         return umpire_1 ? "#{umpire_1.name}" : "#{umpire_2.name}"
       end
   end
-
-  def get_match_umpire
-    Umpire.find_by_id(self.umpire_referee).try(:name)
+  def get_umpire_tv
+    Umpire.find_by_id(self.umpire_tv).try(:name)
   end
 
   def get_reserve_umpire
     Umpire.find_by_id(self.umpire_reserve).try(:name)
   end
 
+  def get_match_referee
+    Umpire.find_by_id(self.umpire_referee).try(:name)
+  end
+
   def coin_toss_outcome
     country = Country.find_by_id(self.coin_toss_win).try(:name)
     if country 
-      "#{country} Won The Toss and Choose To #{self.coin_toss_decision} First" 
+      "#{country.to_s.titleize} won the toss and choose to #{self.coin_toss_decision.to_s.titleize} first" 
     end  
   end
 
