@@ -1,9 +1,9 @@
 <%= form_for(@game,remote: true) do |f| %>
-  
 
-  <div class="panel panel-default scoring-panel">
-    <div class="panel-body"> 
-     
+
+<div class="panel panel-default scoring-panel">
+  <div class="panel-body"> 
+
     <div class="row">
 
       <div class="col-md-3">
@@ -19,7 +19,7 @@
         <div class="form-group">
           <%= f.label 'Coin Toss Decision', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :coin_toss_decision, options_for_select(Game.coin_toss_decisions.map {|k, v| [k.titleize, k]}, :selected => @game.coin_toss_decision), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :coin_toss_decision, options_for_select(Game.coin_toss_decisions.map {|k, v| [k.titleize, k]}, :selected => @game.coin_toss_decision), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
         <div class="form-group">
           <%= f.label 'Game Winner', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :game_winner, options_for_select(@game.get_winner_team,:selected=>f.object.game_winner), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :game_winner, options_for_select(@game.get_winner_team,:selected=>f.object.game_winner), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
           <%= f.label 'Game Winner Type', class: 'label-control' %>
           <div class="input-group">
-          <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, k]}, :selected=>f.object.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, k]}, :selected=>f.object.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -45,10 +45,8 @@
     </div>  
 
     <div class="row">
-
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <%= f.label  "Game Winner Margin", class: 'control-label' %>
           <div class="input-group">
             <%= f.text_field :game_winner_margin,:value=>f.object.game_winner_margin, class: 'form-control' %>
@@ -57,8 +55,7 @@
       </div>
 
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <%= f.label  "Day Night Game", class: 'control-label' %>
           <div class="input-group">
             <%= f.select :day_night_game, options_for_select(Game.day_night_games.map {|k, v| [k.titleize, k]}, :selected=>@game.day_night_game), {prompt: true}, {:class => 'form-control'} %>
@@ -66,42 +63,37 @@
         </div>
       </div>
       <div class="col-md-3">
- 
-       <div class="form-group">
+
+        <div class="form-group">
           <%= f.label  "Player of the Match", class: 'control-label' %>
           <div class="input-group">
-           <%= f.select :player_of_the_match, options_for_select(@game.selected_palyers,:selected=>@game.player_of_the_match), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :player_of_the_match, options_for_select(@game.selected_palyers,:selected=>@game.player_of_the_match), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
       <div class="col-md-3">
- 
-       <div class="form-group">
+
+        <div class="form-group">
           <%= f.label  "Umpire 1", class: 'control-label' %>
           <div class="input-group">
             <%= f.select :umpire_1, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_1), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
           </div>
         </div>
-      </div>
-
-                  
+      </div>  
     </div>  
 
     <div class="row">
-
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <%= f.label  "Umpire 2", class: 'control-label' %>
           <div class="input-group">
-           <%= f.select :umpire_2, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_2), {prompt: true}, {:class => 'form-control',:id => 'umpire_2_id'} %>
+            <%= f.select :umpire_2, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_2), {prompt: true}, {:class => 'form-control',:id => 'umpire_2_id'} %>
           </div>
         </div>
       </div>
 
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <label>Umpire TV</label>
           <div class="input-group">
             <%= f.select :umpire_tv, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_tv), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_tv_id'} %>
@@ -109,8 +101,7 @@
         </div>
       </div>
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <%= f.label  "Umpire Referee", class: 'control-label' %>
           <div class="input-group">
             <%= f.select :umpire_referee, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_referee), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
@@ -118,30 +109,26 @@
         </div>
       </div>
       <div class="col-md-3">
- 
-       <div class="form-group">
+        <div class="form-group">
           <%= f.label  "Umpire Reserve", class: 'control-label' %>
           <div class="input-group">
             <%= f.select :umpire_reserve, options_for_select(Umpire.pluck(:name,:id),:selected=>f.object.umpire_reserve), {prompt: true}, {:class => 'form-control umpire_select2',:id => 'umpire_1_id'} %>
           </div>
         </div>
       </div>
-
-                  
     </div> 
-  
   </div>
-  </div>
+</div>
 
 
-  <% @game.innings.each_with_index do |inning, index| %>
-    <%= f.fields_for :innings, inning do |inn| %>
-    <% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
-      <%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: inning.batting.to_i } %>
-      <%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first } %>
-    <% end %>
-  <% end %>
-  <%= f.submit "Save Scores", class: "btn btn-primary" , :remote => true%>
+<% @game.innings.each_with_index do |inning, index| %>
+<%= f.fields_for :innings, inning do |inn| %>
+<% puts @countries.reject{|c| c[0] == inning.batting.to_i}.first.second %>
+<%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: inning.batting.to_i } %>
+<%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first } %>
+<% end %>
+<% end %>
+<%= f.submit "Save Scores", class: "btn btn-primary" , :remote => true%>
 <% end %>
 
 
@@ -149,34 +136,34 @@
 
 
 
- <script>
-    $(".umpire_select2" ).select2();
-    $("#umpire_2_id" ).select2();
+<script>
+$(".umpire_select2" ).select2();
+$("#umpire_2_id" ).select2();
 
-    // $('#game_game_winner_amount').attr("disabled", true); 
-    // $('#game_game_winner_margin').attr("disabled", true); 
-    
-    $(document).ready(function(){
-       if ($('#game_game_winner').val() == 0) 
-        {
-           $('#game_game_winner_amount').attr("disabled", true); 
-           $('#game_game_winner_margin').attr("disabled", true);     
-        }
-    });
-    $('#game_game_winner').change(function(){
-        if ($(this).val() == 0) 
-        {
-           $('#game_game_winner_amount').attr("disabled", true); 
-           $('#game_game_winner_margin').attr("disabled", true);
-           $('#game_game_winner_amount').val("Draw"); 
-           $('#game_game_winner_margin').val(0); 
-           
-        }
-        else
-        {
-           $('#game_game_winner_amount').attr("disabled", false); 
-           $('#game_game_winner_margin').attr("disabled", false); 
-        }
-    });
+// $('#game_game_winner_amount').attr("disabled", true); 
+// $('#game_game_winner_margin').attr("disabled", true); 
 
- </script>
+$(document).ready(function(){
+  if ($('#game_game_winner').val() == 0) 
+  {
+    $('#game_game_winner_amount').attr("disabled", true); 
+    $('#game_game_winner_margin').attr("disabled", true);     
+  }
+});
+$('#game_game_winner').change(function(){
+  if ($(this).val() == 0) 
+  {
+    $('#game_game_winner_amount').attr("disabled", true); 
+    $('#game_game_winner_margin').attr("disabled", true);
+    $('#game_game_winner_amount').val("Draw"); 
+    $('#game_game_winner_margin').val(0); 
+
+  }
+  else
+  {
+    $('#game_game_winner_amount').attr("disabled", false); 
+    $('#game_game_winner_margin').attr("disabled", false); 
+  }
+});
+
+</script>

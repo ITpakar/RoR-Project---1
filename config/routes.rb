@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :manage_games
 
   resources :countries
   resources :umpires

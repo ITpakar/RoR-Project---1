@@ -67,6 +67,9 @@
 									<% if can? :read, current_usr %>	
 										<li><%= link_to "Manage Users", manage_users_path %></li>
 									<% end -%>
+									<% if can? :read, current_usr %>	
+										<li><%= link_to "Manage Games", manage_games_path %></li>
+									<% end -%>
 								</ul>
 							</li>
 							<% else -%>

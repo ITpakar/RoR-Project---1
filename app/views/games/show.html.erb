@@ -37,15 +37,15 @@
 			</p>
             <p>
 			    <strong>TV Umpire:</strong>
-			    <%= @game.get_umpires%>			
-			</p>
-            <p>
-			    <strong>Match Umpire:</strong>
-			    <%= @game.get_match_umpire%>			
+			    <%= @game.get_umpire_tv%>			
 			</p>
             <p>
 			    <strong>Reserve Umpire:</strong>
 			    <%= @game.get_reserve_umpire%>			
+			</p>
+			<p>
+			    <strong>Match Referee</strong>
+			    <%= @game.get_match_referee%>			
 			</p>
 
 		  <% @game.innings.each_with_index do |inning, index| %>
