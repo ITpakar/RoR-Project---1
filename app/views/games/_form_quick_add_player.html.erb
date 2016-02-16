@@ -30,7 +30,7 @@
     <%= f.select :country_id ,{},{},class: 'form-control'%>  
   </div>
   </div>
-  <div class="form-group">`
+  <div class="form-group">
     <%= f.label :batting_style, class: "col-md-3 control-label" %>
     <div class="col-md-9">
     <%= f.select :batting_style, options_for_select(Player.batting_styles.map {|k, v| [k.titleize, k]}, @player.batting_style), {prompt: true}, {:class => 'form-control'} %>
