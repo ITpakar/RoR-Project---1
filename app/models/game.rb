@@ -107,7 +107,7 @@ class Game < ActiveRecord::Base
   def coin_toss_outcome
     country = Country.find_by_id(self.coin_toss_win).try(:name)
     if country 
-      "#{country.to_s.titleize} won the toss and choose to #{self.coin_toss_decision.to_s.titleize} first" 
+      "#{country.to_s.titleize} won the toss and chose to #{self.coin_toss_decision.to_s.titleize} first" 
     end  
   end
 
