@@ -47,8 +47,6 @@ class Game < ActiveRecord::Base
     self.game_squads.includes(:player).references(:player).pluck(:name,:id)   
   end
 
-
-
   def setup_innings
     self.number_of_innings.to_i.times { self.innings.build }
   end
