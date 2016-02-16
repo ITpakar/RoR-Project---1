@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resources :profiles, only: [:edit, :update]
   end
 
+  get '/load_squads' => 'manage_games#load_squads'
+
   resources :manage_users
   resources :teams
   resources :games

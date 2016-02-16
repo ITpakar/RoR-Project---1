@@ -1,0 +1,458 @@
+<%= form_for(@game, remote: true, html: {class: :game_form }) do |f| %>
+<ul class="errors"></ul>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="container">
+
+      <div class="row">
+        <h3>Step One</h3>
+        <div class="md-col-12">
+          <div class="col-md-4">
+            <div class="form-group input-group">
+              <%= f.label :match_date, class: 'label-control' %>
+              <div class="input-group date" id="match-date-id">
+                <%= f.text_field :match_date, class: "form-control"%>
+              </div>
+              <span id ="date_error" class = "errors"></span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= f.label 'Choose Game Type', class: 'label-control' %>
+              <div class="input-group">
+                <%= f.collection_select :code_id, Code.all, :id, :name, {:prompt => true}, {class: 'form-control'}  %>
+              </div>
+              <div class="input-group">
+                <%= link_to "Quick Add", quick_add_game_type_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= f.label :name, class: 'label-control' %>
+              <div class="input-group">
+                <%= f.text_field :name, class: 'form-control' %>
+              </div>
+              <span id ="name_error" class = "errors"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+	
+      <div class="row">
+        <h3>Step Two</h3>
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= f.label 'Choose Team 1', class: 'label-control' %>
+              <div class="input-group">
+                <%= f.collection_select(:squad_1_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
+                <%= hidden_field_tag :hidden_squad_id_1, f.object.squad_1_id%>
+              </div>
+              <div class="input-group">
+                <%= link_to "Quick Add", quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+              </div>
+              <span id ="squad_1_error" class = "errors"></span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= f.label 'Choose Team 2', class: 'label-control' %>
+              <div class="input-group">
+                <%= f.collection_select(:squad_2_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
+                <%=f.hidden_field :squad_id_2, :value=>""%>
+                <%= hidden_field_tag :hidden_squad_id_2, f.object.squad_2_id%>
+              </div>
+              <div class="input-group">
+                <%= link_to "Quick Add",quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+              </div>
+              <span id ="squad_2_error" class = "errors"></span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= f.label 'Choose Number of Innings', class: 'label-control' %>
+              <div class="input-group">
+                <%= f.select :number_of_innings, {}, { :prompt => 'Please select' }, {class: 'form-control', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "squads", :action => "get_squad_select")}} %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>Step Three</h3>
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.label 'Choose Location', class: 'label-control' %>
+            <div class="input-group">
+              <%= f.collection_select :location_id, Location.all, :id, :full_name, {:prompt => true}, {class: 'form-control'}  %>
+            </div>
+            <%= link_to "Quick Add",quick_add_location_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+            <span id ="location_error" class = "errors"></span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class='row'>
+        <h3>Step Four</h3>
+        <p>
+          <strong>Selected Players</strong>
+        </p>
+        <span id ="squad_error" class = "errors"></span>
+        <div id="no-teams" class="alert alert-danger" role="alert">
+          <p>
+            Please select two teams.
+          </p>
+        </div>
+        <div id="squads">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a data-toggle="tab" href="#team1" id="team_1_label">Team 1</a>
+            </li>
+            <li>
+              <a data-toggle="tab" href="#team2" id="team_2_label">Team 2</a>
+            </li>
+          </ul>
+          <p>
+            &nbsp;
+          </p>
+          <div class="tab-content">
+            <div id="team1" class="tab-pane fade in active">
+              <h4 class="inline-ele">Team 1</h4>
+              <div class="inline-ele">
+                <%= link_to("Quick add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 1}}}) %>					
+              </div>
+
+              <div class="inline-ele pull-right">
+                <%#= link_to("Load Squad", squad_load_1_path(), {class: "btn btn-primary btn-xs", id: 'team_1_squad', onclick: 'load_squad(1);', :data => { :remote => true, params: {team_id: 0}} }) %>
+                <select id = "load_squad_1_id" class = "form-control">
+                  <option value="#">Select squad</option>
+                </select>  
+              </div>
+
+              <div id="team1-data"></div>
+            </div>
+            <div id="team2" class="tab-pane fade">
+              <h4 class="inline-ele"> Team 2 </h4>
+              <div class="inline-ele">
+                <%= link_to("Quick add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 2}}}) %>					
+              </div>					
+              <div class="inline-ele pull-right">
+
+                <select id = "load_squad_2_id" class = "form-control">
+                  <option value="#">Select squad</option>
+                </select>
+              </div>
+
+              <div id="team2-data"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      </div> <!-- contaner -->
+    </div> <!-- body -->
+
+ 		<div class="panel-footer text-right">
+ 			<%= f.submit "Build Game", class: "btn btn-primary" ,id: "save_form"%>
+ 		</div>
+
+ 	</div>
+
+ 	<script type="text/javascript">
+  $(document).ready(function(){
+    // $('#game_code_id').trigger('chanege');
+  });
+ $('#game_match_date').datetimepicker({
+ 	timepicker:false,
+ 	minDate:'-1970/01/01',
+ 	format:'d/m/Y'
+ });
+
+ $('#squads').hide();
+
+ function check_teams() {
+ 	var x = $('#game_squad_1_id').val();
+ 	var y = $('#game_squad_2_id').val();
+ 	var z = $('#game_code_id').val();		
+ 	if (x == '0' || y == '0') {
+ 		$('#no-teams').show();
+ 		$('#squads').hide();
+ 	} else {
+
+ 		$('#team_1_label').html($('#game_squad_1_id :selected').text());
+ 		$('#team_2_label').html($('#game_squad_2_id :selected').text());
+
+ 		$('#team_1_squad').attr('data-params', '{"type": 1, "code_id": '+ z + ',"team_id":' + x + '}');	
+ 		$('#team_2_squad').attr('data-params', '{"type": 2, "code_id": '+ z + ',"team_id":' + y + '}');
+
+ 		$('#no-teams').hide();
+ 		$('#squads').show();
+ 	}		
+ }
+
+ function load_squad(team) {
+
+ }
+
+ function clear_squad(team) {
+ 	if (team == '1') {
+ 		$('#team1-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+ 	} else if (team == '2') {
+ 		$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+ 	}
+ 	else if (team == '3') {
+ 		$('#team1-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+ 		$('#team2-data').empty().append('<div class="alert alert-danger" role="alert"><p>No Squad Selected.</p></div>');
+ 	}
+ }
+//set team------------->
+var set_team = function(team){
+	var code_id = $('#game_code_id').val();
+
+	if (team == '1' || team == '2')
+	{
+		if (team == '1' ){
+			var country_id = $('#game_squad_1_id').val();
+		}
+		else if (team == '2'){
+			var country_id = $('#game_squad_2_id').val();	
+		}
+
+		$.ajax({
+			url: '/get_squads',
+			dataType: 'json',
+			type: 'GET',
+			data: {country_id : country_id,code_id: code_id},
+			dataType: 'json',
+			success: function(data) {
+				var html;
+				html = '<option value="#">Please Select</option>';
+				$.each(data.squads, function(i, value) {
+					html += '<option value=' + value.id + '>' + value.description + '</option>';
+				});
+				if (team == '1' ){$('#load_squad_1_id').html(html); 
+        alert($('#hidden_squad_id_1').val());
+                $('#load_squad_1_id').val($('#hidden_squad_id_1').val());}	  
+				if (team == '2'){$('#load_squad_2_id').html(html);}  
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
+			}
+		});
+	}
+	if (team == '3')
+	{
+        	//$('#team1-data').hide();
+        	if ($('#game_squad_1_id').val() != "") 
+        	{
+        		var country_id = $('#game_squad_1_id').val();
+        		$.ajax({
+        			url: '/get_squads',
+        			dataType: 'json',
+        			type: 'GET',
+        			data: {country_id : country_id,code_id: code_id},
+        			dataType: 'json',
+        			success: function(data) {
+        				var html;
+        				html = '<option value="#">Please Select</option>';
+        				$.each(data.squads, function(i, value) {
+        					html += '<option value=' + value.id + '>' + value.description + '</option>';
+        				});
+                $('#load_squad_1_id').html(html);
+        			},
+        			error: function(jqXHR, textStatus, errorThrown) {
+        				alert(errorThrown);
+        			}
+        		});
+        	}
+
+        	if ($('#game_squad_2_id').val() != "") 
+        	{
+        		var country_id = $('#game_squad_2_id').val();
+        		$.ajax({
+        			url: '/get_squads',
+        			dataType: 'json',
+        			type: 'GET',
+        			data: {country_id : country_id,code_id: code_id},
+        			dataType: 'json',
+        			success: function(data) {
+        				var html;
+        				html = '<option value="#">Please Select</option>';
+        				$.each(data.squads, function(i, value) {
+        					html += '<option value=' + value.id + '>' + value.description + '</option>';
+        				});
+        				$('#load_squad_2_id').html(html);	    
+        			},
+        			error: function(jqXHR, textStatus, errorThrown) {
+        				alert(errorThrown);
+        			}
+        		});
+        	}
+
+        }  
+
+      }
+//set team--------------->    
+
+$('#load_squad_1_id').change(function(){
+	var squad_id = $('#load_squad_1_id').val();
+	$('#game_squad_id_1').val(squad_id);
+
+	$.ajax({
+		url: '/squad-load-1.js',
+		dataType: 'script',
+		type: 'GET',
+		data: {squad_id : squad_id,type : 1},
+	});
+});
+
+$('#load_squad_2_id').change(function(){
+
+	var squad_id = $('#load_squad_2_id').val();
+	$('#game_squad_id_2').val(squad_id);
+
+	$.ajax({
+		url: '/squad-load-2.js',
+		dataType: 'script',
+		type: 'GET',
+		data: {squad_id : squad_id,type : 2},
+	}); 
+});
+
+ // Ajax For Innings ----------> 
+ 
+ $('#game_code_id').change(function(){
+
+    if ($(this).val() == "") 
+    {
+       var html = '<option value= "#">Please Select</option>';
+        $('#game_location_id').prop('selectedIndex',0);
+        $('#game_number_of_innings option').remove();
+        $('#game_squad_1_id').html(html); 
+        $('#game_squad_2_id').html(html);
+        $('#squads').hide();
+        $('#no-teams').show(); 
+
+
+    }
+
+ 	else if ($(this).val() != "") 
+ 	{
+        $('#squads').hide();
+        $('#no-teams').show(); 
+ 		var code_id = $(this).val();
+ 		$.ajax({
+ 			url: '/get_innings',
+ 			dataType: 'json',
+ 			type: 'GET',
+ 			data: {code_id: code_id},
+ 			dataType: 'json',
+ 			success: function(data) {
+ 				var html;	            
+ 				html += '<option value=' + data.code.default_innings + '>' + data.code.default_innings + '</option>';
+ 				$('#game_number_of_innings').html(html);	    
+ 			},
+ 			error: function(jqXHR, textStatus, errorThrown) {
+ 				alert(errorThrown);
+ 			}
+ 		});
+        $.ajax({
+            url: '/get_countries',
+            dataType: 'json',
+            type: 'GET',
+            data: {code_id: code_id},
+            dataType: 'json',
+            success: function(data) {
+                var html = '<option value= "#">Please Select</option>';    
+                $.each(data.countries, function(i, value) {
+                            html += '<option value=' + value.id + '>' + value.name + '</option>';
+                        });
+                $('#game_squad_1_id option').remove();
+                $('#game_squad_2_id option').remove();
+                $('#game_squad_1_id').html(html); 
+                $('#game_squad_2_id').html(html);       
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+ 	}
+ });
+
+ // Validation Game Form Script
+
+ $('#save_form').click(function(e){
+ 	e.preventDefault();
+ 	if ($.fn.myFunction())
+ 	{
+ 		$('#date_error').html("");
+ 		$('#squad_1_error').html("");
+ 		$('#squad_2_error').html("");
+        $('#name_error').html("");
+        $('#location_error').html("");
+ 		$('.game_form').submit();
+ 	}
+ });
+
+ $.fn.myFunction = function(){
+ 	var msg1 = "";
+ 	var msg2 = "";
+ 	var msg3 = "";
+    var msg4 = "";
+    var msg5 = "";
+    var msg6 = "";
+    
+    var a = $('#table_1 tbody tr').length;
+    var b = $('#table_2 tbody tr').length;
+
+ 	if ($('#game_match_date').val().trim() == ""){
+ 		msg1 = "Can't be Blank";
+ 	}
+
+ 	if (($('#game_squad_1_id').val().trim() == "#")||($('#game_squad_1_id').val().trim() == "" ) || ($('#game_squad_1_id').val().trim() == 0)){
+ 		msg2 = "Can't be Blank";
+ 	}
+
+ 	if (($('#game_squad_2_id').val().trim() == "#")||($('#game_squad_2_id').val().trim() == "") || ($('#game_squad_2_id').val().trim() == 0)){
+ 		msg3 = "Can't be Blank";
+ 	} 
+
+ 	if($('#game_squad_1_id').val().trim() == $('#game_squad_2_id').val().trim())
+ 	{
+ 		if (!(($('#game_squad_2_id').val().trim() == "" )||($('#game_squad_2_id').val().trim() == 0)) && ($('#game_squad_2_id').val().trim() != "#"))
+ 		{
+ 			msg2 = "Team's Can't be Same";
+ 		}  
+ 	}  
+    if ($('#game_name').val().trim() == ""){
+        msg4 = "Can't be Blank";
+    }
+    if ($('#game_location_id').val().trim() == ""){
+        msg5 = "Can't be Blank";
+    }
+
+    if (($('#table_1 tbody tr').length < 12 ) || ($('#table_2 tbody tr').length < 12))
+    { msg6 = "Please select squads with minimum 11 players";}  
+
+ 	$('#date_error').html(msg1);
+ 	$('#squad_1_error').html(msg2);
+ 	$('#squad_2_error').html(msg3);
+    $('#name_error').html(msg4);
+    $('#location_error').html(msg5);
+    $('#squad_error').html(msg6);
+
+ 	if(msg1=="" && msg2=="" && msg3=="" && msg4=="" && msg5=="" && msg6=="")
+ 		{return true}
+ }
+
+
+  </script>	
+
+  <% end %>
+
