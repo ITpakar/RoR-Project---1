@@ -74,8 +74,8 @@ class TeamsController < ApplicationController
     if !game_id.blank? then
       @game = Game.find(game_id) unless game_id.blank? 
       @teams = Team.where(game_id: game_id).pluck(:name, :id)
-    end     
-  end  
+    end
+  end
   
   def load_team
     authorize! :access, Team
