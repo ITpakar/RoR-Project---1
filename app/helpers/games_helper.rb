@@ -58,7 +58,7 @@ module GamesHelper
 		stats_current = stats_current.reject{|st| st.fow_order==nil}.sort_by{|st| st[:fow_order]}
 
 		stats_current.each do |stat|
-			str2 = "#{stat.fow_order}-#{stat.fow_score}(#{stat.player.name}, #{stat.fow_overs.to_i}.#{stat.fow_balls}) ov "
+			str2 = "#{stat.fow_order}-#{stat.fow_score}(#{stat.player.name}, #{stat.fow_overs.to_i}.#{stat.fow_balls} ov) "
 			str+= str2
 		end
 		str.chomp(", ")
