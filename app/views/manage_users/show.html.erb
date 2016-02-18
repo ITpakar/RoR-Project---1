@@ -1,4 +1,4 @@
-<h3>View User - <%= @user.profile.screenname %></h3>
+<h3>View User - <%= @user.profile.try(:screenname) %></h3>
 
 <p id="notice"><%= notice %></p>
 

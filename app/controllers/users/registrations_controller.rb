@@ -1,5 +1,14 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
+  before_filter :configure_permitted_parameters
+
+  # GET /users/sign_up
+  def new
+    build_resource({})
+    resource.build_profile
+    respond_with self.resource
+  end
+
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
@@ -24,6 +33,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
   def after_update_path_for(resource)
     edit_user_profile_path(resource, resource.profile)
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u|
+      u.permit(:email, :password, :password_confirmation, :profile_attributes => [:firstname, :lastname, :screenname, :address, :fb_link, :twitter_link, :phone_number])
+    }
   end
 
 end

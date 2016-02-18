@@ -12,7 +12,7 @@
             <div class="form-group input-group">
               <%= f.label :match_date, class: 'label-control' %>
               <div class="input-group date" id="match-date-id">
-                <%= f.text_field :match_date, class: "form-control"%>
+                <%= f.text_field :match_date, class: "form-control", :readonly => true%>
               </div>
               <span id ="date_error" class = "errors"></span>
             </div>
@@ -48,10 +48,12 @@
               <%= f.label 'Choose Team 1', class: 'label-control' %>
               <div class="input-group">
                 <%= f.collection_select(:squad_1_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
-                <%= hidden_field_tag :hidden_squad_id_1, f.object.squad_1_id%>
+                <%=f.hidden_field :squad_id_1,:value=>""%>  
+                <%= hidden_field_tag :hidden_squad_id_1, f.object.squad_1.country_id%>
+                <%= hidden_field_tag :hidden1_squad_id_1, f.object.squad_1_id %>
               </div>
               <div class="input-group">
-                <%= link_to "Quick Add", quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+                <%= link_to "Quick Add", quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type" %>
               </div>
               <span id ="squad_1_error" class = "errors"></span>
             </div>
@@ -62,7 +64,8 @@
               <div class="input-group">
                 <%= f.collection_select(:squad_2_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
                 <%=f.hidden_field :squad_id_2, :value=>""%>
-                <%= hidden_field_tag :hidden_squad_id_2, f.object.squad_2_id%>
+                <%= hidden_field_tag :hidden_squad_id_2, f.object.squad_2.country_id%>
+                <%= hidden_field_tag :hidden2_squad_id_2, f.object.squad_2_id %>
               </div>
               <div class="input-group">
                 <%= link_to "Quick Add",quick_add_country_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
@@ -96,6 +99,17 @@
       </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
       <div class='row'>
         <h3>Step Four</h3>
         <p>
@@ -123,12 +137,11 @@
             <div id="team1" class="tab-pane fade in active">
               <h4 class="inline-ele">Team 1</h4>
               <div class="inline-ele">
-                <%= link_to("Quick add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 1}}}) %>					
+                <%= link_to("Quick add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true, params: {squad: 1}}}) %>					
               </div>
 
               <div class="inline-ele pull-right">
-                <%#= link_to("Load Squad", squad_load_1_path(), {class: "btn btn-primary btn-xs", id: 'team_1_squad', onclick: 'load_squad(1);', :data => { :remote => true, params: {team_id: 0}} }) %>
-                <select id = "load_squad_1_id" class = "form-control">
+                <select id = "load_squad_1_id" class="form-control">
                   <option value="#">Select squad</option>
                 </select>  
               </div>
@@ -141,7 +154,6 @@
                 <%= link_to("Quick add", quick_add_squad_path, {class: "btn btn-primary btn-xs", id: 'quick_add', :data => { :remote => true,params: {squad: 2}}}) %>					
               </div>					
               <div class="inline-ele pull-right">
-
                 <select id = "load_squad_2_id" class = "form-control">
                   <option value="#">Select squad</option>
                 </select>
@@ -154,27 +166,27 @@
         </div>
       </div>
 
-
-      </div> <!-- contaner -->
+      </div> <!-- container -->
     </div> <!-- body -->
 
  		<div class="panel-footer text-right">
- 			<%= f.submit "Build Game", class: "btn btn-primary" ,id: "save_form"%>
+ 			<%#= f.submit "Update Game", class: "btn btn-primary", id: "save_form"%>
  		</div>
 
  	</div>
 
  	<script type="text/javascript">
-  $(document).ready(function(){
-    // $('#game_code_id').trigger('chanege');
-  });
+$(document).ready(function(){
+      // document.getElementById("game_squad_1_id").dispatchEvent(new Event('change'));
+    });
+
  $('#game_match_date').datetimepicker({
  	timepicker:false,
  	minDate:'-1970/01/01',
  	format:'d/m/Y'
  });
 
- $('#squads').hide();
+ // $('#squads').hide();
 
  function check_teams() {
  	var x = $('#game_squad_1_id').val();
@@ -212,7 +224,7 @@
  	}
  }
 //set team------------->
-var set_team = function(team){
+function set_team(team){
 	var code_id = $('#game_code_id').val();
 
 	if (team == '1' || team == '2')
@@ -237,7 +249,7 @@ var set_team = function(team){
 					html += '<option value=' + value.id + '>' + value.description + '</option>';
 				});
 				if (team == '1' ){$('#load_squad_1_id').html(html); 
-        alert($('#hidden_squad_id_1').val());
+      
                 $('#load_squad_1_id').val($('#hidden_squad_id_1').val());}	  
 				if (team == '2'){$('#load_squad_2_id').html(html);}  
 			},
@@ -328,62 +340,62 @@ $('#load_squad_2_id').change(function(){
  // Ajax For Innings ----------> 
  
  $('#game_code_id').change(function(){
+  if ($(this).val() == "") 
+  {
+   var html = '<option value= "#">Please Select</option>';
+   $('#game_location_id').prop('selectedIndex',0);
+   $('#game_number_of_innings option').remove();
+   $('#game_squad_1_id').html(html); 
+   $('#game_squad_2_id').html(html);
+   $('#squads').hide();
+   $('#no-teams').show(); 
+ }
 
-    if ($(this).val() == "") 
-    {
-       var html = '<option value= "#">Please Select</option>';
-        $('#game_location_id').prop('selectedIndex',0);
-        $('#game_number_of_innings option').remove();
-        $('#game_squad_1_id').html(html); 
-        $('#game_squad_2_id').html(html);
-        $('#squads').hide();
-        $('#no-teams').show(); 
-
-
-    }
-
- 	else if ($(this).val() != "") 
- 	{
-        $('#squads').hide();
-        $('#no-teams').show(); 
- 		var code_id = $(this).val();
- 		$.ajax({
- 			url: '/get_innings',
- 			dataType: 'json',
- 			type: 'GET',
- 			data: {code_id: code_id},
- 			dataType: 'json',
- 			success: function(data) {
- 				var html;	            
- 				html += '<option value=' + data.code.default_innings + '>' + data.code.default_innings + '</option>';
- 				$('#game_number_of_innings').html(html);	    
- 			},
- 			error: function(jqXHR, textStatus, errorThrown) {
- 				alert(errorThrown);
- 			}
- 		});
-        $.ajax({
-            url: '/get_countries',
-            dataType: 'json',
-            type: 'GET',
-            data: {code_id: code_id},
-            dataType: 'json',
-            success: function(data) {
-                var html = '<option value= "#">Please Select</option>';    
-                $.each(data.countries, function(i, value) {
-                            html += '<option value=' + value.id + '>' + value.name + '</option>';
-                        });
-                $('#game_squad_1_id option').remove();
-                $('#game_squad_2_id option').remove();
-                $('#game_squad_1_id').html(html); 
-                $('#game_squad_2_id').html(html);       
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
-            }
-        });
- 	}
+ else if ($(this).val() != "") 
+ {
+  $('#squads').hide();
+  $('#no-teams').show(); 
+  var code_id = $(this).val();
+  $.ajax({
+    url: '/get_innings',
+    dataType: 'json',
+    type: 'GET',
+    data: {code_id: code_id},
+    dataType: 'json',
+    success: function(data) {
+     var html;
+     html += '<option value=' + data.code.default_innings + '>' + data.code.default_innings + '</option>';
+     $('#game_number_of_innings').html(html);
+   },
+   error: function(jqXHR, textStatus, errorThrown) {
+     alert(errorThrown);
+   }
  });
+
+  $.ajax({
+    url: '/get_countries',
+    dataType: 'json',
+    type: 'GET',
+    data: {code_id: code_id},
+    dataType: 'json',
+    success: function(data) {
+      var html = '<option value= "#">Please Select</option>';    
+      $.each(data.countries, function(i, value) {
+        html += '<option value=' + value.id + '>' + value.name + '</option>';
+      });
+      $('#game_squad_1_id option').remove();
+      $('#game_squad_2_id option').remove();
+      $('#game_squad_1_id').html(html);
+      $('#game_squad_1_id').val($('#hidden_squad_id_1').val());
+      $('#game_squad_2_id').html(html); 
+      $('#game_squad_2_id').val($('#hidden_squad_id_2').val());
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      alert(errorThrown);
+    }
+  });
+}
+});
 
  // Validation Game Form Script
 
