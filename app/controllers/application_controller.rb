@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.class.name.eql? 'User'
-      root_path
+      '/user-team-builder'
     else
-      admin_root
+      '/games/new'
     end
   end
 
