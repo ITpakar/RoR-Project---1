@@ -10,13 +10,13 @@ module GamesHelper
 
 	def stats_current_sorted stats,team_id
 		stats = stats.reject{ |sp| sp.player.country_id != team_id}
-		stats_with_batting_order = stats.reject{|st| st.batting_order == nil}.sort_by{|st| st[:batting_order]}
+		stats_with_batting_order = stats.reject{|st| (st.batting_order.nil? or st.minutes == 0 or st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }
 	end
+
 	def stats_opponent_sorted stats,team_id
 		stats = stats.reject{ |sp| sp.player.country_id == team_id}
 		stats_with_bowling_order = stats.reject{|st| st.bowling_order == nil}.sort_by{|st| st[:bowling_order]}
 	end
-
 
 	def get_extras stats_opponent,stats_current
 		nb = 0
@@ -34,22 +34,20 @@ module GamesHelper
 	end
 
 	def get_score stats_current,stats_opponent
-		
-		total_runs = 0
-		wickets = 0
-		total_balls = 0
+		total_runs = wickets = total_balls = 0
 		stats_current.each do |stat|
-			total_runs = total_runs + stat.runs
+			total_runs = total_runs + stat.runs + stat.leg_byes
 			total_balls = total_balls + stat.balls.to_i
-			
-
 			if !stat.fow_order.nil?
 				wickets = wickets+1
 			end
-			
 		end
-		overs = "#{total_balls/6}.#{total_balls%6}"
 
+		stats_opponent.each do |stat|
+			total_runs = total_runs + stat.no_balls + stat.wides
+		end
+
+		overs = "#{total_balls/6}.#{total_balls%6}"
 		"#{wickets}/#{total_runs} (#{overs} overs)"
 	end
 
@@ -64,10 +62,20 @@ module GamesHelper
 		str.chomp(", ")
 	end
 
+
+
+
+
+
+
+
+
+
 	def didnot_bat_players stats,team_id
 		stats = stats.reject{ |sp| sp.player.country_id != team_id}
-		stats_with_batting_order = stats.select{|st| st.batting_order == nil}
-		name = stats_with_batting_order.collect{|st| st.player.name}.join(",")
+		# stats_with_batting_order = stats.select{|st| st.batting_order == nil}
+		# name = stats_with_batting_order.collect{|st| st.player.name}.join(",")
+		stats_with_batting_order = stats.select{|st| (st.batting_order.nil? or st.minutes == 0 or st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }.collect{|st| st.player.name}.join(",")
 	end
 
 	def get_selected_runout stat
