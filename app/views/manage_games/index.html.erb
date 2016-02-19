@@ -24,7 +24,23 @@
 		$('.team_form')
 		.bind("ajax:success", function(data, status, xhr) {
 			document.getElementById("game_code_id").dispatchEvent(new Event('change'));
+			setTimeout(explode, 500);
+			function explode(){
+				console.log('Teams loaded.');
+  			document.getElementById("game_squad_1_id").dispatchEvent(new Event('change'));
+  			document.getElementById("game_squad_2_id").dispatchEvent(new Event('change'));
+  			setTimeout(explode1, 200);
+			}
+			function explode1(){
+  			$(document).find('#load_squad_1_id').val($(document).find('#hidden1_squad_id_1').val());
+  			$(document).find('#load_squad_2_id').val($(document).find('#hidden2_squad_id_2').val());
+
+  		document.getElementById("load_squad_1_id").dispatchEvent(new Event('change'));
+  		document.getElementById("load_squad_2_id").dispatchEvent(new Event('change'));
+  		}
 		});
+
+
 	});
 
 </script>

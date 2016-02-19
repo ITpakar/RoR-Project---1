@@ -23,7 +23,7 @@ class UserDatatable < AjaxDatatablesRails::Base
   end
 
   def get_raw_records
-    User.joins(:profile).all
+    User.includes(:profile).all
   end
 
 end
