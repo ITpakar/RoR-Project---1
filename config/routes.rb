@@ -24,7 +24,12 @@ Rails.application.routes.draw do
 
   resources :manage_users
   resources :teams
-  resources :games
+  resources :games do 
+    member do
+      put 'update_game'
+      patch 'update_game'
+    end
+  end
   resources :codes, :path => "forms"
   resources :locations
   resources :squads

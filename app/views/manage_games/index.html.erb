@@ -27,8 +27,10 @@
 			setTimeout(explode, 500);
 			function explode(){
 				console.log('Teams loaded.');
+				
   			document.getElementById("game_squad_1_id").dispatchEvent(new Event('change'));
   			document.getElementById("game_squad_2_id").dispatchEvent(new Event('change'));
+  			$(document).find('#game_code_id').data('source', 'index')
   			setTimeout(explode1, 200);
 			}
 			function explode1(){
