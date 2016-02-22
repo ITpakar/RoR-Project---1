@@ -22,21 +22,25 @@ module GamesHelper
 		nb = 0
 		wides = 0
 		leg_byes = 0
+		byes = 0
 
 		stats_current.each do |stat|
 			leg_byes = leg_byes + stat.leg_byes
+		end
+		stats_current.each do |stat|
+			byes = byes + stat.byes
 		end
 		stats_opponent.each do |stat|
 			nb = nb + stat.no_balls
 			wides = wides + stat.wides
 		end
-		"lb : #{leg_byes},nb : #{nb},wides : #{wides}" 
+		"b : #{byes}, lb : #{leg_byes}, nb : #{nb}, w : #{wides}" 
 	end
 
 	def get_score stats_current,stats_opponent
 		total_runs = wickets = total_balls = 0
 		stats_current.each do |stat|
-			total_runs = total_runs + stat.runs + stat.leg_byes
+			total_runs = total_runs + stat.runs + stat.byes + stat.leg_byes
 			total_balls = total_balls + stat.balls.to_i
 			if !stat.fow_order.nil?
 				wickets = wickets+1
@@ -44,7 +48,7 @@ module GamesHelper
 		end
 
 		stats_opponent.each do |stat|
-			total_runs = total_runs + stat.no_balls + stat.wides
+			total_runs = total_runs + stat.no_balls + stat.wides 
 		end
 
 		overs = "#{total_balls/6}.#{total_balls%6}"
@@ -62,22 +66,13 @@ module GamesHelper
 		str.chomp(", ")
 	end
 
-
-
-
-
-
-
-
-
-
 	def didnot_bat_players stats,team_id
 		stats = stats.reject{ |sp| sp.player.country_id != team_id}
 		# stats_with_batting_order = stats.select{|st| st.batting_order == nil}
 		# name = stats_with_batting_order.collect{|st| st.player.name}.join(",")
-		stats_with_batting_order = stats.select{|st| (st.batting_order.nil? or st.minutes == 0 or st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }.collect{|st| st.player.name}.join(",")
+		stats_with_batting_order = stats.select{|st| (!st.batting_order.nil? && st.minutes == 0 && st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }.collect{|st| st.player.name}.join(",")
 	end
-
+	
 	def get_selected_runout stat
 		if stat.run_out
 			run_out_by = RunOut.where(:innings=>stat.inning_id,:game_id=>@game.id,:player_id=>stat.player_id).pluck(:run_out_by)
