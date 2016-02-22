@@ -34,8 +34,8 @@
 				<% end %>
 	
 			</table>
-            <b>Extras  (<%=get_extras(stats_opponent,stats_current)%>)</b>
-            <b><p>Score  : <%=get_score(stats_current,stats_opponent)%></p></b>
+            <b>Extras  (<%=get_extras(stats_opponent,stats_current, inning, squad_temp)%>)</b>
+            <b><p>Score  : <%=get_score(stats_current,stats_opponent, inning, squad_temp)%></p></b>
             <b>Did not bat (</b><%=didnot_bat_players(stats,team_id)%><b>)</b><br/>
             <b>Fall of wickets</b> <%=fall_of_wickets(stats_current)%>
 			<h5>Bowling</h5>

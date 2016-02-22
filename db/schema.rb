@@ -104,13 +104,15 @@ ActiveRecord::Schema.define(version: 20160222021700) do
   add_index "games", ["squad_2_id"], name: "index_games_on_squad_2_id", using: :btree
 
   create_table "innings", force: :cascade do |t|
-    t.integer  "game_id",    limit: 4
-    t.integer  "batting",    limit: 4, default: 0
-    t.integer  "bowling",    limit: 4, default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.integer  "byes",       limit: 4, default: 0
-    t.integer  "leg_byes",   limit: 4, default: 0
+    t.integer  "game_id",          limit: 4
+    t.integer  "batting",          limit: 4, default: 0
+    t.integer  "bowling",          limit: 4, default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "squad_1_byes",     limit: 4, default: 0
+    t.integer  "squad_1_leg_byes", limit: 4, default: 0
+    t.integer  "squad_2_byes",     limit: 4, default: 0
+    t.integer  "squad_2_leg_byes", limit: 4, default: 0
   end
 
   add_index "innings", ["game_id"], name: "index_innings_on_game_id", using: :btree

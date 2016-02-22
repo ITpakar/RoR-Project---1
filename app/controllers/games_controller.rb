@@ -213,10 +213,10 @@ class GamesController < ApplicationController
       :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
       game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
       game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-      innings_attributes: [:id, :game_id, :batting], 
+      innings_attributes: [:id, :game_id, :batting, :squad_1_byes, :squad_1_leg_byes, :squad_2_byes, :squad_2_leg_byes], 
       stats_attributes: [
         :id, :inning_id, :player_id, 
-        :runs, :minutes, :balls, :fours, :sixes,:byes,:leg_byes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
         :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
         :created_at, :updated_at
         ])
@@ -229,10 +229,10 @@ class GamesController < ApplicationController
       :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
       game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
       game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
-      innings_attributes: [:id, :game_id, :batting], 
+      innings_attributes: [:id, :game_id, :batting, :squad_1_byes, :squad_1_leg_byes, :squad_2_byes, :squad_2_leg_byes], 
       stats_attributes: [
         :id, :inning_id, :player_id, 
-        :runs, :minutes, :balls, :fours, :sixes,:byes,:leg_byes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
         :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
         :created_at, :updated_at
         ])

@@ -18,18 +18,18 @@ module GamesHelper
 		stats_with_bowling_order = stats.reject{|st| st.bowling_order == nil}.sort_by{|st| st[:bowling_order]}
 	end
 
-	def get_extras stats_opponent,stats_current
+	def get_extras stats_opponent, stats_current, inning, squad_temp
 		nb = 0
 		wides = 0
 		leg_byes = 0
 		byes = 0
 
-		stats_current.each do |stat|
-			leg_byes = leg_byes + stat.leg_byes
-		end
-		stats_current.each do |stat|
-			byes = byes + stat.byes
-		end
+		#stats_current.each do |stat|
+			leg_byes = leg_byes + (squad_temp == 1 ? inning.squad_1_leg_byes : inning.squad_2_leg_byes)
+		#end
+		#stats_current.each do |stat|
+			byes = byes + (squad_temp == 1 ? inning.squad_1_byes : inning.squad_2_byes)
+		#end
 		stats_opponent.each do |stat|
 			nb = nb + stat.no_balls
 			wides = wides + stat.wides
@@ -37,10 +37,11 @@ module GamesHelper
 		"b : #{byes}, lb : #{leg_byes}, nb : #{nb}, w : #{wides}" 
 	end
 
-	def get_score stats_current,stats_opponent
+	def get_score stats_current,stats_opponent, inning, squad_temp
 		total_runs = wickets = total_balls = 0
+		total_runs = total_runs + (squad_temp == 1 ? inning.squad_1_byes : inning.squad_2_byes) + (squad_temp == 1 ? inning.squad_1_leg_byes : inning.squad_2_leg_byes)
 		stats_current.each do |stat|
-			total_runs = total_runs + stat.runs + stat.byes + stat.leg_byes
+			total_runs = total_runs + stat.runs 
 			total_balls = total_balls + stat.balls.to_i
 			if !stat.fow_order.nil?
 				wickets = wickets+1
