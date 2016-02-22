@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160211135447) do
+ActiveRecord::Schema.define(version: 20160222021700) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -56,13 +56,13 @@ ActiveRecord::Schema.define(version: 20160211135447) do
 
   create_table "game_squads", force: :cascade do |t|
     t.integer  "game_id",       limit: 4
+    t.integer  "squad_id",      limit: 4
     t.integer  "player_id",     limit: 4
     t.boolean  "selected",                default: false
     t.boolean  "captain",                 default: false
     t.boolean  "wicket_keeper",           default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "squad_id",      limit: 4
   end
 
   add_index "game_squads", ["game_id"], name: "index_game_squads_on_game_id", using: :btree
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 20160211135447) do
     t.integer  "bowling",    limit: 4, default: 0
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.integer  "byes",       limit: 4, default: 0
+    t.integer  "leg_byes",   limit: 4, default: 0
   end
 
   add_index "innings", ["game_id"], name: "index_innings_on_game_id", using: :btree
@@ -219,7 +221,7 @@ ActiveRecord::Schema.define(version: 20160211135447) do
     t.float    "fow_overs",      limit: 24
     t.integer  "fow_balls",      limit: 4
     t.integer  "lbw_by",         limit: 4
-    t.integer  "over_partial",   limit: 4
+    t.integer  "over_partial",   limit: 4,  default: 0
     t.integer  "byes",           limit: 4,  default: 0
     t.integer  "leg_byes",       limit: 4,  default: 0
   end
@@ -286,21 +288,4 @@ ActiveRecord::Schema.define(version: 20160211135447) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "game_squads", "games"
-  add_foreign_key "game_squads", "players"
-  add_foreign_key "game_squads", "squads"
-  add_foreign_key "innings", "games"
-  add_foreign_key "locations", "countries"
-  add_foreign_key "players", "countries"
-  add_foreign_key "run_outs", "games"
-  add_foreign_key "run_outs", "players"
-  add_foreign_key "squad_players", "players"
-  add_foreign_key "squad_players", "squads"
-  add_foreign_key "squads", "codes"
-  add_foreign_key "squads", "countries"
-  add_foreign_key "stats", "innings"
-  add_foreign_key "stats", "players"
-  add_foreign_key "team_players", "teams"
-  add_foreign_key "teams", "games"
-  add_foreign_key "umpires", "countries"
 end
