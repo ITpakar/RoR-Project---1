@@ -80,7 +80,7 @@ class Stat < ActiveRecord::Base
     elsif !self.bowled_by.nil?
       bowller  = Player.find_by_id(self.bowled_by).name
         return  "b #{bowller}"
-    elsif ((self.fow_order.nil?) && (!self.batting_order.nil?))
+    elsif ((self.fow_order.nil?) && (!self.batting_order.nil?) && (self.minutes != 0))
         return  "not out"  
     end
   end

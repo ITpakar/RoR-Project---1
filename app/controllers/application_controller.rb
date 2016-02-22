@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   
   before_filter :set_mailer_host
+  around_filter :wrap_in_transaction
+  
   def set_mailer_host
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
   end
@@ -39,6 +41,12 @@ class ApplicationController < ActionController::Base
       current_usr.is_admin? ? authenticate_admin! : authenticate_user!
     else
       authenticate_user!
+    end
+  end
+
+  def wrap_in_transaction
+    ActiveRecord::Base.transaction do
+      yield
     end
   end
 

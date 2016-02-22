@@ -47,7 +47,7 @@
             <div class="form-group">
               <%= f.label 'Choose Team 1', class: 'label-control' %>
               <div class="input-group">
-                <%= f.collection_select(:squad_1_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);'}) %>
+                <%= f.collection_select(:squad_1_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(1);check_teams();set_team(1);', :data => {:source => ''}}) %>
                 <%=f.hidden_field :squad_id_1,:value=>""%>  
                 <%= hidden_field_tag :hidden_squad_id_1, f.object.squad_1.country_id%>
                 <%= hidden_field_tag :hidden1_squad_id_1, f.object.squad_1_id %>
@@ -62,7 +62,7 @@
             <div class="form-group">
               <%= f.label 'Choose Team 2', class: 'label-control' %>
               <div class="input-group">
-                <%= f.collection_select(:squad_2_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);'}) %>
+                <%= f.collection_select(:squad_2_id, {},{},{}, {prompt: true}, {class: 'form-control', onchange: 'clear_squad(2);check_teams();set_team(2);', :data => {:source => ''}}) %>
                 <%=f.hidden_field :squad_id_2, :value=>""%>
                 <%= hidden_field_tag :hidden_squad_id_2, f.object.squad_2.country_id%>
                 <%= hidden_field_tag :hidden2_squad_id_2, f.object.squad_2_id %>
@@ -170,7 +170,7 @@
     </div> <!-- body -->
 
  		<div class="panel-footer text-right">
- 			<%#= f.submit "Update Game", class: "btn btn-primary", id: "save_form"%>
+ 			<%= f.submit "Update Game", class: "btn btn-primary", id: "save_form", :disabled_with => 'Updated'%>
  		</div>
 
  	</div>
@@ -339,7 +339,8 @@ $('#load_squad_2_id').change(function(){
 
  // Ajax For Innings ----------> 
  
- $('#game_code_id').change(function(){
+ $('#game_code_id').change(function(e){
+  $thiss = $(this);
   if ($(this).val() == "") 
   {
    var html = '<option value= "#">Please Select</option>';
@@ -386,9 +387,19 @@ $('#load_squad_2_id').change(function(){
       $('#game_squad_1_id option').remove();
       $('#game_squad_2_id option').remove();
       $('#game_squad_1_id').html(html);
-      $('#game_squad_1_id').val($('#hidden_squad_id_1').val());
+      
       $('#game_squad_2_id').html(html); 
-      $('#game_squad_2_id').val($('#hidden_squad_id_2').val());
+
+      console.log($thiss.data('source'));
+
+      if ($thiss.data('source') !== 'index'){
+        $('#game_squad_1_id').val($('#hidden_squad_id_1').val());
+        $('#game_squad_2_id').val($('#hidden_squad_id_2').val());
+      }
+      else{
+        $('#game_squad_1_id').val('#');
+        $('#game_squad_2_id').val('#');
+      }
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert(errorThrown);

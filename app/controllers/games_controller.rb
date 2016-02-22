@@ -40,7 +40,7 @@ class GamesController < ApplicationController
   def update
     authorize! :update, Player
     @game.update(update_game_params)
-    stats = params[:game][:stats_attributes]
+    stats = params[:game][:stats_attributes] ? params[:game][:stats_attributes] : [] 
     stats.each_value do |stat|
       stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
       if !stat[:run_out].blank? && stat[:batting_order].present?
@@ -53,6 +53,11 @@ class GamesController < ApplicationController
         @_stat.update_attributes(:run_out => true)
       end
     end
+  end
+
+  def update_game
+    authorize! :create, Game
+    @game.update(game_params)
   end
 
   def destroy
