@@ -34,7 +34,9 @@ class GamesController < ApplicationController
   def create
     authorize! :create, Game
     @game = Game.new(game_params)
-    @game.save
+    if @game.save
+      flash[:notice] = "Game was successfully created."
+    end
   end
 
   def update

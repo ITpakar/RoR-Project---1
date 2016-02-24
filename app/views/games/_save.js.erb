@@ -5,5 +5,10 @@ $("ul.errors").html("")
   <% end %>
 <% else %>  
   $('#games-table').DataTable().ajax.reload();
-  $("#global-modal").modal("hide")
+  $("#global-modal").modal("hide");
+  <% if flash[:notice] %>
+    $('#alert-message-container p').html("<%= flash[:notice] %>");
+    $('#alert-message-container').fadeIn();
+    $(".alert-success" ).fadeOut(3000);
+  <% end %>
 <% end %>
