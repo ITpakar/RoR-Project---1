@@ -10,7 +10,7 @@ module GamesHelper
 
 	def stats_current_sorted stats,team_id
 		stats = stats.reject{ |sp| sp.player.country_id != team_id}
-		stats_with_batting_order = stats.reject{|st| (st.batting_order.nil? or st.minutes == 0 or st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }
+		stats_with_batting_order = stats.reject{|st| (st.batting_order.nil? || st.minutes==0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }
 	end
 
 	def stats_opponent_sorted stats,team_id
@@ -49,7 +49,8 @@ module GamesHelper
 		end
 
 		stats_opponent.each do |stat|
-			total_runs = total_runs + stat.no_balls + stat.wides 
+			total_runs = total_runs + stat.no_balls + stat.wides
+			total_balls = total_balls - stat.no_balls
 		end
 
 		overs = "#{total_balls/6}.#{total_balls%6}"
@@ -71,7 +72,7 @@ module GamesHelper
 		stats = stats.reject{ |sp| sp.player.country_id != team_id}
 		# stats_with_batting_order = stats.select{|st| st.batting_order == nil}
 		# name = stats_with_batting_order.collect{|st| st.player.name}.join(",")
-		stats_with_batting_order = stats.select{|st| (!st.batting_order.nil? && st.minutes == 0 && st.balls == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }.collect{|st| st.player.name}.join(",")
+		stats_with_batting_order = stats.select{|st| (!st.batting_order.nil? && st.minutes == 0) }.sort{|a,b| a[:batting_order] && b[:batting_order] ? a[:batting_order] <=> b[:batting_order] : a[:batting_order] ? -1 : 1 }.collect{|st| st.player.name}.join(",")
 	end
 	
 	def get_selected_runout stat
