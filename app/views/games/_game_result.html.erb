@@ -32,10 +32,15 @@
 					<td><%= calculate_stricke_rate(s)%></td>	
 				</tr>
 				<% end %>
-	
+                <tr>
+                    <td><b>Extras</b></td>
+                    <td colspan="7"><b>(<%=get_extras(stats_opponent,stats_current, inning, squad_temp)%>)</b></td>
+                </tr>
+                <tr>
+                    <td><b>Score</b></td>
+                    <td colspan="7"><b><%=get_score(stats_current,stats_opponent, inning, squad_temp)%></b></td>
+                </tr>
 			</table>
-            <b>Extras  (<%=get_extras(stats_opponent,stats_current, inning, squad_temp)%>)</b>
-            <b><p>Score  : <%=get_score(stats_current,stats_opponent, inning, squad_temp)%></p></b>
             <b>Did not bat (</b><%=didnot_bat_players(stats,team_id)%><b>)</b><br/>
             <b>Fall of wickets</b> <%=fall_of_wickets(stats_current)%>
 			<h5>Bowling</h5>
