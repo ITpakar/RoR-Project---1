@@ -79,9 +79,11 @@
 							<% end -%>
 					<% end -%>
 					<% if can? :read, current_usr.try(:profile) %>
+                      <% unless current_admin %>
 						<li>
 							<%= link_to 'Account Management', edit_user_profile_path(current_usr, current_usr.profile) %>
 						</li>
+                      <% end %>
 					<% end -%>
 				<% end -%>
 			</ul>
