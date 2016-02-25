@@ -21,7 +21,7 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    authorize! :udpate, Location
+    authorize! :update, Location
   end
 
   def create
@@ -31,7 +31,7 @@ class LocationsController < ApplicationController
   end
 
   def update
-    authorize! :udpate, Location
+    authorize! :update, Location
     @location.update(location_params)
     respond_with(@location)
   end
@@ -48,6 +48,6 @@ class LocationsController < ApplicationController
   end
 
   def location_params
-    params.require(:location).permit(:name, :country_id)
+    params.require(:location).permit(:name, :city, :country_id)
   end
 end

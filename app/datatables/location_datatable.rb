@@ -5,12 +5,12 @@ class LocationDatatable < AjaxDatatablesRails::Base
   
   def sortable_columns
     # Declare strings in this format: ModelName.column_name
-    @sortable_columns ||= ['Location.name', 'Country.name']
+    @sortable_columns ||= ['Location.name', 'Location.city', 'Country.name']
   end
 
   def searchable_columns
     # Declare strings in this format: ModelName.column_name
-    @searchable_columns ||= ['Location.name', 'Country.name']
+    @searchable_columns ||= ['Location.name', 'Location.city', 'Country.name']
   end
 
   private
@@ -25,7 +25,7 @@ class LocationDatatable < AjaxDatatablesRails::Base
       [
         # comma separated list of the values for each cell of a table row
         # example: record.attribute,		
-		    record.name, record.country.name, ops
+		    record.name, record.city, record.country.name, ops
       ]
     end
   end
