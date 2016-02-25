@@ -128,6 +128,7 @@
 <%= render partial: 'inning', locals: {inning: inning, index: index, f: f, inn: inn, team_id: @countries.reject{|c| c[0] == inning.batting.to_i}.first.first, squad_temp: 2} %>
 <% end %>
 <% end %>
+<div id="alert-message-container" class="alert alert-success" role="alert" style="display: none;"><p></p></div>
 <%= f.submit "Save Scores", class: "btn btn-primary" , :remote => true%>
 <% end %>
 

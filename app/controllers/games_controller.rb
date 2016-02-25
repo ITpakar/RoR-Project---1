@@ -41,7 +41,9 @@ class GamesController < ApplicationController
 
   def update
     authorize! :update, Player
-    @game.update(update_game_params)
+    if @game.update(update_game_params)
+      flash[:notice] = "Scores saved successfully."
+    end
     stats = params[:game][:stats_attributes] ? params[:game][:stats_attributes] : [] 
     stats.each_value do |stat|
       stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
