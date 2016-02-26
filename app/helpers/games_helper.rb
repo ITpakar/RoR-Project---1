@@ -151,4 +151,12 @@ module GamesHelper
 		game.coin_toss_win
 	end
 
+	def location_description game
+		location = game.location
+		if !location.city.blank?
+			"#{location.name} - #{location.city} - #{location.country.name}"
+		else
+			"#{location.name} - #{location.country.name}"
+		end
+	end
 end

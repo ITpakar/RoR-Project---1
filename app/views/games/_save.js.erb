@@ -1,9 +1,19 @@
 $("ul.errors").html("")
 <% if @game.errors.any? %>
   <% @game.errors.full_messages.each do |message| %>
-    $("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
+//    $("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
+    <% if @game.errors.added? :name, :taken %>
+        $('#name_error').empty().append('<div class="alert alert-danger" role="alert"><p><%= message %></p></div>');
+    <% else %>
+        $("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
+    <% end %>
   <% end %>
 <% else %>  
   $('#games-table').DataTable().ajax.reload();
-  $("#global-modal").modal("hide")
+  $("#global-modal").modal("hide");
+  <% if flash[:notice] %>
+    $('#alert-message-container p').html("<%= flash[:notice] %>");
+    $('#alert-message-container').fadeIn();
+    $(".alert-success" ).fadeOut(3000);
+  <% end %>
 <% end %>

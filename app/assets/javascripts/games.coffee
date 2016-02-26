@@ -7,7 +7,7 @@ $ ->
     pagingType: "full_numbers"
     columnDefs: [
       orderable: false
-      targets: 1
+      targets: 5
      ]
   ) 
 

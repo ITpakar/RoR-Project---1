@@ -3,7 +3,7 @@ class GameDatatable < AjaxDatatablesRails::Base
   def_delegators :@view, :link_to, :h, :mailto, :game_path, :edit_game_path
 
   def sortable_columns
-    @sortable_columns ||= ['Game.match_date', 'Game.name']
+    @sortable_columns ||= ['Game.match_date', 'Game.name', 'Location.name', 'Country.name', 'countries_squads.name']
   end
 
   def searchable_columns
@@ -25,7 +25,7 @@ class GameDatatable < AjaxDatatablesRails::Base
   end
 
   def get_raw_records
-	 Game.includes(:squad_1, :squad_2, :location).references(:squad_1, :squad_2, :location).where(deleted: '0')
+	 Game.includes(:squad_1 => :country).includes(:squad_2 => :country).includes(:location).where(deleted: '0')
   end
   
 end

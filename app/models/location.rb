@@ -8,4 +8,5 @@ class Location < ActiveRecord::Base
       "#{self.country.name} - #{self.name}"  
     end
   end
+
 end

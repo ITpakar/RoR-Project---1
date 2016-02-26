@@ -290,4 +290,21 @@ ActiveRecord::Schema.define(version: 20160222021700) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "game_squads", "games"
+  add_foreign_key "game_squads", "players"
+  add_foreign_key "game_squads", "squads"
+  add_foreign_key "innings", "games"
+  add_foreign_key "locations", "countries"
+  add_foreign_key "players", "countries"
+  add_foreign_key "run_outs", "games"
+  add_foreign_key "run_outs", "players"
+  add_foreign_key "squad_players", "players"
+  add_foreign_key "squad_players", "squads"
+  add_foreign_key "squads", "codes"
+  add_foreign_key "squads", "countries"
+  add_foreign_key "stats", "innings"
+  add_foreign_key "stats", "players"
+  add_foreign_key "team_players", "teams"
+  add_foreign_key "teams", "games"
+  add_foreign_key "umpires", "countries"
 end
