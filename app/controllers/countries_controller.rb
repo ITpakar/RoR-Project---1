@@ -49,14 +49,17 @@ class CountriesController < ApplicationController
 
   def get_players
     authorize! :read, Country
+
+    dob_limit = '1965/01/1'
     if params[:squad_id].blank?
-      available_players = Player.where(country_id: params[:country_id] )
+      available_players = Player.where(country_id: params[:country_id] ).where('dob > ?', dob_limit)
     else
       all_players = Player.where(country_id: params[:country_id] ).pluck(:id)
       squad_players = SquadPlayer.where(squad_id: params[:squad_id]).pluck(:player_id)
       remaining_players = all_players - squad_players
-      available_players = Player.where(:id => remaining_players)
-    end  
+      available_players = Player.where(:id => remaining_players).where('dob > ?', dob_limit)
+    end
+
     render :json => {:players => available_players}
   end
 

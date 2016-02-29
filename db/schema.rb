@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222021700) do
+ActiveRecord::Schema.define(version: 20160229061039) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -56,13 +56,13 @@ ActiveRecord::Schema.define(version: 20160222021700) do
 
   create_table "game_squads", force: :cascade do |t|
     t.integer  "game_id",       limit: 4
-    t.integer  "squad_id",      limit: 4
     t.integer  "player_id",     limit: 4
     t.boolean  "selected",                default: false
     t.boolean  "captain",                 default: false
     t.boolean  "wicket_keeper",           default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+    t.integer  "squad_id",      limit: 4
   end
 
   add_index "game_squads", ["game_id"], name: "index_game_squads_on_game_id", using: :btree
@@ -140,9 +140,11 @@ ActiveRecord::Schema.define(version: 20160222021700) do
     t.string   "dob",            limit: 255
     t.string   "full_name",      limit: 255
     t.string   "scorecard_name", limit: 255
+    t.string   "slug",           limit: 255
   end
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree
+  add_index "players", ["slug"], name: "index_players_on_slug", using: :btree
 
   create_table "profiles", force: :cascade do |t|
     t.string   "firstname",       limit: 255

@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   before_action :authenticate_scope
-  before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :set_player, only: [:profile, :show, :edit, :update, :destroy]
   respond_to :html, :js, :json
   
   def index
@@ -41,12 +41,11 @@ class PlayersController < ApplicationController
   end
 
   def profile
-    @player = Player.find_by_id(params[:id])
   end
 
   private
     def set_player
-      @player = Player.find(params[:id])
+      @player = Player.friendly.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

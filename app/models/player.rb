@@ -1,5 +1,7 @@
 class Player < ActiveRecord::Base
   belongs_to :country
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   
   has_many :team_players
   
@@ -11,4 +13,5 @@ class Player < ActiveRecord::Base
   # validates :role, :presence => true
   validates :batting_style, :presence => true
   # validates :bowling_style, :presence => true
+
 end

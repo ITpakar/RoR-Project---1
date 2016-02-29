@@ -26,3 +26,4 @@ gem "select2-rails"
 gem 'devise'
 gem "figaro"
 gem 'cancancan', '~> 1.10'
+gem 'friendly_id'
