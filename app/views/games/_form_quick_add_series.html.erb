@@ -1,7 +1,7 @@
 <div class="modal-header">
-<h3>New Country</h3>
+<h3>New Series</h3>
 </div>
-<%= form_tag(save_quick_add_country_path ,remote: true,:class=> "form-horizontal", :style=> "display:inline;")   do %>
+<%= form_tag(save_quick_add_series_path ,remote: true,:class=> "form-horizontal", :style=> "display:inline;")   do %>
   <div class="modal-body">
   <ul class="errors"></ul>
 
@@ -13,19 +13,11 @@
     </div>
 
     <div class="form-group">
-    <%= label_tag("Select Code", nil,:class=> "col-md-4 control-label" )%>
-    <div class="col-md-8">
-        
-    <% for code in Code.all %>
-    <div>
-      <%= check_box_tag "country[code_ids][]", code.id,:selected=>true,:selectable=>false %>
-      <%= code.name %>
+        <%= label_tag("Select Countries", nil,:class=> "col-md-4 control-label" )%>
+        <div class="col-md-8">
+            <%= select_tag(:country_ids, options_for_select(Country.all.collect {|x| [x.name, x.id]}), :multiple => true) %>
+        </div>
     </div>
-    <% end %>
-
-  </div>
-  </div>
-  
   </div>
 
   <div class="modal-footer">
@@ -34,4 +26,3 @@
   </div>
 
 <% end %>
-

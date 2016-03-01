@@ -3,6 +3,7 @@ class Game < ActiveRecord::Base
   belongs_to :squad_2, :class_name => "Squad", :foreign_key => "squad_2_id"
   belongs_to :location
   belongs_to :code
+  belongs_to :series
   
   has_many :game_team_1_squads, :class_name => "GameSquad"
   has_many :game_team_2_squads, :class_name => "GameSquad"

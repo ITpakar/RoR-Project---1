@@ -64,6 +64,9 @@
 									<% if can? :read, current_usr %>	
 										<li><a href="/umpires">Umpires</a></li>
 									<% end -%>
+                                    <% if can? :read, current_usr %>
+                                        <li><a href="/series">Series</a></li>
+                                    <% end -%>
 									<% if can? :read, current_usr %>	
 										<li><%= link_to "Manage Users", manage_users_path %></li>
 									<% end -%>

@@ -8,7 +8,7 @@
       <div class="row">
         <h3>Step One</h3>
         <div class="md-col-12">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group input-group">
               <%= f.label :match_date, class: 'label-control' %>
               <div class="input-group date" id="match-date-id">
@@ -17,7 +17,7 @@
               <span id ="date_error" class = "errors"></span>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
               <%= f.label 'Choose Game Type', class: 'label-control' %>
               <div class="input-group">
@@ -28,7 +28,18 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
+            <div class="form-group">
+              <%= f.label 'Choose Series', class: 'label-control' %>
+              <div class="input-group">
+                <%= f.collection_select :series_id, Series.stored, :id, :name, {:prompt => true}, {class: 'form-control'}  %>
+              </div>
+              <div class="input-group">
+                <%= link_to "Quick Add", quick_add_series_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="form-group">
               <%= f.label :name, class: 'label-control' %>
               <div class="input-group">

@@ -1,0 +1,7 @@
+<%html = "<option value="+@series.id.to_s+">"+@series.name+"</option>"%>
+
+$('#game_series_id').append("<%= html.html_safe%>");
+$("#global-modal").modal("hide");
+
+
+
