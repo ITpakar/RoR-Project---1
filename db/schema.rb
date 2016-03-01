@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301020348) do
+ActiveRecord::Schema.define(version: 20160301062515) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -220,6 +220,8 @@ ActiveRecord::Schema.define(version: 20160301020348) do
     t.integer  "fours",          limit: 4,  default: 0
     t.integer  "sixes",          limit: 4,  default: 0
     t.boolean  "run_out",                   default: false
+    t.boolean  "hit_wicket",                default: false
+    t.boolean  "retired_hurt",              default: false
     t.integer  "bowled_by",      limit: 4
     t.integer  "caught_by",      limit: 4
     t.integer  "stumped_by",     limit: 4,  default: 0
