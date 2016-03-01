@@ -1,5 +1,6 @@
 class Player < ActiveRecord::Base
   belongs_to :country
+  mount_uploader :image, ImageUploader
   extend FriendlyId
   friendly_id :name, use: :slugged
   

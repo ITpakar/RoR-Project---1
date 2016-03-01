@@ -1,6 +1,7 @@
 class PlayersController < ApplicationController
   before_action :authenticate_scope
   before_action :set_player, only: [:profile, :show, :edit, :update, :destroy]
+  skip_before_filter :verify_authenticity_token, :only => :update
   respond_to :html, :js, :json
   
   def index
@@ -51,7 +52,7 @@ class PlayersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def player_params
       # params[:player][:dob] = convert_to_database_date(params[:player][:dob])
-      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name)
+      params.require(:player).permit(:name, :country_id, :batting_style, :bowling_style, :role,:dob,:full_name,:scorecard_name, :image)
     end
 
 
