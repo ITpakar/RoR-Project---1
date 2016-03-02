@@ -8,7 +8,7 @@ class ProfilesController < ApplicationController
 
 	private
 	def profile_params
-		params.require(:profile).permit(:firstname, :lastname, :screenname, :address,
+		params.require(:profile).permit(:firstname, :lastname, :screenname, :country_id, :address,
 			:phone_number, :fb_link, :twitter_link)
 	end
 end
