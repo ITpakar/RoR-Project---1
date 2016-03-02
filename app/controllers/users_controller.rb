@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_scope
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :notify_password_change]
   respond_to :html, :js, :json
   
   def index
@@ -41,6 +41,10 @@ class UsersController < ApplicationController
     authorize! :destroy, User
     @user.deleted = 1
     @user.save
+  end
+
+  def notify_password_change
+    UserMailer.password_reset_notification(@user, @password)
   end
 
   private
