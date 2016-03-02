@@ -16,7 +16,7 @@
 			
 			<p>
 				<strong>Country:</strong>
-				<%= @player.country %>
+				<%= @player.country.name %>
 			</p>
 			
 			<p>
@@ -33,6 +33,10 @@
 				<strong>Role:</strong>
 				<%= @player.role %>
 			</p>
+            <p>
+                <strong>Image:</strong>
+                <%= image_tag @player.image_url(:medium) %>
+            </p>
 			
 			<%= link_to 'Edit', edit_player_path(@player) %> |
 			<%= link_to 'Back', players_path %>
