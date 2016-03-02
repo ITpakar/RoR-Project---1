@@ -5,7 +5,7 @@
  	<div class="panel-body">
  		<h3>Step One</h3>
  		<div class="row">
- 			<div class="col-md-4">
+ 			<div class="col-md-3">
  				<div class="form-group input-group">
  					<%= f.label :match_date, class: 'label-control' %>
  					<div class="input-group date" id="match-date-id">
@@ -14,7 +14,7 @@
  					<span id ="date_error" class = "errors"></span>
  				</div>
  			</div>
- 			<div class="col-md-4">
+ 			<div class="col-md-3">
  				<div class="form-group">
  					<%= f.label 'Choose Game Type', class: 'label-control' %>
  					<div class="input-group">
@@ -28,15 +28,27 @@
  					</div>
  				</div>
 
- 				<div class="col-md-4">
- 					<div class="form-group">
- 						<%= f.label :name, class: 'label-control' %>
- 						<div class="input-group">
- 							<%= f.text_field :name, class: 'form-control' %>
- 						</div>
-                        <span id ="name_error" class = "errors"></span>
- 					</div>
- 				</div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <%= f.label 'Choose Series', class: 'label-control' %>
+                    <div class="input-group">
+                        <%= f.collection_select :series_id, Series.stored, :id, :name, {:prompt => true}, {class: 'form-control', onchange: 'check_series();'}  %>
+                    </div>
+                    <div class="input-group">
+                        <%= link_to "Quick Add", quick_add_series_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <%= f.label :name, class: 'label-control' %>
+                    <div class="input-group">
+                        <%= f.text_field :name, class: 'form-control' %>
+                    </div>
+                    <span id ="name_error" class = "errors"></span>
+                </div>
+            </div>
  			</div>
  			<h3>Step Two</h3>
  			<div class="row">
@@ -96,13 +108,16 @@
  			</p>
 
             <span id ="squad_error" class = "errors"></span>
-
+            <div id="no-series" class="alert alert-danger" role="alert">
+                <p>
+                  Please select a series.
+                </p>
+            </div>
  			<div id="no-teams" class="alert alert-danger" role="alert">
  				<p>
  					Please select two teams.
  				</p>
  			</div>
-
  			<div id="squads">
  				<ul class="nav nav-tabs">
  					<li class="active">
@@ -195,6 +210,16 @@
  	}		
  }
 
+ function check_series() {
+    var selected_series_id = $('#game_series_id').val();
+    if (selected_series_id == '0') {
+        $('#no-series').show();
+        check_teams();
+    } else {
+        $('#no-series').hide();
+        check_teams();
+    }
+ }
  function load_squad(team) {
 
  }

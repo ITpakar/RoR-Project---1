@@ -26,3 +26,7 @@
 .idea/Tipping.iml
 .idea/vcs.xml
 .idea/workspace.xml
+.idea/runConfigurations/Development__Tipping.xml
+.idea/runConfigurations/Production__Tipping.xml
+.idea/runConfigurations/spec__Tipping.xml
+.idea/runConfigurations/test__Tipping.xml

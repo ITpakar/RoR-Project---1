@@ -9,5 +9,5 @@ $ ->
       orderable: false
       targets: 5
      ]
-  ) 
+  )
 

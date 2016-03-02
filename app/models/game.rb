@@ -3,6 +3,7 @@ class Game < ActiveRecord::Base
   belongs_to :squad_2, :class_name => "Squad", :foreign_key => "squad_2_id"
   belongs_to :location
   belongs_to :code
+  belongs_to :series
   
   has_many :game_team_1_squads, :class_name => "GameSquad"
   has_many :game_team_2_squads, :class_name => "GameSquad"
@@ -61,7 +62,7 @@ class Game < ActiveRecord::Base
   end
 
   def get_winner_team
-    [["Draw",0],[self.squad_1.country.name,self.squad_1.country.id],[self.squad_2.country.name,self.squad_2.country.id]] 
+    [["Draw",0],["Game Abandoned", -1], ["No Result", -2], [self.squad_1.country.name,self.squad_1.country.id],[self.squad_2.country.name,self.squad_2.country.id]]
   end
   
   def full_name
@@ -77,6 +78,10 @@ class Game < ActiveRecord::Base
   def get_winner_description
     if self.game_winner == 0
       return "Draw"
+    elsif self.game_winner == -1
+      return "Game Abandoned"
+    elsif self.game_winner == -2
+      return "No Result"
     else
       winner = Country.find_by_id(self.game_winner)
       "#{winner.name} won by #{self.game_winner_margin} #{self.game_winner_amount}"  

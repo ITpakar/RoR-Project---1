@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
   resources :countries
   resources :umpires
+  resources :series
   
   get 'squad-select' => 'squads#get_squad_select'
   get 'game-innings' => 'games#get_games_innings'
@@ -75,6 +76,9 @@ Rails.application.routes.draw do
 
   get 'quick_add_country' => 'games#quick_add_country'
   post 'save_quick_add_country' => 'games#save_quick_add_country'
+
+  get 'quick_add_series' => 'games#quick_add_series'
+  post 'save_quick_add_series' => 'games#save_quick_add_series'
   
   get 'quick_add_location' => 'games#quick_add_location'
   post 'save_quick_add_location' => 'games#save_quick_add_location'
@@ -93,6 +97,8 @@ Rails.application.routes.draw do
   get 'get_innings' => 'codes#get_innings'
 
   get 'get_countries' => 'countries#get_countries'
+
+  get 'get_series' => 'series#get_series'
 
   get '/logout' => 'sessions#logout'
 

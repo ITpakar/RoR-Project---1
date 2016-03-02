@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222021700) do
+ActiveRecord::Schema.define(version: 20160301062515) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -54,15 +54,22 @@ ActiveRecord::Schema.define(version: 20160222021700) do
     t.datetime "updated_at",                             null: false
   end
 
+  create_table "countries_series", id: false, force: :cascade do |t|
+    t.integer "country_id", limit: 4, null: false
+    t.integer "series_id",  limit: 4, null: false
+  end
+
+  add_index "countries_series", ["country_id", "series_id"], name: "index_countries_series_on_country_id_and_series_id", unique: true, using: :btree
+
   create_table "game_squads", force: :cascade do |t|
     t.integer  "game_id",       limit: 4
-    t.integer  "squad_id",      limit: 4
     t.integer  "player_id",     limit: 4
     t.boolean  "selected",                default: false
     t.boolean  "captain",                 default: false
     t.boolean  "wicket_keeper",           default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+    t.integer  "squad_id",      limit: 4
   end
 
   add_index "game_squads", ["game_id"], name: "index_game_squads_on_game_id", using: :btree
@@ -98,8 +105,10 @@ ActiveRecord::Schema.define(version: 20160222021700) do
     t.integer  "umpire_tv",           limit: 4
     t.integer  "umpire_referee",      limit: 4
     t.integer  "umpire_reserve",      limit: 4
+    t.integer  "series_id",           limit: 4
   end
 
+  add_index "games", ["series_id"], name: "index_games_on_series_id", using: :btree
   add_index "games", ["squad_1_id"], name: "index_games_on_squad_1_id", using: :btree
   add_index "games", ["squad_2_id"], name: "index_games_on_squad_2_id", using: :btree
 
@@ -140,9 +149,11 @@ ActiveRecord::Schema.define(version: 20160222021700) do
     t.string   "dob",            limit: 255
     t.string   "full_name",      limit: 255
     t.string   "scorecard_name", limit: 255
+    t.string   "slug",           limit: 255
   end
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree
+  add_index "players", ["slug"], name: "index_players_on_slug", using: :btree
 
   create_table "profiles", force: :cascade do |t|
     t.string   "firstname",       limit: 255
@@ -169,6 +180,13 @@ ActiveRecord::Schema.define(version: 20160222021700) do
 
   add_index "run_outs", ["game_id"], name: "index_run_outs_on_game_id", using: :btree
   add_index "run_outs", ["player_id"], name: "index_run_outs_on_player_id", using: :btree
+
+  create_table "series", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "deleted",                default: false
+  end
 
   create_table "squad_players", force: :cascade do |t|
     t.integer  "player_id",  limit: 4
@@ -202,6 +220,8 @@ ActiveRecord::Schema.define(version: 20160222021700) do
     t.integer  "fours",          limit: 4,  default: 0
     t.integer  "sixes",          limit: 4,  default: 0
     t.boolean  "run_out",                   default: false
+    t.boolean  "hit_wicket",                default: false
+    t.boolean  "retired_hurt",              default: false
     t.integer  "bowled_by",      limit: 4
     t.integer  "caught_by",      limit: 4
     t.integer  "stumped_by",     limit: 4,  default: 0

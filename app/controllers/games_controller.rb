@@ -44,17 +44,19 @@ class GamesController < ApplicationController
     if @game.update(update_game_params)
       flash[:notice] = "Scores saved successfully."
     end
-    stats = params[:game][:stats_attributes] ? params[:game][:stats_attributes] : [] 
-    stats.each_value do |stat|
-      stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
-      if !stat[:run_out].blank? && stat[:batting_order].present?
-        @_stat = Stat.find_by_id(stat[:id])
-        @_run_out = RunOut.where(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id) if @_stat.run_out         
-        @_run_out.delete_all if @_run_out
-        stat[:run_out].each do |run_out_by|
-          RunOut.create(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id,run_out_by: run_out_by) 
+    stats = params[:game][:stats_attributes] ? params[:game][:stats_attributes] : []
+    unless stats.blank?
+      stats.each_value do |stat|
+        stat[:run_out].reject!(&:empty?) if stat[:run_out].present?
+        if !stat[:run_out].blank? && stat[:batting_order].present?
+          @_stat = Stat.find_by_id(stat[:id])
+          @_run_out = RunOut.where(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id) if @_stat.run_out
+          @_run_out.delete_all if @_run_out
+          stat[:run_out].each do |run_out_by|
+            RunOut.create(game_id: @game.id,player_id: @_stat.player_id,innings: @_stat.inning_id,run_out_by: run_out_by)
+          end
+          @_stat.update_attributes(:run_out => true)
         end
-        @_stat.update_attributes(:run_out => true)
       end
     end
   end
@@ -121,6 +123,16 @@ class GamesController < ApplicationController
     authorize! :create, Game 
     @country = Country.create(:name => params[:name])
     @country.code_ids = params[:country][:code_ids]
+  end
+
+  def quick_add_series
+    authorize! :create, Game
+  end
+
+  def save_quick_add_series
+    authorize! :create, Game
+    @series = Series.create(:name => params[:name])
+    @series.country_ids = params[:country_ids]
   end
 
   def quick_add_location
@@ -220,7 +232,7 @@ class GamesController < ApplicationController
       innings_attributes: [:id, :game_id, :batting, :squad_1_byes, :squad_1_leg_byes, :squad_2_byes, :squad_2_leg_byes], 
       stats_attributes: [
         :id, :inning_id, :player_id, 
-        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :hit_wicket, :retired_hurt, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
         :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
         :created_at, :updated_at
         ])
@@ -229,14 +241,14 @@ class GamesController < ApplicationController
   def update_game_params
     params[:game][:game_winner_margin] = 0 if (params[:game][:game_winner]=="0")
     params[:game][:game_winner_amount] = 0 if (params[:game][:game_winner]=="0")
-    params.require(:game).permit(:id, :match_date, :code_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
+    params.require(:game).permit(:id, :match_date, :code_id, :series_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
       :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
       game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
       game_team_2_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
       innings_attributes: [:id, :game_id, :batting, :squad_1_byes, :squad_1_leg_byes, :squad_2_byes, :squad_2_leg_byes], 
       stats_attributes: [
         :id, :inning_id, :player_id, 
-        :runs, :minutes, :balls, :fours, :sixes, :run_out, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
+        :runs, :minutes, :balls, :fours, :sixes, :run_out, :hit_wicket, :retired_hurt, :bowled_by, :caught_by,:lbw_by,:stumped_by,:batting_order,:fow_order,:fow_score,:fow_overs,:fow_balls,
         :bowling_order,:overs,:over_partial,:maidens, :runs_against, :zeroes_against, :fours_against, :sixes_against, :no_balls, :wides, :wickets,  
         :created_at, :updated_at
         ])

@@ -26,6 +26,8 @@
 				<th>Stumped By</th>
 				<th>Lbw By</th>
 				<th>Run Out By</th>
+                <th>Hit Wicket</th>
+                <th>Retired Hurt</th>
 				<th>Fow Order</th>
 				<th>Fow Score</th>
 				<th>Fow Overs</th>
@@ -48,6 +50,8 @@
 				<td><%= s.select(:stumped_by,opponent_palyers,{},{})%></td>
 				<td><%= s.select(:lbw_by,opponent_palyers,{},{})%></td>
 				<td class><%= s.select(:run_out,opponent_palyers,{:selected=>get_selected_runout(p)},{:class=>"select2-runout",:multiple=>true})%></td>
+                <td><%= s.check_box :hit_wicket %></td>
+                <td><%= s.check_box :retired_hurt %></td>
 				<td><%= s.text_field :fow_order,:size => 3%></td>
 				<td><%= s.text_field :fow_score, :size => 3%></td>
 				<td><%= s.text_field :fow_overs, :size => 3%></td>

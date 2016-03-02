@@ -62,6 +62,11 @@ class Stat < ActiveRecord::Base
        run_out_by = RunOut.where(:innings=>self.inning_id,:game_id=>game_id,:player_id=>self.player_id).pluck(:run_out_by)
        run_out_player = Player.where(:id=>run_out_by).pluck(:name).join(",")
        return "run out (#{run_out_player})"
+    elsif self.hit_wicket
+      bowller =  Player.find_by_id(self.bowled_by).name
+      return "Hit Wicket b #{bowller}"
+    elsif self.retired_hurt
+      return "Retired Hurt"
     elsif !self.lbw_by.nil?
       name = Player.find_by_id(self.lbw_by).name
       return "lbw #{name}"

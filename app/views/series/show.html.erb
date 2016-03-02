@@ -1,0 +1,22 @@
+<h3>View Series - <%= @country.name %></h3>
+
+
+
+<div class="col-md-12">
+	<div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+		<div class="panel-heading">
+			<h4 class="panel-title">Main Details</h4>
+		</div>
+		<div class="panel-body">
+
+						<p>
+			  <strong>Name:</strong>
+			  <%= @series.name %>
+			</p>
+			
+						<%= link_to 'Edit', edit_series_path(@series) %> |
+			<%= link_to 'Back', series_index_path %>
+		
+		</div>
+	</div>
+</div>

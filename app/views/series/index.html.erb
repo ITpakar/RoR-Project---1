@@ -1,0 +1,18 @@
+<h3>Series</h3>
+<div class="col-md-12">
+  <div class="panel panel-inverse">
+    <div class="panel-body">    
+      <p><%= link_to "New Series", new_series_path, remote: true, class: "btn btn-xs btn-primary" %></p>
+      <table id="series-table" data-source="<%= series_index_path(format: :json) %>" class="table table-striped table-bordered dataTable no-footer" width="100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+		    <th>Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>	
+    </div>
+  </div>
+</div>
