@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   # has_one :profile, dependent: :destroy
   has_one :profile, as: :profilable, dependent: :destroy
+  belongs_to :country
   accepts_nested_attributes_for :profile, allow_destroy: true
   after_save :create_profile, :on => :create, unless: Proc.new { self.profile }
 

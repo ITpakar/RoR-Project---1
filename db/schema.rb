@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301123739) do
+ActiveRecord::Schema.define(version: 20160302055423) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -168,7 +168,10 @@ ActiveRecord::Schema.define(version: 20160301123739) do
     t.string   "phone_number",    limit: 255
     t.integer  "profilable_id",   limit: 4
     t.string   "profilable_type", limit: 255
+    t.integer  "country_id",      limit: 4
   end
+
+  add_index "profiles", ["country_id"], name: "index_profiles_on_country_id", using: :btree
 
   create_table "run_outs", force: :cascade do |t|
     t.integer  "game_id",    limit: 4
