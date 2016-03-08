@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302055423) do
+ActiveRecord::Schema.define(version: 20160308100719) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -138,19 +138,20 @@ ActiveRecord::Schema.define(version: 20160302055423) do
   add_index "locations", ["country_id"], name: "index_locations_on_country_id", using: :btree
 
   create_table "players", force: :cascade do |t|
-    t.string   "name",           limit: 255
-    t.integer  "country_id",     limit: 4
-    t.integer  "batting_style",  limit: 4,   default: 0
-    t.string   "bowling_style",  limit: 255
-    t.string   "role",           limit: 255
-    t.boolean  "deleted",                    default: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.string   "dob",            limit: 255
-    t.string   "full_name",      limit: 255
-    t.string   "scorecard_name", limit: 255
-    t.string   "slug",           limit: 255
-    t.string   "image",          limit: 255
+    t.string   "name",             limit: 255
+    t.integer  "country_id",       limit: 4
+    t.integer  "batting_style",    limit: 4,   default: 0
+    t.string   "bowling_style",    limit: 255
+    t.string   "role",             limit: 255
+    t.boolean  "deleted",                      default: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "dob",              limit: 255
+    t.string   "full_name",        limit: 255
+    t.string   "scorecard_name",   limit: 255
+    t.string   "slug",             limit: 255
+    t.string   "image",            limit: 255
+    t.string   "image_source_url", limit: 255
   end
 
   add_index "players", ["country_id"], name: "index_players_on_country_id", using: :btree

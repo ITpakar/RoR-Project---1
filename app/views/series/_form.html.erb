@@ -11,7 +11,7 @@
   <div class="form-group">
     <%= label_tag("Select Countries", nil,:class=> "col-md-3 control-label" )%>
     <div class="col-md-9">
-      <%= f.select :country_ids, Country.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
+      <%= f.select(:country_ids,Country.all.collect {|x| [x.name, x.id]},{:selected=>get_selected_countries(f.object)},{:style=>'width:100%;',:class=>'select2-element',:multiple=>true})%>
     </div>
   </div>
   <div class="modal-footer">
@@ -20,3 +20,7 @@
   </div>
   </div>
 <% end %>
+
+<script>
+    $('.select2-element').select2();
+</script>

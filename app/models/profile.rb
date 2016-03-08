@@ -4,4 +4,5 @@ class Profile < ActiveRecord::Base
 	# validates_format_of :phone_number, :with =>  /\d[0-9]\)*\z/ , :message => "Only positive number without spaces are allowed"
 	# belongs_to :user
 	belongs_to :profilable, :polymorphic => true
+  belongs_to :country
 end

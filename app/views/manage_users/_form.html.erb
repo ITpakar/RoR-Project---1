@@ -41,7 +41,12 @@
         <%= p.text_field :screenname, class: 'form-control', :required => true %>
       </div>
     </div>
-
+    <div class="form-group">
+      <%= p.label :country_id, class: "col-md-3 control-label" %>
+      <div class="col-md-9">
+        <%= p.select :country_id, options_for_select(Country.pluck(:name, :id),:selected => p.object.country_id), {prompt: true,}, {:class => 'form-control'} %>
+      </div>
+    </div>
     <div class="form-group">
       <%= p.label :phone_number, class: "col-md-3 control-label" %>
       <div class="col-md-9">

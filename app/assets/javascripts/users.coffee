@@ -6,4 +6,4 @@ $ ->
     serverSide: true
     ajax: $('#manage-users-table').data('source')
     pagingType: 'full_numbers'
-    columnDefs: [{ "orderable": false, "targets": 1 }]
+    columnDefs: [{ "orderable": false, "targets": 5 }]

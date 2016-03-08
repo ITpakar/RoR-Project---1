@@ -12,7 +12,7 @@
             <div class="form-group input-group">
               <%= f.label :match_date, class: 'label-control' %>
               <div class="input-group date" id="match-date-id">
-                <%= f.text_field :match_date, class: "form-control", :readonly => true%>
+                <%= f.text_field :match_date, class: "form-control", :value => change_date(@game) %>
               </div>
               <span id ="date_error" class = "errors"></span>
             </div>
@@ -32,7 +32,7 @@
             <div class="form-group">
               <%= f.label 'Choose Series', class: 'label-control' %>
               <div class="input-group">
-                <%= f.collection_select :series_id, Series.stored, :id, :name, {:prompt => true}, {class: 'form-control'}  %>
+                <%= f.collection_select :series_id, Series.stored, :id, :name, {:prompt => true, :selected => @game.series_id}, {class: 'form-control', onchange: 'check_series();'}  %>
               </div>
               <div class="input-group">
                 <%= link_to "Quick Add", quick_add_series_path, remote: true, class: "btn btn-xs btn-primary",id: "quick_add_game_type"  %>
@@ -127,6 +127,11 @@
           <strong>Selected Players</strong>
         </p>
         <span id ="squad_error" class = "errors"></span>
+        <div id="no-series" class="alert alert-danger" role="alert">
+          <p>
+            Please select a series.
+          </p>
+        </div>
         <div id="no-teams" class="alert alert-danger" role="alert">
           <p>
             Please select two teams.
@@ -199,6 +204,16 @@ $(document).ready(function(){
 
  // $('#squads').hide();
 
+function check_series() {
+    var selected_series_id = $('#game_series_id').val();
+    if (selected_series_id == '0') {
+        $('#no-series').show();
+        check_teams();
+    } else {
+        $('#no-series').hide();
+        check_teams();
+    }
+}
  function check_teams() {
  	var x = $('#game_squad_1_id').val();
  	var y = $('#game_squad_2_id').val();
