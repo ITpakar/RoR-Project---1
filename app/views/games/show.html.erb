@@ -30,7 +30,7 @@
 			</p>
 			<p>
 			    <strong>Series:</strong>
-                <%= @game.series.name%>
+                <%= @game.series.name unless @game.series.nil? %>
 			</p>
 			<p>
 			    <strong>Coin Toss Outcome:</strong>
