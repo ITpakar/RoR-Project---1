@@ -32,7 +32,6 @@ class PlayersController < ApplicationController
 
   def update
     @player.update(player_params)
-    respond_with(@player)
   end
 
   def destroy

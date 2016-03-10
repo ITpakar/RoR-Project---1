@@ -5,7 +5,7 @@ $ ->
     serverSide: true
     ajax: $('#squads-table').data('source')    
     pagingType: 'full_numbers'
-    columnDefs: [{ "orderable": false, "targets": 1 }]
+    columnDefs: [{ "orderable": false, "targets": 3 }]
 
   $('#global-modal').on 'shown.bs.modal', ->
     $('#display-selected-table tbody').sortable()   
