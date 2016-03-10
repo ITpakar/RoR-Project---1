@@ -40,6 +40,9 @@
 	</div>
     <div class="col-md-6 text-center" style="padding-top: 10px;">
       <%= image_tag @player.image_url(:medium) %>
+      <div>
+        <span>Source: </span><%= @player.image_source_url %>
+      </div>
     </div>
     <div class='horizontal-ruler col-md-12'></div>
     <div style="clear:both;"></div>

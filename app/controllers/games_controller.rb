@@ -241,6 +241,9 @@ class GamesController < ApplicationController
   def update_game_params
     params[:game][:game_winner_margin] = 0 if (params[:game][:game_winner]=="0")
     params[:game][:game_winner_amount] = 0 if (params[:game][:game_winner]=="0")
+    params[:game][:squad_1_id] = params[:game][:squad_id_1] if params[:game][:squad_id_1].present?
+    params[:game][:squad_2_id] = params[:game][:squad_id_2] if params[:game][:squad_id_2].present?
+
     params.require(:game).permit(:id, :match_date, :code_id, :series_id, :name, :squad_1_id, :squad_2_id, :location_id, :number_of_innings,:coin_toss_win,
       :coin_toss_decision,:game_winner,:game_winner_amount,:game_winner_margin,:day_night_game,:player_of_the_match,:umpire_1,:umpire_2,:umpire_tv,:umpire_referee,:umpire_reserve,
       game_team_1_squads_attributes: [:id, :player_id, :squad_id, :selected, :captain, :wicket_keeper], 
