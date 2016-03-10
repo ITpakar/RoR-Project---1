@@ -15,7 +15,7 @@
     <div class="form-group">
         <%= label_tag("Select Host Countries", nil,:class=> "col-md-4 control-label" )%>
         <div class="col-md-8">
-            <%= select_tag(:country_ids, options_for_select(Country.all.collect {|x| [x.name, x.id]}), :multiple => true) %>
+            <%= select_tag(:country_ids, options_for_select(Country.all.collect {|x| [x.name, x.id]}),{:style=>'width:100%;',:class=>'select2-element',:multiple=>true}) %>
         </div>
     </div>
   </div>
@@ -26,3 +26,7 @@
   </div>
 
 <% end %>
+
+<script>
+    $('.select2-element').select2();
+</script>
