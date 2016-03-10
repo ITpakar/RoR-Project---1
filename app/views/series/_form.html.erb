@@ -9,7 +9,7 @@
 	</div>
   </div>
   <div class="form-group">
-    <%= label_tag("Select Countries", nil,:class=> "col-md-3 control-label" )%>
+    <%= label_tag("Select Host Countries", nil,:class=> "col-md-3 control-label" )%>
     <div class="col-md-9">
       <%= f.select :country_ids, Country.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
     </div>
