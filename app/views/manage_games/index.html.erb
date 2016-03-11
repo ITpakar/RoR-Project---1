@@ -8,7 +8,7 @@
 			<div class="form-group">
 				<%= f.label 'Choose Game', class: 'label-control' %>
 				<div class="form-group">
-					<%= f.select :game_id, options_for_select(Game.all.map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control', :data => {  :remote => true, :format => 'js', :url => url_for(:controller => "manage_games", :action => "load_squads")}} %>
+					<%= f.select :game_id, options_for_select(Game.order(:match_date => :desc).map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control select2-element', :data => {  :remote => true, :format => 'js', :url => url_for(:controller => "manage_games", :action => "load_squads")}} %>
 				</div>
 			</div>
 		</div>
@@ -44,5 +44,7 @@
 
 
 	});
+
+    $('.select2-element').select2();
 
 </script>

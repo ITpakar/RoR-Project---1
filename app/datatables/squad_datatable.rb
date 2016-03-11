@@ -2,11 +2,11 @@ class SquadDatatable < AjaxDatatablesRails::Base
   def_delegators :@view, :link_to, :h, :mailto, :squad_path, :edit_squad_path
   
   def sortable_columns
-    @sortable_columns ||= ['Code.name', 'Country.Name']
+    @sortable_columns ||= ['Country.Name', 'Code.name', 'Squad.description']
   end
 
   def searchable_columns
-    @searchable_columns ||= ['Code.name', 'Country.Name']
+    @searchable_columns ||= ['Country.Name', 'Code.name', 'Squad.description']
   end
 
   private

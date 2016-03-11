@@ -83,7 +83,7 @@
 
   def get_squads
     authorize! :read, Squad
-    @squads = Squad.where(:code_id=>params[:code_id],:country_id=>params[:country_id])
+    @squads = Squad.where(:code_id=>params[:code_id],:country_id=>params[:country_id], :deleted => false)
     render :json => {:squads => @squads}
   end
 

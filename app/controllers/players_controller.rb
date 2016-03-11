@@ -18,21 +18,24 @@ class PlayersController < ApplicationController
   def new
     authorize! :new, Player
     @player = Player.new
+    session[:return_to] ||= request.referer
   end
 
   def edit
     authorize! :edit, Player
+    session[:return_to] ||= request.referer
   end
 
   def create
     authorize! :create, Player
     @player = Player.new(player_params)
     @player.save
+    redirect_to session.delete(:return_to)
   end
 
   def update
     @player.update(player_params)
-    respond_with(@player)
+    redirect_to session.delete(:return_to)
   end
 
   def destroy
