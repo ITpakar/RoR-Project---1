@@ -1,0 +1,5 @@
+<% if flash[:notice] %>
+$('#alert-message-container p').html("<%= flash[:notice] %>");
+$('#alert-message-container').fadeIn();
+$(".alert-success" ).fadeOut(3000);
+<% end %>
