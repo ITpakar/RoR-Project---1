@@ -25,12 +25,14 @@ class Game < ActiveRecord::Base
   #enum game_winner: {Draw: 0, Team1: 1, Team2: 2}
   enum game_winner_amount: {Draw: 0, Runs: 1, Wickets: 2}
   enum day_night_game: {DayGame: 0, NightGame: 1, DayNightGame: 2}
+  enum state: [ :prepped, :prepared, :locked_out, :completed ]
 
   accepts_nested_attributes_for :game_team_1_squads
   accepts_nested_attributes_for :game_team_2_squads
   accepts_nested_attributes_for :innings
   accepts_nested_attributes_for :stats
-  
+
+  scope :uncompleted, -> { where "state <> ?", Game.states[:completed] }
   
   before_create :setup_innings
   after_create :setup_squad_stats

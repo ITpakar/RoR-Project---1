@@ -1,16 +1,23 @@
 class GamesController < ApplicationController
   before_action :authenticate_scope
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game, only: [:show, :edit, :update, :destroy, :toggle_state, :lock_out]
   respond_to :html, :js, :json
   
   def index
     authorize! :read, Game  
     respond_to do |format|
       format.html
-      format.json { render json: GameDatatable.new(view_context) }
+      format.json { render json: GameDatatable.new(view_context, {called_by: :index}) }
     end
   end
 
+  def active
+    authorize! :read, Game
+    respond_to do |format|
+      format.html
+      format.json { render json: GameDatatable.new(view_context, {called_by: :active}) }
+    end
+  end
   def show
     authorize! :read, Game
     @game = Game.find_by_id(params[:id])
@@ -30,6 +37,7 @@ class GamesController < ApplicationController
   def edit
     authorize! :update, Game
   end
+
 
   def create
     authorize! :create, Game
@@ -64,6 +72,22 @@ class GamesController < ApplicationController
   def update_game
     authorize! :create, Game
     @game.update(game_params)
+  end
+
+  def toggle_state
+    authorize! :update, Game
+    if @game.completed?
+      @game.state = "locked_out"
+    else
+      @game.state = "completed"
+    end
+    @game.save
+  end
+
+  def lock_out
+    authorize! :update, Game
+    @game.state = "locked_out"
+    @game.save
   end
 
   def destroy

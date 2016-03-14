@@ -24,8 +24,13 @@ Rails.application.routes.draw do
 
   resources :manage_users
   resources :teams
-  resources :games do 
+  resources :games do
+    collection do
+      get 'active'
+    end
     member do
+      put 'toggle_state'
+      put 'lock_out'
       put 'update_game'
       patch 'update_game'
     end

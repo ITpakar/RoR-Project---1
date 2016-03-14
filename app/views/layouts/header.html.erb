@@ -25,6 +25,11 @@
 								<li><%= link_to "User Team Builder", user_team_builder_path %></li>
 							<% end -%>
 					<% end -%>
+                    <% if can? :read, Team %>
+                      <% if current_admin %>
+                        <li><%= link_to "Active Games", active_games_path %></li>
+                      <% end %>
+                    <% end %>
 					<% if can? :read, current_usr %>
 						<li><a href="/scoring">Scoring</a></li>
 					<% end -%>
