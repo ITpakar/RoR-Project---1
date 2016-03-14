@@ -145,10 +145,11 @@ $("#umpire_2_id" ).select2();
 // $('#game_game_winner_margin').attr("disabled", true); 
 
 $(document).ready(function(){
-  if ($('#game_game_winner').val() == 0) 
+  if ($('#game_game_winner').val() <= 0)
   {
     $('#game_game_winner_amount').attr("disabled", true); 
-    $('#game_game_winner_margin').attr("disabled", true);     
+    $('#game_game_winner_margin').attr("disabled", true);
+
   }
 
 
@@ -164,7 +165,7 @@ $('#game_game_winner').change(function(){
         if (winner == 0) {
             $('#game_game_winner_amount').val(0);
         } else {
-            $('#game_game_winner_amount').val(-1);
+            $('#game_game_winner_amount').val('');
         }
 
         $('#game_game_winner_margin').val(0);

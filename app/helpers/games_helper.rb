@@ -168,7 +168,7 @@ module GamesHelper
 			if game_winner == 0
 				[["Draw",0]]
 			else
-				[["No Result",-1]]
+				[["Please Select", ""]]
 			end
 		else
 			[ ["Runs", 1], ["Wickets", 2], ["Bowl Out", 3], ["Super Over", 4] ]

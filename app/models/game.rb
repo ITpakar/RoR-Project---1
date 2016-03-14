@@ -31,8 +31,7 @@ class Game < ActiveRecord::Base
   accepts_nested_attributes_for :innings
   accepts_nested_attributes_for :stats
 
-  scope :uncompleted, -> { where "state <> ?", Game.states[:completed] }
-  
+  scope :editable, -> { where "state < ?", Game.states[:locked_out] }
   before_create :setup_innings
   after_create :setup_squad_stats
 

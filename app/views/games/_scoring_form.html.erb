@@ -7,7 +7,7 @@
 			<div class="form-group">
 				<%= f.label 'Choose Game', class: 'label-control' %>
 				<div class="form-group">
-					<%= f.select :id, options_for_select(Game.uncompleted.order(:match_date => :desc).map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control select2-element', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "games", :action => "load_innings")}} %>
+					<%= f.select :id, options_for_select(Game.editable.order(:match_date => :desc).map{|s| [s.full_name, s.id]}), { prompt: true }, {class: 'form-control select2-element', :data => {  :remote => true, :format => 'json', :url => url_for(:controller => "games", :action => "load_innings")}} %>
 				</div>
 			</div>
 		</div>
