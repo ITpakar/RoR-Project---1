@@ -65,7 +65,9 @@ class TeamsController < ApplicationController
     end
     params[:team][:team_players_attributes] = pp
     @team = Team.new(team_params)
-    @team.save
+    if @team.save
+      flash[:notice] = "Team was successfully created."
+    end
   end
   
   def load_teams
@@ -98,6 +100,8 @@ class TeamsController < ApplicationController
        end
        @stats[t.inning_id][t.player_id] = t   
     end
+    logger.debug "Stat: #{@stat}"
+    logger.debug "Stats: #{@stats}"
   end
 
   private

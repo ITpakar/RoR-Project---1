@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   get 'team-builder' => 'teams#team_builder'
   get 'user-team-builder' => 'teams#user_team_builder'
   post 'team-builder' => 'teams#team_builder_save'
+  post 'user-team-builder' => 'teams#team_builder_save'
   
   get 'load-teams' => 'teams#load_teams'
   get 'load-team' => 'teams#load_team'

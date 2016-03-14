@@ -7,13 +7,14 @@ class Ability
     when User
       Rails.logger.info '==CanCan::Ability=======user'
       cannot :read, User
-      can :read, Team
+      can :manage, Team
       can :manage, Profile
       can :read, Game
       can :read, Player
       cannot :create, Player
       cannot :destroy, Player
       cannot :edit, Player
+      cannot :destroy, Team
     when Admin
       Rails.logger.info '==CanCan::Ability=======admin'
       can :manage, :all
