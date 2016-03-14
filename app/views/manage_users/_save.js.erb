@@ -5,5 +5,10 @@ $("ul.errors").html("");
   <% end %>
 <% else %>  
   $('#manage-users-table').DataTable().ajax.reload();
-  $("#global-modal").modal("hide")
+
+  <% unless @new_password.nil? %>
+    $("#inner-global-modal").html("<%= escape_javascript(render 'password_reset_prompt' ) %>")
+  <% else %>
+    $("#global-modal").modal("hide");
+  <% end %>
 <% end %>

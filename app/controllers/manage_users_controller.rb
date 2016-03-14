@@ -33,10 +33,11 @@ class ManageUsersController < ApplicationController
 
   def update
     # authorize! :udpate, User
-    @password_updated = false
+    @new_password = nil
     unless user_params[:password].blank? and user_params[:password_confirmation].blank?
-      @user.update(user_params)
-      @password_updated = true
+      if @user.update(user_params)
+        @new_password = user_params[:password]
+      end
     else
       @user.update_without_password(user_params)
     end

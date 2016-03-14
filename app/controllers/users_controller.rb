@@ -43,9 +43,6 @@ class UsersController < ApplicationController
     @user.save
   end
 
-  def notify_password_change
-    UserMailer.password_reset_notification(@user, @password)
-  end
 
   private
   def set_user
