@@ -37,7 +37,7 @@
         <div class="form-group">
           <%= f.label 'Game Winner Type', class: 'label-control' %>
           <div class="input-group">
-            <%= f.select :game_winner_amount, options_for_select(Game.game_winner_amounts.map {|k, v| [k.titleize, k]}, :selected=>f.object.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
+            <%= f.select :game_winner_amount, options_for_select(get_winner_types(@game.game_winner), :selected=>f.object.game_winner_amount), {prompt: true}, {:class => 'form-control'} %>
           </div>
         </div>
       </div>
@@ -145,26 +145,55 @@ $("#umpire_2_id" ).select2();
 // $('#game_game_winner_margin').attr("disabled", true); 
 
 $(document).ready(function(){
-  if ($('#game_game_winner').val() == 0) 
-  {
-    $('#game_game_winner_amount').attr("disabled", true); 
-    $('#game_game_winner_margin').attr("disabled", true);     
-  }
-});
-$('#game_game_winner').change(function(){
-  if ($(this).val() == 0) 
+  if ($('#game_game_winner').val() <= 0)
   {
     $('#game_game_winner_amount').attr("disabled", true); 
     $('#game_game_winner_margin').attr("disabled", true);
-    $('#game_game_winner_amount').val("Draw"); 
-    $('#game_game_winner_margin').val(0); 
 
   }
-  else
-  {
-    $('#game_game_winner_amount').attr("disabled", false); 
-    $('#game_game_winner_margin').attr("disabled", false); 
-  }
+
+
 });
+
+$('#game_game_winner').change(function(){
+    var winner = $(this).val();
+    if (winner <= 0)
+    {
+        $('#game_game_winner_amount').attr("disabled", true);
+        $('#game_game_winner_margin').attr("disabled", true);
+        $('#game_game_winner_amount').html(game_winner_types(winner));
+        if (winner == 0) {
+            $('#game_game_winner_amount').val(0);
+        } else {
+            $('#game_game_winner_amount').val('');
+        }
+
+        $('#game_game_winner_margin').val(0);
+
+    }
+    else
+    {
+        $('#game_game_winner_amount').attr("disabled", false);
+        $('#game_game_winner_margin').attr("disabled", false);
+        $('#game_game_winner_amount').html(game_winner_types(winner));
+    }
+});
+
+function game_winner_types(game_winner) {
+    var result;
+    if (game_winner <= 0) {
+        result  = '<option value>Please Select</option>';
+        result += '<option value="-1">No Result</option>';
+        result += '<option value="0">Draw</option>';
+    } else {
+        result  = '<option value>Please Select</option>';
+        result += '<option value="1">Runs</option>';
+        result += '<option value="2">Wickets</option>';
+        result += '<option value="3">Bowl Out</option>';
+        result += '<option value="4">Super Over</option>';
+    }
+
+    return result;
+}
 
 </script>

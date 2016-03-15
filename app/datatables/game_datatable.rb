@@ -20,7 +20,8 @@ class GameDatatable < AjaxDatatablesRails::Base
     records.map do |record|
 	    ops = ''
       ops = link_to('<i class="fa fa-eye"> </i>'.html_safe, game_path(record))
-      if @called_by == "index"
+      calledBy = called_by
+      if calledBy.eql? :index
         if record.completed?
           ops = ops + " " + link_to('<i class="fa fa-plus"> </i>'.html_safe, toggle_state_game_path(record), method: :put, remote: true)
         else
@@ -41,7 +42,13 @@ class GameDatatable < AjaxDatatablesRails::Base
   end
 
   def get_raw_records
-	 Game.includes(:squad_1 => :country).includes(:squad_2 => :country).includes(:location).where(deleted: '0')
+   calledBy = called_by
+   if calledBy.eql? :index
+     Game.includes(:squad_1 => :country).includes(:squad_2 => :country).includes(:location).where(deleted: '0')
+   else
+     Game.includes(:squad_1 => :country).includes(:squad_2 => :country).includes(:location).where(deleted: '0').where(state: '0')
+   end
+
   end
   
 end

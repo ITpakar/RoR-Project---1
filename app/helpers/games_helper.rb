@@ -159,4 +159,20 @@ module GamesHelper
 			"#{location.name} - #{location.country.name}"
 		end
 	end
+
+	def winner_types_disabled? game_winner
+		game_winner.nil? || game_winner < 1
+	end
+
+	def get_winner_types game_winner
+		if winner_types_disabled?(game_winner)
+			if game_winner == 0
+				[["Draw",0]]
+			else
+				[["Please Select", ""]]
+			end
+		else
+			[ ["Runs", 1], ["Wickets", 2], ["Bowl Out", 3], ["Super Over", 4] ]
+		end
+	end
 end
